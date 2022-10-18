@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class HomeTabCustomization extends ConsumerWidget {
   const HomeTabCustomization();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final padding = ref.watch(displayPreferencesProvider).edgeInsets;
+    final theme = Theme.of(context);
     final configuration = ref.watch(homeTabConfigurationProvider);
 
     return ListView(
-      padding: padding,
+      padding: theme.spacing.edgeInsets,
       children: [
         const HomeTopPadding(),
         if (isFree) ...[
@@ -25,10 +26,10 @@ class HomeTabCustomization extends ConsumerWidget {
               ),
             ],
           ),
-          smallVerticalSpacer,
+          VerticalSpacer.small,
         ] else
           const _HomeTabResetToDefaultCard(),
-        smallVerticalSpacer,
+        VerticalSpacer.small,
         const _HomeTabReorderList(),
         if (configuration.canAddMoreLists) const HomeTabAddListCard(),
       ],
@@ -65,7 +66,7 @@ class _HomeTabResetToDefaultCard extends ConsumerWidget {
     final theme = Theme.of(context);
     final notifier = ref.watch(homeTabConfigurationProvider.notifier);
 
-    return HarpyListCard(
+    return RbyListCard(
       color: Colors.transparent,
       leading: const Icon(CupertinoIcons.clear),
       title: const Text('reset to default'),

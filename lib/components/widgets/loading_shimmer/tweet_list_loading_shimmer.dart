@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 /// A loading shimmer for a tweet list with placeholder tweet cards.
-class TweetListLoadingSliver extends ConsumerWidget {
+class TweetListLoadingSliver extends StatelessWidget {
   const TweetListLoadingSliver();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return SliverLoadingShimmer(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          verticalSpacer,
+          VerticalSpacer.normal,
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: display.paddingValue * 2),
+            padding: EdgeInsets.symmetric(horizontal: theme.spacing.base * 2),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,7 +26,7 @@ class TweetListLoadingSliver extends ConsumerWidget {
                   15,
                   Padding(
                     padding: EdgeInsetsDirectional.only(
-                      bottom: display.paddingValue * 2,
+                      bottom: theme.spacing.base * 2,
                     ),
                     child: const TweetPlaceholder(),
                   ),
@@ -52,24 +52,24 @@ class TweetPlaceholder extends StatelessWidget {
         Row(
           children: [
             const PlaceholderBox(width: 42, height: 42, shape: BoxShape.circle),
-            horizontalSpacer,
+            HorizontalSpacer.normal,
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
                   PlaceholderBox(widthFactor: .75, height: 15),
-                  smallVerticalSpacer,
+                  VerticalSpacer.small,
                   PlaceholderBox(widthFactor: .5, height: 15),
                 ],
               ),
             )
           ],
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         const PlaceholderBox(widthFactor: .6, height: 15),
-        smallVerticalSpacer,
+        VerticalSpacer.small,
         const PlaceholderBox(height: 15),
-        smallVerticalSpacer,
+        VerticalSpacer.small,
         const PlaceholderBox(widthFactor: .8, height: 15),
       ],
     );

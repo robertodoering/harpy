@@ -3,9 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class SetupPage extends ConsumerStatefulWidget {
@@ -50,7 +51,7 @@ class _SetupPageState extends ConsumerState<SetupPage> {
 
   @override
   Widget build(BuildContext context) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
     final connections = ref.watch(_connectionsProvider).values.isNotEmpty
         ? ref.watch(_connectionsProvider).values.first
@@ -59,7 +60,7 @@ class _SetupPageState extends ConsumerState<SetupPage> {
     final children = [
       SetupWelcomeContent(
         onStart: () => _controller.nextPage(
-          duration: kLongAnimationDuration,
+          duration: theme.animation.long,
           curve: Curves.easeOutCubic,
         ),
       ),
@@ -74,8 +75,8 @@ class _SetupPageState extends ConsumerState<SetupPage> {
     return HarpyScaffold(
       safeArea: true,
       child: AnimatedPadding(
-        duration: kShortAnimationDuration,
-        padding: EdgeInsets.symmetric(vertical: display.paddingValue),
+        duration: theme.animation.short,
+        padding: EdgeInsets.symmetric(vertical: theme.spacing.base),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -90,12 +91,12 @@ class _SetupPageState extends ConsumerState<SetupPage> {
             ImmediateSlideAnimation(
               delay: _delay,
               curve: Curves.easeOutCubic,
-              duration: kLongAnimationDuration,
+              duration: theme.animation.long,
               begin: const Offset(0, .5),
               child: ImmediateOpacityAnimation(
                 delay: _delay,
                 curve: Curves.easeOutCubic,
-                duration: kLongAnimationDuration,
+                duration: theme.animation.long,
                 child: Stack(
                   children: [
                     _PageIndicator(
@@ -191,17 +192,17 @@ class _SkipButtonState extends ConsumerState<_SkipButton> {
 
   @override
   Widget build(BuildContext context) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
     if (_opacity == 0) return const SizedBox();
 
     return Opacity(
       opacity: _opacity,
       child: Container(
-        padding: display.edgeInsetsSymmetric(horizontal: true),
+        padding: theme.spacing.symmetric(horizontal: true),
         alignment: AlignmentDirectional.centerStart,
-        child: HarpyButton.text(
-          padding: display.edgeInsets,
+        child: RbyButton.text(
+          padding: theme.spacing.edgeInsets,
           label: const Text('skip'),
           onTap: () => finishSetup(ref),
         ),
@@ -248,21 +249,21 @@ class _PrevButtonState extends ConsumerState<_PrevButton> {
 
   @override
   Widget build(BuildContext context) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
     if (_opacity == 0) return const SizedBox();
 
     return Opacity(
       opacity: _opacity,
       child: Container(
-        padding: display.edgeInsetsSymmetric(horizontal: true),
+        padding: theme.spacing.symmetric(horizontal: true),
         alignment: AlignmentDirectional.centerStart,
-        child: HarpyButton.text(
-          padding: display.edgeInsets,
+        child: RbyButton.text(
+          padding: theme.spacing.edgeInsets,
           icon: const Icon(CupertinoIcons.chevron_left),
           onTap: () => widget.controller.animateToPage(
             (widget.controller.page! - 1).round().clamp(0, widget.length - 1),
-            duration: kLongAnimationDuration,
+            duration: theme.animation.long,
             curve: Curves.easeOutCubic,
           ),
         ),
@@ -315,21 +316,21 @@ class _NextButtonState extends ConsumerState<_NextButton> {
 
   @override
   Widget build(BuildContext context) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
     if (_opacity == 0) return const SizedBox();
 
     return Opacity(
       opacity: _opacity,
       child: Container(
-        padding: display.edgeInsetsSymmetric(horizontal: true),
+        padding: theme.spacing.symmetric(horizontal: true),
         alignment: AlignmentDirectional.centerEnd,
-        child: HarpyButton.text(
-          padding: display.edgeInsets,
+        child: RbyButton.text(
+          padding: theme.spacing.edgeInsets,
           icon: const Icon(CupertinoIcons.chevron_right),
           onTap: () => widget.controller.animateToPage(
             (widget.controller.page! + 1).round().clamp(0, widget.length),
-            duration: kLongAnimationDuration,
+            duration: theme.animation.long,
             curve: Curves.easeOutCubic,
           ),
         ),
@@ -341,5 +342,5 @@ class _NextButtonState extends ConsumerState<_NextButton> {
 void finishSetup(WidgetRef ref) {
   HapticFeedback.lightImpact();
   ref.read(setupPreferencesProvider).performedSetup = true;
-  ref.read(routerProvider).goNamed(HomePage.name);
+  ref.context.goNamed(HomePage.name);
 }

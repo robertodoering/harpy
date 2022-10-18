@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_image/flutter_image.dart';
-import 'package:harpy/components/components.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 import 'package:shimmer/shimmer.dart';
 
 /// Builds a network [Image] with a shimmer loading animation that fades into
@@ -70,7 +69,7 @@ class HarpyImage extends StatelessWidget {
 
     final theme = Theme.of(context);
 
-    return HarpyAnimatedSwitcher(
+    return RbyAnimatedSwitcher(
       child: frame == null
           ? GestureDetector(
               // empty on tap to prevent tap gestures on loading shimmer

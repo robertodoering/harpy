@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class TweetCardMedia extends ConsumerWidget {
   const TweetCardMedia({
@@ -20,7 +20,7 @@ class TweetCardMedia extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final harpyTheme = ref.watch(harpyThemeProvider);
+    final theme = Theme.of(context);
 
     Widget child;
 
@@ -101,7 +101,7 @@ class TweetCardMedia extends ConsumerWidget {
 
     return ClipRRect(
       clipBehavior: Clip.hardEdge,
-      borderRadius: harpyTheme.borderRadius,
+      borderRadius: theme.shape.borderRadius,
       child: SensitiveMediaOverlay(
         tweet: tweet,
         child: _MediaConstrainedHeight(
@@ -173,7 +173,7 @@ class _MediaConstrainedHeight extends ConsumerWidget {
   }
 }
 
-/// Creates a hero tag for the media which is unique for each [HarpyPage].
+/// Creates a hero tag for the media which is unique for each [RbyPage].
 ///
 /// Note: One tweet can have the same media data (e.g. a retweet and the
 ///       original tweet). To avoid having the same hero tag we need to
@@ -188,7 +188,7 @@ String mediaHeroTag(
 
   final buffer = StringBuffer('${tweet.hashCode}${media.hashCode}');
 
-  if (routeSettings is HarpyPage && routeSettings.key is ValueKey) {
+  if (routeSettings is RbyPage && routeSettings.key is ValueKey) {
     final key = routeSettings.key! as ValueKey;
     // key = current route path
     buffer.write('${key.value}');

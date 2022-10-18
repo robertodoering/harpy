@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 /// Builds a button at the bottom of the screen that animate in or out of the
 /// screen based on the scroll offset and direction.
@@ -90,6 +90,8 @@ class _ScrollToTopState extends ConsumerState<ScrollToTop> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Stack(
       children: [
         widget.child,
@@ -98,11 +100,11 @@ class _ScrollToTopState extends ConsumerState<ScrollToTop> {
           child: AnimatedOpacity(
             opacity: _show ? 1 : 0,
             curve: Curves.easeInOut,
-            duration: kShortAnimationDuration,
+            duration: theme.animation.short,
             child: AnimatedSlide(
               offset: _show ? Offset.zero : const Offset(0, 1),
               curve: Curves.easeInOut,
-              duration: kShortAnimationDuration,
+              duration: theme.animation.short,
               child: _ScrollToTopButton(
                 onTap: _scrollToTop,
                 content: widget.content,
@@ -129,30 +131,29 @@ class _ScrollToTopButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
-    final display = ref.watch(displayPreferencesProvider);
     final harpyTheme = ref.watch(harpyThemeProvider);
 
     return Padding(
-      padding: display.edgeInsets.copyWith(
-        bottom:
-            bottomPadding ?? display.paddingValue + mediaQuery.padding.bottom,
+      padding: theme.spacing.edgeInsets.copyWith(
+        bottom: bottomPadding ?? theme.spacing.base + mediaQuery.padding.bottom,
       ),
       child: Material(
         color: harpyTheme.colors.alternateCardColor,
-        borderRadius: harpyTheme.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         child: InkWell(
-          borderRadius: harpyTheme.borderRadius,
+          borderRadius: theme.shape.borderRadius,
           onTap: onTap,
           child: Padding(
-            padding: display.edgeInsets,
+            padding: theme.spacing.edgeInsets,
             child: AnimatedSize(
-              duration: kShortAnimationDuration,
+              duration: theme.animation.short,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(CupertinoIcons.arrow_up),
-                  if (content != null) ...[smallHorizontalSpacer, content!],
+                  if (content != null) ...[HorizontalSpacer.small, content!],
                 ],
               ),
             ),

@@ -1,10 +1,10 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
-class ChangelogWidget extends ConsumerWidget {
+class ChangelogWidget extends StatelessWidget {
   const ChangelogWidget({
     required this.data,
   });
@@ -12,12 +12,11 @@ class ChangelogWidget extends ConsumerWidget {
   final ChangelogData data;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     return Padding(
-      padding: display.edgeInsets,
+      padding: theme.spacing.edgeInsets,
       child: Column(
         children: [
           if (data.title != null) ...[
@@ -25,19 +24,19 @@ class ChangelogWidget extends ConsumerWidget {
               data.title!,
               style: theme.textTheme.subtitle1,
             ),
-            verticalSpacer,
+            VerticalSpacer.normal,
           ],
           if (data.date != null) ...[
             _ChangelogDate(date: data.date!),
-            verticalSpacer,
+            VerticalSpacer.normal,
           ],
           if (data.summary.isNotEmpty) ...[
             _ChangelogSummary(summary: data.summary),
-            verticalSpacer,
+            VerticalSpacer.normal,
           ],
           for (final entry in data.entries) ...[
             _ChangelogEntry(entry: entry),
-            if (entry != data.entries.last) smallVerticalSpacer,
+            if (entry != data.entries.last) VerticalSpacer.small,
           ],
         ],
       ),
@@ -81,7 +80,7 @@ class _ChangelogSummary extends StatelessWidget {
       children: [
         for (final line in summary) ...[
           HarpyMarkdown(line),
-          if (line != summary.last) smallVerticalSpacer,
+          if (line != summary.last) VerticalSpacer.small,
         ],
       ],
     );
@@ -104,7 +103,7 @@ class _ChangelogEntry extends StatelessWidget {
           padding: const EdgeInsetsDirectional.only(top: 2),
           child: entry.type.asIcon,
         ),
-        horizontalSpacer,
+        HorizontalSpacer.normal,
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,12 +117,12 @@ class _ChangelogEntry extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text('·'),
-                          smallHorizontalSpacer,
+                          HorizontalSpacer.small,
                           Expanded(child: HarpyMarkdown(subEntry.line)),
                         ],
                       ),
                       if (subEntry != entry.subEntries.last)
-                        smallVerticalSpacer,
+                        VerticalSpacer.small,
                     ],
                   ],
                 ),

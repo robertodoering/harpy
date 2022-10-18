@@ -3,25 +3,26 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class TranslateLanguagesDialogTile extends ConsumerWidget {
   const TranslateLanguagesDialogTile();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final harpyTheme = ref.watch(harpyThemeProvider);
+    final theme = Theme.of(context);
     final language = ref.watch(languagePreferencesProvider);
 
     final locale = Localizations.localeOf(context);
     final groupValue = language.activeTranslateLanguage(locale);
     final name = kTranslateLanguages[groupValue];
 
-    return HarpyListTile(
+    return RbyListTile(
       leading: const Icon(Icons.translate),
       title: const Text('translate language'),
       subtitle: name != null ? Text(name) : null,
       multilineTitle: true,
-      borderRadius: harpyTheme.borderRadius,
+      borderRadius: theme.shape.borderRadius,
       onTap: () => showDialog<void>(
         context: context,
         builder: (_) => const _TranslateLanguageDialog(),
@@ -58,19 +59,19 @@ class _DialogState extends ConsumerState<_TranslateLanguageDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
     final language = ref.watch(languagePreferencesProvider);
     final languageNotifier = ref.watch(languagePreferencesProvider.notifier);
 
     final locale = Localizations.localeOf(context);
     final groupValue = language.translateLanguage;
 
-    return HarpyDialog(
+    return RbyDialog(
       title: const Text('change the language used to translate tweets'),
       contentPadding: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
       stickyContent: Padding(
-        padding: display.edgeInsets,
+        padding: theme.spacing.edgeInsets,
         child: TextField(
           decoration: InputDecoration(
             hintText: kTranslateLanguages[groupValue],
@@ -81,12 +82,12 @@ class _DialogState extends ConsumerState<_TranslateLanguageDialog> {
       content: Column(
         children: [
           for (final entry in _entries(locale).entries)
-            HarpyRadioTile<String>(
+            RbyRadioTile<String>(
               title: entry.value,
               value: entry.key,
               groupValue: groupValue,
-              leadingPadding: display.edgeInsets / 4,
-              contentPadding: display.edgeInsets / 4,
+              leadingPadding: theme.spacing.edgeInsets / 4,
+              contentPadding: theme.spacing.edgeInsets / 4,
               onChanged: (value) {
                 HapticFeedback.lightImpact();
                 Navigator.of(context).pop();

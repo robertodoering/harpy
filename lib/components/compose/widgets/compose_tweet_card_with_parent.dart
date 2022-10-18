@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class ComposeTweetCardWithParent extends StatelessWidget {
   const ComposeTweetCardWithParent({
@@ -18,7 +19,7 @@ class ComposeTweetCardWithParent extends StatelessWidget {
     return Column(
       children: [
         const ComposeTweetCard(),
-        verticalSpacer,
+        VerticalSpacer.normal,
         if (parentTweet != null)
           _ParentTweetCard(
             tweet: parentTweet!,
@@ -54,8 +55,8 @@ class _ParentTweetCard extends ConsumerWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: display.paddingValue,
-            vertical: display.smallPaddingValue,
+            horizontal: theme.spacing.base,
+            vertical: theme.spacing.small,
           ),
           child: Row(
             children: [
@@ -63,7 +64,7 @@ class _ParentTweetCard extends ConsumerWidget {
                 width: TweetCardAvatar.defaultRadius(display.fontSizeDelta) * 2,
                 child: const Icon(CupertinoIcons.reply, size: 18),
               ),
-              horizontalSpacer,
+              HorizontalSpacer.normal,
               Expanded(
                 child: Text(
                   label,
@@ -73,7 +74,7 @@ class _ParentTweetCard extends ConsumerWidget {
             ],
           ),
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         TweetCard(
           tweet: tweet,
           createDelegates: (tweet, notifier) =>

@@ -4,8 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:harpy/core/core.dart';
 import 'package:location/location.dart' as location;
+import 'package:rby/rby.dart';
 
 part 'find_trends_location_provider.freezed.dart';
 

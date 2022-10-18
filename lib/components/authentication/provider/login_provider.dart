@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 import 'package:twitter_webview_auth/twitter_webview_auth.dart';
 
 /// Handles login.
@@ -124,7 +124,7 @@ class _Login with LoggerMixin {
   /// Used by [TwitterAuth] to navigate to the login webview page.
   Future<Uri?> _webviewNavigation(TwitterLoginWebview webview) async {
     return _ref.read(routerProvider).navigator?.push<Uri?>(
-          HarpyPageRoute(
+          SlidePageRoute(
             builder: (_) => LoginWebview(webview: webview),
           ),
         );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class FontCard extends StatelessWidget {
   const FontCard({
@@ -23,7 +24,7 @@ class FontCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return HarpyListCard(
+    return RbyListCard(
       border: selected ? Border.all(color: theme.colorScheme.primary) : null,
       title: Text(font, style: style),
       trailing: isFree && !assetFont ? const FlareIcon.shiningStar() : null,

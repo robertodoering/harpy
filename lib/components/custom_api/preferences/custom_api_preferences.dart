@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:harpy/core/preferences/preferences_provider.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:harpy/core/core.dart';
 
 part 'custom_api_preferences.freezed.dart';
 

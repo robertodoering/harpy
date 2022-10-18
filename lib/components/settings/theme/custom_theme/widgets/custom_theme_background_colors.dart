@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class CustomThemeBackgroundColors extends ConsumerWidget {
   const CustomThemeBackgroundColors({
@@ -21,7 +21,7 @@ class CustomThemeBackgroundColors extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('background colors', style: theme.textTheme.headline4),
-        verticalSpacer,
+        VerticalSpacer.normal,
         _ReorderableBackgroundColors(notifier: notifier),
         _AddBackgroundColor(notifier: notifier),
       ],
@@ -40,7 +40,6 @@ class _ReorderableBackgroundColors extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final harpyTheme = ref.watch(harpyThemeProvider);
-    final display = ref.watch(displayPreferencesProvider);
 
     return ReorderableList(
       physics: const NeverScrollableScrollPhysics(),
@@ -53,13 +52,13 @@ class _ReorderableBackgroundColors extends ConsumerWidget {
                 index: index,
                 child: Container(
                   color: Colors.transparent,
-                  padding: display.edgeInsets,
+                  padding: theme.spacing.edgeInsets,
                   child: const Icon(CupertinoIcons.bars),
                 ),
               )
             : Container(
                 color: Colors.transparent,
-                padding: display.edgeInsets,
+                padding: theme.spacing.edgeInsets,
                 child: Icon(
                   CupertinoIcons.bars,
                   color: theme.iconTheme.color!.withOpacity(.5),
@@ -69,14 +68,14 @@ class _ReorderableBackgroundColors extends ConsumerWidget {
         return Padding(
           key: ValueKey(Object.hash(color, index)),
           padding: EdgeInsetsDirectional.only(
-            bottom: display.smallPaddingValue,
+            bottom: theme.spacing.small,
           ),
           child: ClipRRect(
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             child: CustomThemeColor(
               color: Color(color),
               padding: EdgeInsets.zero,
-              leading: HarpyButton.icon(
+              leading: RbyButton.transparent(
                 icon: const Icon(CupertinoIcons.xmark, size: 20),
                 onTap: notifier.canRemoveBackgroundColor
                     ? () => notifier.removeBackgroundColor(index)
@@ -101,7 +100,7 @@ class _ReorderableBackgroundColors extends ConsumerWidget {
   }
 }
 
-class _AddBackgroundColor extends ConsumerWidget {
+class _AddBackgroundColor extends StatelessWidget {
   const _AddBackgroundColor({
     required this.notifier,
   });
@@ -109,23 +108,22 @@ class _AddBackgroundColor extends ConsumerWidget {
   final CustomThemeNotifier notifier;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
 
     return AnimatedCrossFade(
-      duration: kShortAnimationDuration,
+      duration: theme.animation.short,
       sizeCurve: Curves.fastOutSlowIn,
       firstChild: Container(
         width: double.infinity,
         decoration: BoxDecoration(
           border: Border.all(color: theme.dividerColor),
-          borderRadius: harpyTheme.borderRadius,
+          borderRadius: theme.shape.borderRadius,
         ),
-        child: HarpyListTile(
+        child: RbyListTile(
           leading: const Icon(CupertinoIcons.add),
           title: const Text('add background color'),
-          borderRadius: harpyTheme.borderRadius,
+          borderRadius: theme.shape.borderRadius,
           onTap: notifier.addBackgroundColor,
         ),
       ),

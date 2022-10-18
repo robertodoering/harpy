@@ -39,7 +39,7 @@ final lightThemeProvider = StateProvider(
       fontSizeDelta: display.fontSizeDelta,
       displayFont: display.displayFont,
       bodyFont: display.bodyFont,
-      paddingValue: display.paddingValue,
+      compact: display.compactMode,
     );
   },
   name: 'LightThemeProvider',
@@ -65,7 +65,7 @@ final darkThemeProvider = StateProvider(
       fontSizeDelta: display.fontSizeDelta,
       displayFont: display.displayFont,
       bodyFont: display.bodyFont,
-      paddingValue: display.paddingValue,
+      compact: display.compactMode,
     );
   },
   name: 'DarkThemeProvider',

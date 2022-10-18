@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({
@@ -40,6 +40,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
 
     return HarpyBackground(
@@ -55,7 +56,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
           ),
           AnimatedOpacity(
             opacity: _showLoading ? 1 : 0,
-            duration: kLongAnimationDuration,
+            duration: theme.animation.long,
             curve: Curves.easeInOut,
             child: const CircularProgressIndicator(),
           ),

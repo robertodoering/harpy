@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class TimelineFilterCard extends ConsumerWidget {
   const TimelineFilterCard({
@@ -18,12 +19,11 @@ class TimelineFilterCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     return _TimelineFilterCardBase(
       isSelected: sortedFilter.isSelected,
       onTap: sortedFilter.isSelected
-          ? () => ref.read(routerProvider).pushNamed(
+          ? () => context.pushNamed(
                 TimelineFilterCreation.name,
                 extra: {'initialTimelineFilter': sortedFilter.timelineFilter},
               )
@@ -45,7 +45,7 @@ class TimelineFilterCard extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: display.edgeInsets.copyWith(bottom: 0),
+                  padding: theme.spacing.edgeInsets.copyWith(bottom: 0),
                   child: Text(
                     sortedFilter.timelineFilter.name,
                     style: theme.textTheme.subtitle2,
@@ -55,17 +55,17 @@ class TimelineFilterCard extends ConsumerWidget {
                 ),
                 if (sortedFilter.appliedFilters.isNotEmpty) ...[
                   Padding(
-                    padding: display.edgeInsets.copyWith(top: 0),
+                    padding: theme.spacing.edgeInsets.copyWith(top: 0),
                     child: _AppliedFiltersText(
                       filters: sortedFilter.appliedFilters,
                     ),
                   ),
                 ] else
-                  verticalSpacer,
+                  VerticalSpacer.normal,
               ],
             ),
           ),
-          HarpyButton.icon(
+          RbyButton.transparent(
             icon: const Icon(CupertinoIcons.ellipsis_vertical),
             onTap: () => _showTimelineFilterCardBottomSheet(
               ref,
@@ -79,7 +79,7 @@ class TimelineFilterCard extends ConsumerWidget {
   }
 }
 
-class _TimelineFilterCardBase extends ConsumerWidget {
+class _TimelineFilterCardBase extends StatelessWidget {
   const _TimelineFilterCardBase({
     required this.child,
     required this.onTap,
@@ -93,13 +93,12 @@ class _TimelineFilterCardBase extends ConsumerWidget {
   final bool isSelected;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        borderRadius: harpyTheme.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         color: theme.cardTheme.color,
         border: Border.all(
           color: isSelected ? theme.colorScheme.primary : Colors.transparent,
@@ -108,7 +107,7 @@ class _TimelineFilterCardBase extends ConsumerWidget {
       child: Material(
         type: MaterialType.transparency,
         child: InkWell(
-          borderRadius: harpyTheme.borderRadius,
+          borderRadius: theme.shape.borderRadius,
           onTap: onTap,
           onLongPress: onLongPress,
           child: child,
@@ -177,9 +176,8 @@ void _showTimelineFilterCardBottomSheet(
 }) {
   final theme = Theme.of(ref.context);
 
-  showHarpyBottomSheet<void>(
+  showRbyBottomSheet<void>(
     ref.context,
-    harpyTheme: ref.read(harpyThemeProvider),
     children: [
       BottomSheetHeader(
         child: Text(
@@ -187,7 +185,7 @@ void _showTimelineFilterCardBottomSheet(
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      HarpyListTile(
+      RbyListTile(
         leading: Icon(CupertinoIcons.delete, color: theme.errorColor),
         title: Text(
           'delete',
@@ -207,20 +205,20 @@ void _showTimelineFilterCardBottomSheet(
           Navigator.of(ref.context).pop();
         },
       ),
-      HarpyListTile(
+      RbyListTile(
         leading: const Icon(FeatherIcons.edit2),
         title: const Text('edit'),
         onTap: () {
           HapticFeedback.lightImpact();
           Navigator.of(ref.context).pop();
 
-          ref.read(routerProvider).pushNamed(
+          ref.context.pushNamed(
             TimelineFilterCreation.name,
             extra: {'initialTimelineFilter': filter},
           );
         },
       ),
-      HarpyListTile(
+      RbyListTile(
         leading: const Icon(FeatherIcons.copy),
         title: const Text('duplicate'),
         onTap: () {

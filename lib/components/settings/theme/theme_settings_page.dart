@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class ThemeSettingsPage extends ConsumerWidget {
   const ThemeSettingsPage();
@@ -18,7 +20,7 @@ class ThemeSettingsPage extends ConsumerWidget {
           _MaterialYouThemes(),
           _PredefinedThemes(),
           if (isPro) _CustomThemes(),
-          SliverToBoxAdapter(child: smallVerticalSpacer),
+          SliverToBoxAdapter(child: VerticalSpacer.small),
           SliverToBoxAdapter(child: CreateCustomThemeCard()),
           if (isFree) _LockedProThemes(),
           SliverBottomPadding(),
@@ -33,6 +35,7 @@ class _MaterialYouThemes extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final display = ref.watch(displayPreferencesProvider);
     final brightness = ref.watch(platformBrightnessProvider);
     final themePreferences = ref.watch(themePreferencesProvider);
@@ -47,7 +50,7 @@ class _MaterialYouThemes extends ConsumerWidget {
     final darkData = materialYouDark.asData?.value;
 
     return SliverPadding(
-      padding: display.edgeInsetsSymmetric(horizontal: true),
+      padding: theme.spacing.symmetric(horizontal: true),
       sliver: SliverList(
         delegate: SliverChildListDelegate.fixed([
           if (lightData != null) ...[
@@ -57,7 +60,7 @@ class _MaterialYouThemes extends ConsumerWidget {
                 fontSizeDelta: display.fontSizeDelta,
                 displayFont: display.displayFont,
                 bodyFont: display.bodyFont,
-                paddingValue: display.paddingValue,
+                compact: display.compactMode,
               ),
               selectedLightTheme: lightThemeId == -2,
               selectedDarkTheme: darkThemeId == -2,
@@ -80,7 +83,7 @@ class _MaterialYouThemes extends ConsumerWidget {
                 newDarkThemeId: -2,
               ),
             ),
-            smallVerticalSpacer,
+            VerticalSpacer.small,
           ],
           if (darkData != null) ...[
             ThemeCard(
@@ -89,7 +92,7 @@ class _MaterialYouThemes extends ConsumerWidget {
                 fontSizeDelta: display.fontSizeDelta,
                 displayFont: display.displayFont,
                 bodyFont: display.bodyFont,
-                paddingValue: display.paddingValue,
+                compact: display.compactMode,
               ),
               selectedLightTheme: lightThemeId == -1,
               selectedDarkTheme: darkThemeId == -1,
@@ -112,7 +115,7 @@ class _MaterialYouThemes extends ConsumerWidget {
                 newDarkThemeId: -1,
               ),
             ),
-            smallVerticalSpacer,
+            VerticalSpacer.small,
           ],
         ]),
       ),
@@ -125,7 +128,7 @@ class _PredefinedThemes extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
     final brightness = ref.watch(platformBrightnessProvider);
     final themePreferences = ref.watch(themePreferencesProvider);
     final notifier = ref.watch(themePreferencesProvider.notifier);
@@ -136,7 +139,7 @@ class _PredefinedThemes extends ConsumerWidget {
     final predefinedThemes = ref.watch(predefinedThemesProvider);
 
     return SliverPadding(
-      padding: display.edgeInsetsSymmetric(horizontal: true),
+      padding: theme.spacing.symmetric(horizontal: true),
       sliver: SliverList(
         delegate: SliverChildListDelegate.fixed([
           for (var i = 0; i < predefinedThemes.length; i++) ...[
@@ -163,7 +166,7 @@ class _PredefinedThemes extends ConsumerWidget {
                 newDarkThemeId: i,
               ),
             ),
-            if (i != predefinedThemes.length - 1) smallVerticalSpacer,
+            if (i != predefinedThemes.length - 1) VerticalSpacer.small,
           ],
         ]),
       ),
@@ -176,7 +179,7 @@ class _CustomThemes extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
+    final theme = Theme.of(context);
     final display = ref.watch(displayPreferencesProvider);
     final brightness = ref.watch(platformBrightnessProvider);
     final themePreferences = ref.watch(themePreferencesProvider);
@@ -188,23 +191,23 @@ class _CustomThemes extends ConsumerWidget {
 
     return SliverList(
       delegate: SliverChildListDelegate.fixed([
-        if (customThemes.isNotEmpty) Divider(height: display.paddingValue * 2),
+        if (customThemes.isNotEmpty) Divider(height: theme.spacing.base * 2),
         for (var i = 0; i < customThemes.length; i++) ...[
           Padding(
-            padding: display.edgeInsetsSymmetric(horizontal: true),
+            padding: theme.spacing.symmetric(horizontal: true),
             child: ThemeCard(
               HarpyTheme(
                 data: customThemes[i],
                 fontSizeDelta: display.fontSizeDelta,
                 displayFont: display.displayFont,
                 bodyFont: display.bodyFont,
-                paddingValue: display.paddingValue,
+                compact: display.compactMode,
               ),
               selectedLightTheme: i + 10 == lightThemeId,
               selectedDarkTheme: i + 10 == darkThemeId,
               onTap: () => lightThemeId == i + 10 || darkThemeId == i + 10
                   // edit selected theme
-                  ? router.goNamed(
+                  ? context.goNamed(
                       CustomThemePage.name,
                       queryParams: {'themeId': '${i + 10}'},
                     )
@@ -227,7 +230,7 @@ class _CustomThemes extends ConsumerWidget {
                 themePreferencesNotifier: notifier,
                 newDarkThemeId: i + 10,
               ),
-              onEdit: () => router.goNamed(
+              onEdit: () => context.goNamed(
                 CustomThemePage.name,
                 queryParams: {'themeId': '${i + 10}'},
               ),
@@ -236,7 +239,7 @@ class _CustomThemes extends ConsumerWidget {
               ),
             ),
           ),
-          if (i < customThemes.length - 1) smallVerticalSpacer,
+          if (i < customThemes.length - 1) VerticalSpacer.small,
         ],
       ]),
     );
@@ -249,15 +252,13 @@ class _LockedProThemes extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
-
     final predefinedProThemes = ref.watch(predefinedProThemesProvider);
 
     return SliverList(
       delegate: SliverChildListDelegate.fixed([
-        Divider(height: display.paddingValue * 2),
+        Divider(height: theme.spacing.base * 2),
         Padding(
-          padding: display.edgeInsetsSymmetric(horizontal: true),
+          padding: theme.spacing.symmetric(horizontal: true),
           child: Text(
             'only available for harpy pro',
             style: theme.textTheme.subtitle2?.copyWith(
@@ -265,13 +266,13 @@ class _LockedProThemes extends ConsumerWidget {
             ),
           ),
         ),
-        verticalSpacer,
-        for (final theme in predefinedProThemes) ...[
+        VerticalSpacer.normal,
+        for (final harpyTheme in predefinedProThemes) ...[
           Padding(
-            padding: display.edgeInsetsSymmetric(horizontal: true),
-            child: LockedProThemeCard(theme),
+            padding: theme.spacing.symmetric(horizontal: true),
+            child: LockedProThemeCard(harpyTheme),
           ),
-          smallVerticalSpacer,
+          VerticalSpacer.small,
         ]
       ]),
     );

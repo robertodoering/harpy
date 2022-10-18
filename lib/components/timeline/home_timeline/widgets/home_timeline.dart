@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
 
 class HomeTimeline extends ConsumerStatefulWidget {
   const HomeTimeline({
@@ -28,7 +28,6 @@ class _HomeTimelineState extends ConsumerState<HomeTimeline> {
 
   @override
   Widget build(BuildContext context) {
-    final router = ref.watch(routerProvider);
     final tweetVisibility = ref.watch(tweetVisibilityPreferencesProvider);
 
     return Timeline(
@@ -42,7 +41,7 @@ class _HomeTimelineState extends ConsumerState<HomeTimeline> {
         HomeTimelineTopActions(),
       ],
       endSlivers: const [HomeBottomSliverPadding()],
-      onChangeFilter: () => router.pushNamed(HomeTimelineFilter.name),
+      onChangeFilter: () => context.pushNamed(HomeTimelineFilter.name),
     );
   }
 }

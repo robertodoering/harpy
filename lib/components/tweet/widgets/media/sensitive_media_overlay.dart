@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class SensitiveMediaOverlay extends ConsumerStatefulWidget {
   const SensitiveMediaOverlay({
@@ -30,7 +31,7 @@ class _SensitiveMediaOverlayState extends ConsumerState<SensitiveMediaOverlay> {
       children: [
         widget.child,
         Positioned.fill(
-          child: HarpyAnimatedSwitcher(
+          child: RbyAnimatedSwitcher(
             child: media.hidePossiblySensitive &&
                     widget.tweet.possiblySensitive &&
                     _showOverlay

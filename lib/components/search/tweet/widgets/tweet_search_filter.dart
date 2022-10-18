@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class TweetSearchFilter extends ConsumerWidget {
   const TweetSearchFilter({
@@ -18,7 +18,7 @@ class TweetSearchFilter extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
     final filter = ref.watch(tweetSearchFilterProvider(initialFilter));
     final notifier = ref.watch(
       tweetSearchFilterProvider(initialFilter).notifier,
@@ -30,7 +30,7 @@ class TweetSearchFilter extends ConsumerWidget {
           HarpySliverAppBar(
             title: const Text('advanced query'),
             actions: [
-              HarpyButton.icon(
+              RbyButton.transparent(
                 icon: const Icon(CupertinoIcons.search),
                 onTap: filter.isValid
                     ? () {
@@ -45,14 +45,14 @@ class TweetSearchFilter extends ConsumerWidget {
             ],
           ),
           SliverPadding(
-            padding: display.edgeInsets,
+            padding: theme.spacing.edgeInsets,
             sliver: SliverList(
               delegate: SliverChildListDelegate.fixed([
                 _InvalidFilterInfo(filter: filter),
                 _FilterGeneralGroup(filter: filter, notifier: notifier),
-                verticalSpacer,
+                VerticalSpacer.normal,
                 _FilterIncludesGroup(filter: filter, notifier: notifier),
-                verticalSpacer,
+                VerticalSpacer.normal,
                 _FilterExcludesGroup(filter: filter, notifier: notifier),
               ]),
             ),
@@ -64,7 +64,7 @@ class TweetSearchFilter extends ConsumerWidget {
   }
 }
 
-class _InvalidFilterInfo extends ConsumerWidget {
+class _InvalidFilterInfo extends StatelessWidget {
   const _InvalidFilterInfo({
     required this.filter,
   });
@@ -72,21 +72,20 @@ class _InvalidFilterInfo extends ConsumerWidget {
   final TweetSearchFilterData filter;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     return AnimatedSize(
-      duration: kShortAnimationDuration,
+      duration: theme.animation.short,
       curve: Curves.easeOutCubic,
-      child: HarpyAnimatedSwitcher(
+      child: RbyAnimatedSwitcher(
         child: !filter.isEmpty() && !filter.isValid
             ? Padding(
-                padding: display.edgeInsets.copyWith(top: 0),
+                padding: theme.spacing.edgeInsets.copyWith(top: 0),
                 child: Row(
                   children: [
                     Icon(CupertinoIcons.info, color: theme.colorScheme.primary),
-                    horizontalSpacer,
+                    HorizontalSpacer.normal,
                     Expanded(
                       child: Text(
                         'a general / included search query is required',
@@ -105,7 +104,7 @@ class _InvalidFilterInfo extends ConsumerWidget {
   }
 }
 
-class _FilterGeneralGroup extends ConsumerWidget {
+class _FilterGeneralGroup extends StatelessWidget {
   const _FilterGeneralGroup({
     required this.filter,
     required this.notifier,
@@ -115,16 +114,15 @@ class _FilterGeneralGroup extends ConsumerWidget {
   final TweetSearchFilterNotifier notifier;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
-    final harpyTheme = ref.watch(harpyThemeProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return ExpansionCard(
       title: const Text('general'),
       children: [
-        smallVerticalSpacer,
+        VerticalSpacer.small,
         Padding(
-          padding: display.edgeInsetsSymmetric(horizontal: true),
+          padding: theme.spacing.symmetric(horizontal: true),
           child: ClearableTextField(
             text: filter.tweetAuthor,
             decoration: const InputDecoration(
@@ -135,9 +133,9 @@ class _FilterGeneralGroup extends ConsumerWidget {
             onClear: () => notifier.setTweetAuthor(''),
           ),
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         Padding(
-          padding: display.edgeInsetsSymmetric(horizontal: true),
+          padding: theme.spacing.symmetric(horizontal: true),
           child: ClearableTextField(
             text: filter.replyingTo,
             decoration: const InputDecoration(
@@ -148,11 +146,11 @@ class _FilterGeneralGroup extends ConsumerWidget {
             onClear: () => notifier.setReplyingTo(''),
           ),
         ),
-        verticalSpacer,
-        HarpyListTile(
+        VerticalSpacer.normal,
+        RbyListTile(
           title: const Text('results'),
           trailing: DropdownButton<TweetSearchResultType>(
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             value: filter.resultType,
             isDense: true,
             icon: const Icon(Icons.arrow_drop_down_rounded),
@@ -174,7 +172,7 @@ class _FilterGeneralGroup extends ConsumerWidget {
             ],
           ),
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
       ],
     );
   }
@@ -194,35 +192,35 @@ class _FilterIncludesGroup extends ConsumerWidget {
     return ExpansionCard(
       title: const Text('includes'),
       children: [
-        smallVerticalSpacer,
+        VerticalSpacer.small,
         FilterListEntry(
           labelText: 'keyword / phrase',
           activeFilters: filter.includesPhrases,
           onSubmitted: notifier.addIncludingPhrase,
           onDeleted: notifier.removeIncludingPhrase,
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         FilterListEntry(
           labelText: 'hashtag',
           activeFilters: filter.includesHashtags,
           onSubmitted: notifier.addIncludingHashtag,
           onDeleted: notifier.removeIncludingHashtag,
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         FilterListEntry(
           labelText: 'user mention',
           activeFilters: filter.includesMentions,
           onSubmitted: notifier.addIncludingMention,
           onDeleted: notifier.removeIncludingMention,
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         FilterListEntry(
           labelText: 'url',
           activeFilters: filter.includesUrls,
           onSubmitted: notifier.addIncludingUrl,
           onDeleted: notifier.removeIncludingUrls,
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         FilterSwitchTile(
           text: 'retweets',
           value: filter.includesRetweets,
@@ -260,28 +258,28 @@ class _FilterExcludesGroup extends ConsumerWidget {
     return ExpansionCard(
       title: const Text('excludes'),
       children: [
-        smallVerticalSpacer,
+        VerticalSpacer.small,
         FilterListEntry(
           labelText: 'keyword / phrase',
           activeFilters: filter.excludesPhrases,
           onSubmitted: notifier.addExcludingPhrase,
           onDeleted: notifier.removeExcludingPhrase,
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         FilterListEntry(
           labelText: 'hashtag',
           activeFilters: filter.excludesHashtags,
           onSubmitted: notifier.addExcludingHashtag,
           onDeleted: notifier.removeExcludingHashtag,
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         FilterListEntry(
           labelText: 'user mention',
           activeFilters: filter.excludesMentions,
           onSubmitted: notifier.addExcludingMention,
           onDeleted: notifier.removeExcludingMention,
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
         FilterSwitchTile(
           text: 'retweets',
           value: filter.excludesRetweets,

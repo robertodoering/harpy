@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 /// Builds an info message that fades into view.
 ///
 /// Either [primaryMessage] or [secondaryMessage] must not be `null`.
-class InfoMessage extends ConsumerWidget {
+class InfoMessage extends StatelessWidget {
   const InfoMessage({
     this.primaryMessage,
     this.secondaryMessage,
@@ -17,14 +14,13 @@ class InfoMessage extends ConsumerWidget {
   final Widget? secondaryMessage;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     return ImmediateOpacityAnimation(
-      duration: kShortAnimationDuration,
+      duration: theme.animation.short,
       child: Container(
-        padding: display.edgeInsets,
+        padding: theme.spacing.edgeInsets,
         alignment: AlignmentDirectional.center,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -36,7 +32,7 @@ class InfoMessage extends ConsumerWidget {
                 child: primaryMessage!,
               ),
             if (primaryMessage != null && secondaryMessage != null)
-              verticalSpacer,
+              VerticalSpacer.normal,
             if (secondaryMessage != null)
               DefaultTextStyle(
                 style: theme.textTheme.subtitle2!,

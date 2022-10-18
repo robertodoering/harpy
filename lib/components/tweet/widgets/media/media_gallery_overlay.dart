@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 enum MediaOverlayActions {
   retweet,
@@ -60,7 +61,7 @@ class _MediaOverlayState extends ConsumerState<MediaGalleryOverlay>
 
     _controller = AnimationController(
       vsync: this,
-      duration: kShortAnimationDuration,
+      duration: const Duration(milliseconds: 250),
     );
 
     _topAnimation = Tween(begin: const Offset(0, -1), end: Offset.zero)
@@ -85,6 +86,8 @@ class _MediaOverlayState extends ConsumerState<MediaGalleryOverlay>
 
     _observer ??= ref.read(routeObserver)
       ?..subscribe(this, ModalRoute.of(context)!);
+
+    _controller.duration = Theme.of(context).animation.short;
   }
 
   @override
@@ -159,8 +162,8 @@ class _OverlayAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.light,
@@ -177,11 +180,11 @@ class _OverlayAppBar extends ConsumerWidget {
                 colors: [Colors.black87, Colors.transparent],
               ),
             ),
-            padding: EdgeInsets.symmetric(horizontal: display.smallPaddingValue)
-                .copyWith(
-              top: display.smallPaddingValue + mediaQuery.padding.top,
+            padding:
+                EdgeInsets.symmetric(horizontal: theme.spacing.small).copyWith(
+              top: theme.spacing.small + mediaQuery.padding.top,
             ),
-            child: HarpyButton.icon(
+            child: RbyButton.transparent(
               icon: const Icon(CupertinoIcons.xmark, color: Colors.white),
               onTap: Navigator.of(context).maybePop,
             ),
@@ -261,8 +264,8 @@ class _OverlayTweetActions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     return Container(
       decoration: const BoxDecoration(
@@ -272,7 +275,7 @@ class _OverlayTweetActions extends ConsumerWidget {
           colors: [Colors.transparent, Colors.black87],
         ),
       ),
-      padding: EdgeInsets.symmetric(horizontal: display.smallPaddingValue)
+      padding: EdgeInsets.symmetric(horizontal: theme.spacing.small)
           .copyWith(bottom: mediaQuery.padding.bottom),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -301,22 +304,21 @@ class _OverlayPreviewText extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     return Padding(
       padding: EdgeInsetsDirectional.only(
-        start: display.paddingValue,
-        end: display.paddingValue,
-        top: display.smallPaddingValue,
-        bottom: display.smallPaddingValue,
+        start: theme.spacing.base,
+        end: theme.spacing.base,
+        top: theme.spacing.small,
+        bottom: theme.spacing.small,
       ),
       child: AnimatedSize(
-        duration: kShortAnimationDuration,
+        duration: theme.animation.short,
         alignment: AlignmentDirectional.bottomCenter,
         curve: Curves.easeInOut,
         child: GestureDetector(
           onTap: () => delegates.onShowTweet?.call(ref),
-          child: HarpyAnimatedSwitcher(
+          child: RbyAnimatedSwitcher(
             layoutBuilder: (currentChild, previousChildren) => Stack(
               alignment: AlignmentDirectional.bottomCenter,
               children: [

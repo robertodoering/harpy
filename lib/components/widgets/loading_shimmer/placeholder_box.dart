@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
-class PlaceholderBox extends ConsumerWidget {
+class PlaceholderBox extends StatelessWidget {
   const PlaceholderBox({
     this.width,
     this.height,
@@ -20,9 +19,8 @@ class PlaceholderBox extends ConsumerWidget {
   final AlignmentGeometry alignment;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
 
     return FractionallySizedBox(
       widthFactor: widthFactor,
@@ -33,7 +31,7 @@ class PlaceholderBox extends ConsumerWidget {
         height: height,
         decoration: BoxDecoration(
           borderRadius:
-              shape == BoxShape.circle ? null : harpyTheme.borderRadius,
+              shape == BoxShape.circle ? null : theme.shape.borderRadius,
           shape: shape,
           color: theme.cardTheme.color,
         ),

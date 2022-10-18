@@ -5,6 +5,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 // false positive
 // ignore_for_file: avoid_redundant_argument_values
@@ -33,7 +34,6 @@ class ThemeCard extends ConsumerWidget {
   void _showBottomSheet(BuildContext context) {
     _showThemeSelectionBottomSheet(
       context,
-      harpyTheme: harpyTheme,
       name: harpyTheme.name,
       selectedLightTheme: selectedLightTheme,
       selectedDarkTheme: selectedDarkTheme,
@@ -46,7 +46,7 @@ class ThemeCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
     final brightness = ref.watch(platformBrightnessProvider);
 
     final style = harpyTheme.themeData.textTheme.subtitle2!;
@@ -62,7 +62,7 @@ class ThemeCard extends ConsumerWidget {
     }
 
     return ClipRRect(
-      borderRadius: harpyTheme.borderRadius,
+      borderRadius: theme.shape.borderRadius,
       child: _ThemeCardBase(
         harpyTheme: harpyTheme,
         borderColor: borderColor,
@@ -72,7 +72,7 @@ class ThemeCard extends ConsumerWidget {
           children: [
             Expanded(
               child: Padding(
-                padding: display.edgeInsets,
+                padding: theme.spacing.edgeInsets,
                 child: Text(
                   harpyTheme.name,
                   style: style,
@@ -86,7 +86,7 @@ class ThemeCard extends ConsumerWidget {
               // pro version
               if (selectedLightTheme)
                 Padding(
-                  padding: display.edgeInsets,
+                  padding: theme.spacing.edgeInsets,
                   child: Icon(
                     CupertinoIcons.sun_max,
                     color: brightness == Brightness.light
@@ -96,7 +96,7 @@ class ThemeCard extends ConsumerWidget {
                 ),
               if (selectedDarkTheme)
                 Padding(
-                  padding: display.edgeInsets,
+                  padding: theme.spacing.edgeInsets,
                   child: Icon(
                     CupertinoIcons.moon,
                     color: brightness == Brightness.dark
@@ -105,7 +105,7 @@ class ThemeCard extends ConsumerWidget {
                   ),
                 ),
             ],
-            HarpyButton.icon(
+            RbyButton.transparent(
               icon: const Icon(CupertinoIcons.ellipsis_vertical),
               onTap: () => _showBottomSheet(context),
             ),
@@ -123,14 +123,14 @@ class LockedProThemeCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
     final style = harpyTheme.themeData.textTheme.subtitle2!;
 
     return _ThemeCardBase(
       harpyTheme: harpyTheme,
       child: Padding(
-        padding: display.edgeInsets,
+        padding: theme.spacing.edgeInsets,
         child: Row(
           children: [
             Expanded(
@@ -142,7 +142,7 @@ class LockedProThemeCard extends ConsumerWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  smallHorizontalSpacer,
+                  HorizontalSpacer.small,
                   Container(
                     width: style.fontSize! - 2,
                     height: style.fontSize! - 2,
@@ -151,7 +151,7 @@ class LockedProThemeCard extends ConsumerWidget {
                       shape: BoxShape.circle,
                     ),
                   ),
-                  smallHorizontalSpacer,
+                  HorizontalSpacer.small,
                   Container(
                     width: style.fontSize! - 2,
                     height: style.fontSize! - 2,
@@ -171,7 +171,7 @@ class LockedProThemeCard extends ConsumerWidget {
   }
 }
 
-class _ThemeCardBase extends ConsumerWidget {
+class _ThemeCardBase extends StatelessWidget {
   const _ThemeCardBase({
     required this.harpyTheme,
     required this.child,
@@ -188,8 +188,8 @@ class _ThemeCardBase extends ConsumerWidget {
   final VoidCallback? onLongPress;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     final gradient = LinearGradient(
       colors: harpyTheme.colors.backgroundColors.length > 1
@@ -203,23 +203,22 @@ class _ThemeCardBase extends ConsumerWidget {
     return Theme(
       data: harpyTheme.themeData,
       child: AnimatedContainer(
-        duration: kShortAnimationDuration,
+        duration: theme.animation.short,
         constraints: BoxConstraints(
           // prevent a height difference when icons in the card show
           // min height: icon size + 2 (border) + vertical padding
-          minHeight: harpyTheme.themeData.iconTheme.size! +
-              2 +
-              display.paddingValue * 2,
+          minHeight:
+              harpyTheme.themeData.iconTheme.size! + 2 + theme.spacing.base * 2,
         ),
         decoration: BoxDecoration(
           gradient: gradient,
-          borderRadius: harpyTheme.borderRadius,
+          borderRadius: theme.shape.borderRadius,
           border: Border.all(color: borderColor ?? Colors.transparent),
         ),
         child: Material(
           type: MaterialType.transparency,
           child: InkWell(
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
             onTap: onTap,
             onLongPress: onLongPress,
             child: child,
@@ -232,7 +231,6 @@ class _ThemeCardBase extends ConsumerWidget {
 
 void _showThemeSelectionBottomSheet(
   BuildContext context, {
-  required HarpyTheme harpyTheme,
   required String name,
   required bool selectedLightTheme,
   required bool selectedDarkTheme,
@@ -243,15 +241,14 @@ void _showThemeSelectionBottomSheet(
 }) {
   final theme = Theme.of(context);
 
-  showHarpyBottomSheet<void>(
+  showRbyBottomSheet<void>(
     context,
-    harpyTheme: harpyTheme,
     children: [
       BottomSheetHeader(
         child: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
       ),
       if (onDelete != null)
-        HarpyListTile(
+        RbyListTile(
           leading: Icon(CupertinoIcons.delete, color: theme.errorColor),
           title: Text(
             'delete',
@@ -267,7 +264,7 @@ void _showThemeSelectionBottomSheet(
           },
         ),
       if (onEdit != null)
-        HarpyListTile(
+        RbyListTile(
           leading: const Icon(FeatherIcons.edit2),
           title: const Text('edit'),
           onTap: () {
@@ -276,7 +273,7 @@ void _showThemeSelectionBottomSheet(
             onEdit();
           },
         ),
-      HarpyListTile(
+      RbyListTile(
         leading: Icon(
           CupertinoIcons.sun_max,
           color: isPro && selectedLightTheme ? theme.colorScheme.primary : null,
@@ -299,7 +296,7 @@ void _showThemeSelectionBottomSheet(
           onSelectLightTheme();
         },
       ),
-      HarpyListTile(
+      RbyListTile(
         leading: Icon(
           CupertinoIcons.moon,
           color: isPro && selectedDarkTheme ? theme.colorScheme.primary : null,

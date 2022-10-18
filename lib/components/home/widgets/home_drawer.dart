@@ -4,31 +4,33 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 typedef AnimatedWidgetBuilder = Widget Function(
   AnimationController controller,
 );
 
 /// A fullscreen-sized navigation drawer for the [HomeTabView].
-class HomeDrawer extends ConsumerWidget {
+class HomeDrawer extends StatelessWidget {
   const HomeDrawer();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final padding = ref.watch(displayPreferencesProvider).edgeInsets;
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return _DrawerAnimationListener(
       builder: (controller) => ListView(
-        padding: padding,
+        padding: theme.spacing.edgeInsets,
         children: [
           const HomeTopPadding(),
           const _AuthenticatedUser(),
-          verticalSpacer,
+          VerticalSpacer.normal,
           const _ConnectionsCount(),
-          verticalSpacer,
-          verticalSpacer,
+          VerticalSpacer.normal,
+          VerticalSpacer.normal,
           _Entries(controller),
           const HomeBottomPadding(),
         ],
@@ -95,9 +97,6 @@ class _AuthenticatedUser extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final router = ref.watch(routerProvider);
-    final harpyTheme = ref.watch(harpyThemeProvider);
-    final padding = ref.watch(displayPreferencesProvider).edgeInsets;
     final user = ref.watch(authenticationStateProvider).user;
 
     if (user == null) {
@@ -105,22 +104,22 @@ class _AuthenticatedUser extends ConsumerWidget {
     }
 
     return InkWell(
-      borderRadius: harpyTheme.borderRadius,
-      onTap: () => router.pushNamed(
+      borderRadius: theme.shape.borderRadius,
+      onTap: () => context.pushNamed(
         UserPage.name,
         params: {'handle': user.handle},
         extra: user,
       ),
       child: Card(
         child: Padding(
-          padding: padding,
+          padding: theme.spacing.edgeInsets,
           child: Row(
             children: [
               HarpyCircleAvatar(
                 radius: 28,
                 imageUrl: user.appropriateUserImageUrl,
               ),
-              horizontalSpacer,
+              HorizontalSpacer.normal,
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,7 +128,7 @@ class _AuthenticatedUser extends ConsumerWidget {
                       user.name,
                       style: theme.textTheme.headline5,
                     ),
-                    smallVerticalSpacer,
+                    VerticalSpacer.small,
                     Text(
                       '@${user.handle}',
                       style: theme.textTheme.subtitle1,
@@ -150,7 +149,6 @@ class _ConnectionsCount extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
     final user = ref.watch(authenticationStateProvider).user;
 
     if (user == null) {
@@ -162,22 +160,22 @@ class _ConnectionsCount extends ConsumerWidget {
         Expanded(
           child: ConnectionCount(
             count: user.friendsCount,
-            builder: (count) => HarpyListCard(
+            builder: (count) => RbyListCard(
               title: FittedBox(child: Text('$count  following')),
-              onTap: () => router.pushNamed(
+              onTap: () => context.pushNamed(
                 FollowingPage.name,
                 params: {'handle': user.handle},
               ),
             ),
           ),
         ),
-        horizontalSpacer,
+        HorizontalSpacer.normal,
         Expanded(
           child: ConnectionCount(
             count: user.followersCount,
-            builder: (count) => HarpyListCard(
+            builder: (count) => RbyListCard(
               title: FittedBox(child: Text('$count  followers')),
-              onTap: () => router.pushNamed(
+              onTap: () => context.pushNamed(
                 FollowersPage.name,
                 params: {'handle': user.handle},
               ),
@@ -230,7 +228,6 @@ class _Entries extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final router = ref.watch(routerProvider);
     final general = ref.watch(generalPreferencesProvider);
     final user = ref.watch(authenticationStateProvider).user;
     final launcher = ref.watch(launcherProvider);
@@ -240,62 +237,62 @@ class _Entries extends ConsumerWidget {
     if (user == null) return const SizedBox();
 
     final children = [
-      HarpyListCard(
+      RbyListCard(
         leading: const Icon(CupertinoIcons.person),
         title: const Text('profile'),
-        onTap: () => router.pushNamed(
+        onTap: () => context.pushNamed(
           UserPage.name,
           params: {'handle': user.handle},
           extra: user,
         ),
       ),
-      verticalSpacer,
-      HarpyListCard(
+      VerticalSpacer.normal,
+      RbyListCard(
         leading: const Icon(CupertinoIcons.search),
         title: const Text('search'),
-        onTap: () => router.pushNamed(SearchPage.name),
+        onTap: () => context.pushNamed(SearchPage.name),
       ),
-      verticalSpacer,
-      HarpyListCard(
+      VerticalSpacer.normal,
+      RbyListCard(
         leading: const Icon(CupertinoIcons.list_bullet),
         title: const Text('lists'),
-        onTap: () => router.pushNamed(
+        onTap: () => context.pushNamed(
           ListShowPage.name,
           params: {'handle': user.handle},
         ),
       ),
-      verticalSpacer,
-      HarpyListCard(
+      VerticalSpacer.normal,
+      RbyListCard(
         leading: const Icon(FeatherIcons.feather),
         title: const Text('compose'),
-        onTap: () => router.pushNamed(ComposePage.name),
+        onTap: () => context.pushNamed(ComposePage.name),
       ),
-      verticalSpacer,
-      verticalSpacer,
-      HarpyListCard(
+      VerticalSpacer.normal,
+      VerticalSpacer.normal,
+      RbyListCard(
         leading: const Icon(Icons.settings_rounded),
         title: const Text('settings'),
-        onTap: () => router.pushNamed(SettingsPage.name),
+        onTap: () => context.pushNamed(SettingsPage.name),
       ),
-      verticalSpacer,
+      VerticalSpacer.normal,
       if (isFree) ...[
-        HarpyListCard(
+        RbyListCard(
           leading: const FlareIcon.shiningStar(),
           title: const Text('harpy pro'),
           onTap: () => launcher(
             'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
           ),
         ),
-        verticalSpacer,
+        VerticalSpacer.normal,
       ],
-      HarpyListCard(
+      RbyListCard(
         leading: const FlareIcon.harpyLogo(),
         title: const Text('about'),
-        onTap: () => router.pushNamed(AboutPage.name),
+        onTap: () => context.pushNamed(AboutPage.name),
       ),
-      verticalSpacer,
-      verticalSpacer,
-      HarpyListCard(
+      VerticalSpacer.normal,
+      VerticalSpacer.normal,
+      RbyListCard(
         leading: Icon(
           CupertinoIcons.square_arrow_left,
           color: theme.colorScheme.error,

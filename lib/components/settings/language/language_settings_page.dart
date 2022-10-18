@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class LanguageSettingsPage extends ConsumerWidget {
   const LanguageSettingsPage();
@@ -9,14 +10,14 @@ class LanguageSettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
     return HarpyScaffold(
       child: CustomScrollView(
         slivers: [
           const HarpySliverAppBar(title: Text('language')),
           SliverPadding(
-            padding: display.edgeInsets,
+            padding: theme.spacing.edgeInsets,
             sliver: const _LanguageSettingsList(),
           ),
           const SliverBottomPadding(),
@@ -34,8 +35,8 @@ class _LanguageSettingsList extends ConsumerWidget {
     return const SliverList(
       delegate: SliverChildListDelegate.fixed([
         Card(child: TranslateLanguagesDialogTile()),
-        verticalSpacer,
-        HarpyListCard(
+        VerticalSpacer.normal,
+        RbyListCard(
           leading: Icon(Icons.translate),
           title: Text('app language'),
           subtitle: Text('coming soon!'),

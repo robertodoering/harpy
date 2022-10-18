@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 class MediaTimeline extends ConsumerStatefulWidget {
   const MediaTimeline({
@@ -56,7 +57,7 @@ class _MediaTimelineState extends ConsumerState<MediaTimeline> {
 
   @override
   Widget build(BuildContext context) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
     final timelineState = ref.watch(widget.provider);
     final timelineNotifier = ref.watch(widget.provider.notifier);
     final mediaEntries = ref.watch(mediaTimelineProvider(timelineState.tweets));
@@ -81,7 +82,7 @@ class _MediaTimelineState extends ConsumerState<MediaTimeline> {
                 },
               ),
               SliverPadding(
-                padding: display.edgeInsets,
+                padding: theme.spacing.edgeInsets,
                 sliver: MediaTimelineMediaList(entries: mediaEntries),
               ),
             ],
@@ -120,21 +121,21 @@ class _TopActions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
     final layout = ref.watch(layoutPreferencesProvider);
     final layoutNotifier = ref.watch(layoutPreferencesProvider.notifier);
 
     return SliverToBoxAdapter(
       child: Padding(
-        padding: display.edgeInsets.copyWith(bottom: 0),
+        padding: theme.spacing.edgeInsets.copyWith(bottom: 0),
         child: Row(
           children: [
-            HarpyButton.card(
+            RbyButton.card(
               icon: const Icon(CupertinoIcons.refresh),
               onTap: onRefresh,
             ),
             const Spacer(),
-            HarpyButton.card(
+            RbyButton.card(
               icon: layout.mediaTiled
                   ? const Icon(CupertinoIcons.square_split_2x2)
                   : const Icon(CupertinoIcons.square_split_1x2),

@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 import 'package:video_player/video_player.dart';
 
 const _qualityNames = ['best', 'normal', 'small'];
@@ -48,7 +48,7 @@ class TweetVideo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final harpyTheme = ref.watch(harpyThemeProvider);
+    final theme = Theme.of(context);
     final mediaPreferences = ref.watch(mediaPreferencesProvider);
     final connectivity = ref.watch(connectivityProvider);
 
@@ -76,7 +76,7 @@ class TweetVideo extends ConsumerWidget {
             toHeroContext,
           ) =>
               borderRadiusFlightShuttleBuilder(
-            harpyTheme.borderRadius,
+            theme.shape.borderRadius,
             animation,
             flightDirection,
             fromHeroContext,

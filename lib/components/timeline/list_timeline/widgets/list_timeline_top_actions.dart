@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
-class ListTimelineTopActions extends ConsumerWidget {
+class ListTimelineTopActions extends StatelessWidget {
   const ListTimelineTopActions({
     required this.listId,
     required this.listName,
@@ -15,18 +16,18 @@ class ListTimelineTopActions extends ConsumerWidget {
   final String listName;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return SliverToBoxAdapter(
       child: Padding(
-        padding: display.edgeInsets.copyWith(bottom: 0),
+        padding: theme.spacing.edgeInsets.copyWith(bottom: 0),
         child: Row(
           children: [
             _RefreshButton(listId: listId),
             const Spacer(),
             _ListMembersButton(listId: listId, listName: listName),
-            horizontalSpacer,
+            HorizontalSpacer.normal,
             _FilterButton(listId: listId, listName: listName),
           ],
         ),
@@ -47,7 +48,7 @@ class _RefreshButton extends ConsumerWidget {
     final state = ref.watch(listTimelineProvider(listId));
     final notifier = ref.watch(listTimelineProvider(listId).notifier);
 
-    return HarpyButton.card(
+    return RbyButton.card(
       icon: const Icon(CupertinoIcons.refresh),
       onTap: state.tweets.isNotEmpty
           ? () {
@@ -71,13 +72,12 @@ class _ListMembersButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
     final state = ref.watch(listTimelineProvider(listId));
 
-    return HarpyButton.card(
+    return RbyButton.card(
       icon: const Icon(CupertinoIcons.person_2),
       onTap: state is! TimelineStateLoading
-          ? () => router.pushNamed(
+          ? () => context.pushNamed(
                 ListMembersPage.name,
                 params: {'listId': listId},
                 queryParams: {'name': listName},
@@ -99,13 +99,12 @@ class _FilterButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final router = ref.watch(routerProvider);
     final state = ref.watch(listTimelineProvider(listId));
     final notifier = ref.watch(listTimelineProvider(listId).notifier);
 
     final enable = state is! TimelineStateLoading;
 
-    return HarpyButton.card(
+    return RbyButton.card(
       icon: notifier.filter != null
           ? Icon(
               Icons.filter_alt,
@@ -115,7 +114,7 @@ class _FilterButton extends ConsumerWidget {
             )
           : const Icon(Icons.filter_alt_outlined),
       onTap: enable
-          ? () => router.pushNamed(
+          ? () => context.pushNamed(
                 ListTimelineFilter.name,
                 params: {'listId': listId},
                 queryParams: {'name': listName},

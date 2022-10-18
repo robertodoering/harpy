@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tuple/tuple.dart';
 
@@ -30,14 +31,11 @@ void defaultOnUrlTap(WidgetRef ref, UrlData url) {
 }
 
 void defaultOnUrlLongPress(WidgetRef ref, UrlData url) {
-  showHarpyBottomSheet<void>(
+  showRbyBottomSheet<void>(
     ref.context,
-    harpyTheme: ref.read(harpyThemeProvider),
     children: [
-      BottomSheetHeader(
-        child: Text(url.expandedUrl),
-      ),
-      HarpyListTile(
+      BottomSheetHeader(child: Text(url.expandedUrl)),
+      RbyListTile(
         leading: const Icon(CupertinoIcons.square_arrow_left),
         title: const Text('open url externally'),
         onTap: () {
@@ -49,7 +47,7 @@ void defaultOnUrlLongPress(WidgetRef ref, UrlData url) {
           Navigator.of(ref.context).pop();
         },
       ),
-      HarpyListTile(
+      RbyListTile(
         leading: const Icon(CupertinoIcons.square_on_square),
         title: const Text('copy url'),
         onTap: () {
@@ -58,7 +56,7 @@ void defaultOnUrlLongPress(WidgetRef ref, UrlData url) {
           Navigator.of(ref.context).pop();
         },
       ),
-      HarpyListTile(
+      RbyListTile(
         leading: const Icon(CupertinoIcons.share),
         title: const Text('share url'),
         onTap: () {

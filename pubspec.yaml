@@ -17,7 +17,7 @@ dependencies:
   connectivity_plus: ^2.0.2
   cupertino_icons: ^1.0.4
   dart_twitter_api: ^0.5.4
-  device_info_plus: ^4.0.0
+  device_info_plus: ^6.0.0
   download_manager:
     git: https://github.com/robertodoering/download_manager
   dynamic_color: ^1.4.0
@@ -47,24 +47,23 @@ dependencies:
   humanizer: ^2.0.0
   intl: ^0.17.0
   json_annotation: ^4.5.0
-  location: # TODO: change to pub version once updated
-    git:
-      url: https://github.com/TabooSun/flutterlocation.git
-      path: packages/location
-      ref: flutter-3-compatibility
+  location: ^4.4.0
   logging: ^1.0.1
   material_color_utilities: ^0.1.5
   mime_type: ^1.0.0
   modal_bottom_sheet: ^2.0.0
-  package_info_plus: ^1.3.0
+  package_info_plus: ^2.0.0
   path_provider: ^2.0.3
   permission_handler: ^10.0.0
   photo_view:
     # photo_view fork with better gesture recognition
     git: https://github.com/robertodoering/photo_view.git
+  rby:
+    git:
+      url: https://github.com/robertodoering/rby.dart
   scroll_to_index: ^3.0.0
   sentry_flutter: ^6.9.1
-  share_plus: ^4.0.4
+  share_plus: ^5.0.0
   shared_preferences: ^2.0.7
   shimmer: ^2.0.0
   sliver_tools: ^0.2.6

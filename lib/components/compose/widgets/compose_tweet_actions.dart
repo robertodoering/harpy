@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class ComposeTweetActions extends ConsumerWidget {
   const ComposeTweetActions({
@@ -20,12 +21,12 @@ class ComposeTweetActions extends ConsumerWidget {
 
     return Row(
       children: [
-        HarpyButton.icon(
+        RbyButton.transparent(
           icon: const Icon(CupertinoIcons.photo),
           onTap: notifier.pickMedia,
         ),
-        smallHorizontalSpacer,
-        HarpyButton.icon(
+        HorizontalSpacer.small,
+        RbyButton.transparent(
           icon: const Icon(CupertinoIcons.at),
           onTap: () {
             HapticFeedback.lightImpact();
@@ -33,8 +34,8 @@ class ComposeTweetActions extends ConsumerWidget {
             focusNode.requestFocus();
           },
         ),
-        smallHorizontalSpacer,
-        HarpyButton.icon(
+        HorizontalSpacer.small,
+        RbyButton.transparent(
           label: const Text('#'),
           onTap: () {
             HapticFeedback.lightImpact();
@@ -44,7 +45,7 @@ class ComposeTweetActions extends ConsumerWidget {
         ),
         const Spacer(),
         ComposeMaxLength(controller: controller),
-        smallHorizontalSpacer,
+        HorizontalSpacer.small,
         _PostTweetButton(controller: controller),
       ],
     );
@@ -109,7 +110,7 @@ class _PostTweetButtonState extends ConsumerState<_PostTweetButton> {
 
     final canTweet = state.hasMedia || widget.controller.text.trim().isNotEmpty;
 
-    return HarpyButton.icon(
+    return RbyButton.transparent(
       icon: const Icon(Icons.send),
       onTap: canTweet ? () => _showDialog(state) : null,
     );

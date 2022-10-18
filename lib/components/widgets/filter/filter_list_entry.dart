@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 // FIXME: refactor
 
@@ -57,14 +56,14 @@ class _FilterListEntryState extends ConsumerState<FilterListEntry> {
       final backgroundColor = theme.colorScheme.secondary;
 
       return [
-        smallVerticalSpacer,
+        VerticalSpacer.small,
         Wrap(
-          spacing: display.smallPaddingValue,
-          runSpacing: display.smallPaddingValue,
+          spacing: theme.spacing.small,
+          runSpacing: theme.spacing.small,
           children: [
-            for (int i = 0; i < widget.activeFilters.length; i++)
+            for (var i = 0; i < widget.activeFilters.length; i++)
               ImmediateOpacityAnimation(
-                duration: kShortAnimationDuration,
+                duration: theme.animation.short,
                 child: Chip(
                   backgroundColor: backgroundColor,
                   deleteIconColor: foregroundColor,
@@ -81,16 +80,16 @@ class _FilterListEntryState extends ConsumerState<FilterListEntry> {
           ],
         )
       ];
-    } else {
-      return [];
     }
+
+    return [];
   }
 
   Widget _buildSuffixButton() {
     Widget child;
 
     if (_showAddButton) {
-      child = HarpyButton.icon(
+      child = RbyButton.transparent(
         icon: const Icon(CupertinoIcons.add),
         onTap: _controller.text.isEmpty
             ? null
@@ -103,7 +102,7 @@ class _FilterListEntryState extends ConsumerState<FilterListEntry> {
       child = const SizedBox();
     }
 
-    return HarpyAnimatedSwitcher(child: child);
+    return RbyAnimatedSwitcher(child: child);
   }
 
   @override
@@ -112,7 +111,7 @@ class _FilterListEntryState extends ConsumerState<FilterListEntry> {
     final display = ref.watch(displayPreferencesProvider);
 
     return Padding(
-      padding: display.edgeInsetsSymmetric(horizontal: true),
+      padding: theme.spacing.symmetric(horizontal: true),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class ClearableTextField extends ConsumerStatefulWidget {
   const ClearableTextField({
@@ -75,7 +75,7 @@ class _ClearableTextFieldState extends ConsumerState<ClearableTextField> {
         label: widget.decoration?.label,
         labelText: widget.decoration?.labelText,
         isDense: widget.decoration?.isDense,
-        suffixIcon: HarpyButton.icon(
+        suffixIcon: RbyButton.transparent(
           icon: Icon(CupertinoIcons.xmark, size: iconTheme.size),
           onTap: _controller.text.isNotEmpty
               ? () {

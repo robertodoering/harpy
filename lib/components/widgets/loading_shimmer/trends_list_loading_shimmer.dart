@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 /// A loading shimmer for a trends list with placeholder trend cards.
-class TrendsListLoadingSliver extends ConsumerWidget {
+class TrendsListLoadingSliver extends StatelessWidget {
   const TrendsListLoadingSliver();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return SliverLoadingShimmer(
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: display.paddingValue * 2,
-          vertical: display.paddingValue,
+          horizontal: theme.spacing.base * 2,
+          vertical: theme.spacing.base,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -23,7 +23,7 @@ class TrendsListLoadingSliver extends ConsumerWidget {
             25,
             Padding(
               padding: EdgeInsetsDirectional.only(
-                bottom: display.paddingValue * 2,
+                bottom: theme.spacing.base * 2,
               ),
               child: const TrendsPlaceholder(),
             ),
@@ -42,14 +42,14 @@ class TrendsPlaceholder extends StatelessWidget {
     return Row(
       children: [
         const PlaceholderBox(width: 28, height: 28, shape: BoxShape.circle),
-        horizontalSpacer,
-        horizontalSpacer,
+        HorizontalSpacer.normal,
+        HorizontalSpacer.normal,
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
               PlaceholderBox(widthFactor: .75, height: 15),
-              smallVerticalSpacer,
+              VerticalSpacer.small,
               PlaceholderBox(widthFactor: .3, height: 15),
             ],
           ),

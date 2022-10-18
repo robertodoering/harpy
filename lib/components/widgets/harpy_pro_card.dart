@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class HarpyProCard extends ConsumerWidget {
   const HarpyProCard({
@@ -15,7 +16,6 @@ class HarpyProCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
     final launcher = ref.watch(launcherProvider);
 
     final headline = theme.textTheme.headline6!.copyWith(
@@ -42,12 +42,12 @@ class HarpyProCard extends ConsumerWidget {
     );
 
     return Material(
-      borderRadius: harpyTheme.borderRadius,
+      borderRadius: theme.shape.borderRadius,
       elevation: 4,
       color: Colors.transparent,
       // clip the container and the custom paint
       child: ClipRRect(
-        borderRadius: harpyTheme.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         child: DecoratedBox(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -66,7 +66,7 @@ class HarpyProCard extends ConsumerWidget {
             child: Material(
               type: MaterialType.transparency,
               child: InkWell(
-                borderRadius: harpyTheme.borderRadius,
+                borderRadius: theme.shape.borderRadius,
                 onTap: () => launcher(
                   'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
                 ),

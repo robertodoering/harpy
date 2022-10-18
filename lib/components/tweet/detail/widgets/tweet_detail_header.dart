@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 /// Builds the header for the [TweetDetailPage].
 ///
 /// If the tweet has a parent, the parent tweet card will animate into view.
-class TweetDetailHeader extends ConsumerWidget {
+class TweetDetailHeader extends StatelessWidget {
   const TweetDetailHeader({
     required this.tweet,
     required this.parent,
@@ -20,30 +20,30 @@ class TweetDetailHeader extends ConsumerWidget {
   final TweetData? parent;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return SliverToBoxAdapter(
       child: AnimatedSize(
-        duration: kLongAnimationDuration,
+        duration: theme.animation.long,
         curve: Curves.easeOutCubic,
         alignment: AlignmentDirectional.topCenter,
         child: parent != null
             ? Column(
                 children: [
                   Padding(
-                    padding: display.edgeInsets.copyWith(bottom: 0),
+                    padding: theme.spacing.edgeInsets.copyWith(bottom: 0),
                     child: TweetCard(tweet: parent!),
                   ),
-                  verticalSpacer,
+                  VerticalSpacer.normal,
                   TweetListInfoMessage(
                     icon: const Icon(CupertinoIcons.reply),
                     text: Text('${tweet.user.name} replied'),
                   ),
-                  verticalSpacer,
+                  VerticalSpacer.normal,
                 ],
               )
-            : verticalSpacer,
+            : VerticalSpacer.normal,
       ),
     );
   }

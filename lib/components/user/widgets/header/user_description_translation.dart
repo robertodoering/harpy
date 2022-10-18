@@ -3,10 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
-class UserDescriptionTranslation extends ConsumerWidget {
+class UserDescriptionTranslation extends StatelessWidget {
   const UserDescriptionTranslation({
     required this.user,
   });
@@ -14,21 +13,21 @@ class UserDescriptionTranslation extends ConsumerWidget {
   final UserData user;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return AnimatedSize(
-      duration: kShortAnimationDuration,
+      duration: theme.animation.short,
       curve: Curves.easeOutCubic,
       child: AnimatedOpacity(
         opacity: user.descriptionTranslation != null ? 1 : 0,
-        duration: kShortAnimationDuration,
+        duration: theme.animation.short,
         curve: Curves.easeOut,
         child: user.descriptionTranslation != null &&
                 user.descriptionTranslation!.isTranslated
             ? Padding(
                 padding: EdgeInsetsDirectional.only(
-                  top: display.smallPaddingValue,
+                  top: theme.spacing.small,
                 ),
                 child: TranslatedText(
                   user.descriptionTranslation!.text,

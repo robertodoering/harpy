@@ -3,7 +3,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 class RetweetButton extends ConsumerStatefulWidget {
   const RetweetButton({
@@ -30,7 +30,6 @@ class RetweetButton extends ConsumerStatefulWidget {
 
 class _RetweetButtonState extends ConsumerState<RetweetButton> {
   Future<void> _showMenu() async {
-    final popupMenuTheme = PopupMenuTheme.of(context);
     final renderBox = context.findRenderObject()! as RenderBox;
     final overlay =
         Overlay.of(context)!.context.findRenderObject()! as RenderBox;
@@ -49,26 +48,23 @@ class _RetweetButtonState extends ConsumerState<RetweetButton> {
       Offset.zero & overlay.size,
     );
 
-    final result = await showHarpyMenu(
+    final result = await showRbyMenu(
       context: context,
       position: position,
-      elevation: popupMenuTheme.elevation,
-      shape: popupMenuTheme.shape,
-      color: popupMenuTheme.color,
       items: [
-        HarpyPopupMenuItem(
+        RbyPopupMenuListTile(
           value: 0,
           leading: const Icon(FeatherIcons.repeat),
           title: Text(widget.tweet.retweeted ? 'unretweet' : 'retweet'),
         ),
         if (widget.onComposeQuote != null)
-          const HarpyPopupMenuItem(
+          const RbyPopupMenuListTile(
             value: 1,
             leading: Icon(FeatherIcons.feather),
             title: Text('quote tweet'),
           ),
         if (widget.onShowRetweeters != null)
-          const HarpyPopupMenuItem(
+          const RbyPopupMenuListTile(
             value: 2,
             leading: Icon(FeatherIcons.users),
             title: Text('view retweeters'),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
-class UserFollowersCount extends ConsumerWidget {
+class UserFollowersCount extends StatelessWidget {
   const UserFollowersCount({
     required this.user,
   });
@@ -12,20 +12,19 @@ class UserFollowersCount extends ConsumerWidget {
   final UserData user;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
-    final router = ref.watch(routerProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return Wrap(
-      spacing: display.paddingValue,
-      runSpacing: display.smallPaddingValue,
+      spacing: theme.spacing.base,
+      runSpacing: theme.spacing.small,
       alignment: WrapAlignment.spaceBetween,
       children: [
         ConnectionCount(
           count: user.friendsCount,
-          builder: (count) => HarpyButton.text(
+          builder: (count) => RbyButton.text(
             label: Text('$count following'),
-            onTap: () => router.goNamed(
+            onTap: () => context.goNamed(
               FollowingPage.name,
               params: {'handle': user.handle},
             ),
@@ -33,9 +32,9 @@ class UserFollowersCount extends ConsumerWidget {
         ),
         ConnectionCount(
           count: user.followersCount,
-          builder: (count) => HarpyButton.text(
+          builder: (count) => RbyButton.text(
             label: Text('$count followers'),
-            onTap: () => router.goNamed(
+            onTap: () => context.goNamed(
               FollowersPage.name,
               params: {'handle': user.handle},
             ),

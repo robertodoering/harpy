@@ -1,39 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
-class UserCard extends ConsumerWidget {
+class UserCard extends StatelessWidget {
   const UserCard(this.user);
 
   final UserData user;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
-    final display = ref.watch(displayPreferencesProvider);
-    final router = ref.watch(routerProvider);
 
     return Card(
       child: InkWell(
-        borderRadius: harpyTheme.borderRadius,
-        onTap: () => router.pushNamed(
+        borderRadius: theme.shape.borderRadius,
+        onTap: () => context.pushNamed(
           UserPage.name,
           params: {'handle': user.handle},
           extra: user,
         ),
         child: Column(
           children: [
-            HarpyListTile(
+            RbyListTile(
               color: theme.cardTheme.color,
               verticalAlignment: CrossAxisAlignment.start,
-              contentPadding: display.edgeInsets.copyWith(
-                bottom: display.smallPaddingValue,
+              contentPadding: theme.spacing.edgeInsets.copyWith(
+                bottom: theme.spacing.small,
               ),
-              leadingPadding: display.edgeInsets.copyWith(
-                bottom: display.smallPaddingValue,
+              leadingPadding: theme.spacing.edgeInsets.copyWith(
+                bottom: theme.spacing.small,
               ),
               leading: HarpyCircleAvatar(
                 imageUrl: user.profileImageUrl,
@@ -53,7 +50,7 @@ class UserCard extends ConsumerWidget {
                     overflow: TextOverflow.fade,
                   ),
                   if (user.hasDescription) ...[
-                    smallVerticalSpacer,
+                    VerticalSpacer.small,
                     TwitterText(
                       user.description!,
                       entities: user.userDescriptionEntities,

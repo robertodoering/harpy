@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 /// Builds the third page for the [SetupPage].
 class SetupFinishContent extends ConsumerWidget {
@@ -17,10 +18,10 @@ class SetupFinishContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
     return Padding(
-      padding: display.edgeInsets,
+      padding: theme.spacing.edgeInsets,
       child: Column(
         children: [
           Expanded(
@@ -28,20 +29,20 @@ class SetupFinishContent extends ConsumerWidget {
               padding: EdgeInsets.zero,
               children: [
                 const _CrashReports(),
-                verticalSpacer,
-                verticalSpacer,
+                VerticalSpacer.normal,
+                VerticalSpacer.normal,
                 const _HideSensitiveMedia(),
-                verticalSpacer,
-                verticalSpacer,
+                VerticalSpacer.normal,
+                VerticalSpacer.normal,
                 _FollowHarpy(connections: connections, notifier: notifier),
               ],
             ),
           ),
           if (isPro)
             Padding(
-              padding: display.edgeInsets,
+              padding: theme.spacing.edgeInsets,
               child: Center(
-                child: HarpyButton.text(
+                child: RbyButton.text(
                   label: const Text('finish setup'),
                   onTap: () => finishSetup(ref),
                 ),
@@ -59,14 +60,13 @@ class _CrashReports extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
     final general = ref.watch(generalPreferencesProvider);
     final generalNotifier = ref.watch(generalPreferencesProvider.notifier);
 
     return Card(
-      child: HarpySwitchTile(
+      child: RbySwitchTile(
         value: general.crashReports,
-        borderRadius: harpyTheme.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         title: Text(
           'send automatic crash reports',
           style: theme.textTheme.headline5,
@@ -88,14 +88,13 @@ class _HideSensitiveMedia extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
     final media = ref.watch(mediaPreferencesProvider);
     final mediaNotifier = ref.watch(mediaPreferencesProvider.notifier);
 
     return Card(
-      child: HarpySwitchTile(
+      child: RbySwitchTile(
         value: media.hidePossiblySensitive,
-        borderRadius: harpyTheme.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         title: Text(
           'hide possibly sensitive media',
           style: theme.textTheme.headline5,
@@ -107,7 +106,7 @@ class _HideSensitiveMedia extends ConsumerWidget {
   }
 }
 
-class _FollowHarpy extends ConsumerWidget {
+class _FollowHarpy extends StatelessWidget {
   const _FollowHarpy({
     required this.connections,
     required this.notifier,
@@ -117,14 +116,13 @@ class _FollowHarpy extends ConsumerWidget {
   final UserConnectionsNotifier notifier;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
 
     return Card(
-      child: HarpySwitchTile(
+      child: RbySwitchTile(
         value: connections?.contains(UserConnection.following) ?? false,
-        borderRadius: harpyTheme.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         title: Text.rich(
           TextSpan(
             children: [

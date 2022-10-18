@@ -4,8 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage();
@@ -27,11 +26,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     ChangelogDialog.maybeShow(ref);
   }
 
-  Future<void> _startLogin() async {
+  Future<void> _startLogin(ThemeData theme) async {
     HapticFeedback.mediumImpact().ignore();
     setState(() => _loginStarted = true);
 
-    await Future<void>.delayed(kLongAnimationDuration);
+    await Future<void>.delayed(theme.animation.long);
     await ref.read(loginProvider).login();
 
     setState(() => _loginStarted = false);
@@ -39,6 +38,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
     final authenticationState = ref.watch(authenticationStateProvider);
 
@@ -50,7 +50,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         ),
         authenticated: (_) => const SizedBox(),
         unauthenticated: () => AnimatedSlide(
-          duration: kLongAnimationDuration,
+          duration: theme.animation.long,
           curve: Curves.easeInCubic,
           offset: _loginStarted ? const Offset(0, -1) : Offset.zero,
           child: Stack(
@@ -81,7 +81,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  _LoginButton(onTap: _startLogin),
+                  _LoginButton(onTap: () => _startLogin(theme)),
                   const SizedBox(height: 32),
                 ],
               ),
@@ -100,7 +100,7 @@ class _AboutButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Align(
       alignment: AlignmentDirectional.topEnd,
-      child: HarpyPopupMenuButton(
+      child: RbyPopupMenuButton(
         onSelected: (value) {
           switch (value) {
             case 0:
@@ -112,12 +112,12 @@ class _AboutButton extends ConsumerWidget {
           }
         },
         itemBuilder: (_) => const [
-          HarpyPopupMenuItem(
+          RbyPopupMenuListTile(
             value: 0,
             leading: Icon(Icons.info_outline_rounded),
             title: Text('about'),
           ),
-          HarpyPopupMenuItem(
+          RbyPopupMenuListTile(
             value: 1,
             leading: Icon(CupertinoIcons.slider_horizontal_3),
             title: Text('custom api key'),
@@ -180,8 +180,7 @@ class _LoginButton extends StatelessWidget {
       delay: const Duration(milliseconds: 2200),
       duration: const Duration(milliseconds: 1200),
       curve: Curves.elasticOut,
-      begin: 0,
-      child: HarpyButton.elevated(
+      child: RbyButton.elevated(
         label: const Text('login with Twitter'),
         onTap: onTap,
       ),

@@ -3,10 +3,9 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class UserAppBar extends StatelessWidget {
   const UserAppBar({
@@ -44,12 +43,12 @@ class UserAppBar extends StatelessWidget {
   }
 }
 
-class _BackButton extends ConsumerWidget {
+class _BackButton extends StatelessWidget {
   const _BackButton();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     final show = UserScrollDirection.scrollDirectionOf(context) !=
         ScrollDirection.reverse;
@@ -57,22 +56,19 @@ class _BackButton extends ConsumerWidget {
     return AnimatedOpacity(
       opacity: show ? 1 : 0,
       curve: Curves.easeInOut,
-      duration: kShortAnimationDuration,
+      duration: theme.animation.short,
       child: AnimatedSlide(
         offset: show ? Offset.zero : const Offset(0, -1),
         curve: Curves.easeInOut,
-        duration: kShortAnimationDuration,
-        child: Padding(
-          padding: display.edgeInsetsOnly(start: true) / 2,
-          child: Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: HarpyButton.card(
-              icon: Transform.translate(
-                offset: const Offset(-1, 0),
-                child: const Icon(CupertinoIcons.left_chevron),
-              ),
-              onTap: Navigator.of(context).maybePop,
+        duration: theme.animation.short,
+        child: Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: RbyButton.card(
+            icon: Transform.translate(
+              offset: const Offset(-1, 0),
+              child: const Icon(CupertinoIcons.left_chevron),
             ),
+            onTap: Navigator.of(context).maybePop,
           ),
         ),
       ),

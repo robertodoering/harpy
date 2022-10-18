@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 /// Builds the image, gif or video that is used in the [MediaTimeline].
 class MediaTimelineMedia extends ConsumerWidget {
@@ -19,7 +19,7 @@ class MediaTimelineMedia extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final harpyTheme = ref.watch(harpyThemeProvider);
+    final theme = Theme.of(context);
     final layout = ref.watch(layoutPreferencesProvider);
     final mediaPreferences = ref.watch(mediaPreferencesProvider);
     final connectivity = ref.watch(connectivityProvider);
@@ -104,7 +104,7 @@ class MediaTimelineMedia extends ConsumerWidget {
 
     return ClipRRect(
       clipBehavior: Clip.hardEdge,
-      borderRadius: harpyTheme.borderRadius,
+      borderRadius: theme.shape.borderRadius,
       child: SensitiveMediaOverlay(
         tweet: entry.tweet,
         child: AspectRatio(

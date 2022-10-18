@@ -2,18 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
-class AboutPage extends ConsumerWidget {
+class AboutPage extends StatelessWidget {
   const AboutPage();
 
   static const name = 'about';
   static const path = '/about_harpy';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final padding = ref.watch(displayPreferencesProvider).edgeInsets;
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return HarpyScaffold(
       child: CustomScrollView(
@@ -21,10 +23,10 @@ class AboutPage extends ConsumerWidget {
           HarpySliverAppBar(
             title: const Text('about'),
             actions: [
-              HarpyPopupMenuButton(
+              RbyPopupMenuButton(
                 onSelected: (_) => showLicensePage(context: context),
                 itemBuilder: (_) => const [
-                  HarpyPopupMenuItem(
+                  RbyPopupMenuListTile(
                     value: true,
                     title: Text('licenses'),
                   ),
@@ -33,21 +35,21 @@ class AboutPage extends ConsumerWidget {
             ],
           ),
           SliverPadding(
-            padding: padding,
+            padding: theme.spacing.edgeInsets,
             sliver: const SliverList(
               delegate: SliverChildListDelegate.fixed([
                 _HarpyLogo(),
-                verticalSpacer,
+                VerticalSpacer.normal,
                 _SummaryCard(),
-                verticalSpacer,
+                VerticalSpacer.normal,
                 _DonationCard(),
-                verticalSpacer,
+                VerticalSpacer.normal,
                 if (isFree) ...[
                   _ProCard(),
-                  verticalSpacer,
+                  VerticalSpacer.normal,
                 ],
                 _CreditsCard(),
-                verticalSpacer,
+                VerticalSpacer.normal,
                 _PrivacyPolicyCard(),
               ]),
             ),
@@ -92,8 +94,6 @@ class _SummaryCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
-    final router = ref.watch(routerProvider);
     final version = ref.watch(deviceInfoProvider).packageInfo?.version;
     final launcher = ref.watch(launcherProvider);
 
@@ -108,34 +108,34 @@ class _SummaryCard extends ConsumerWidget {
     return Card(
       child: Column(
         children: [
-          HarpyListTile(
+          RbyListTile(
             leading: const Icon(Icons.history),
             title: Text(
               'version $version',
               style: theme.textTheme.subtitle1,
             ),
             borderRadius: BorderRadius.only(
-              topLeft: harpyTheme.radius,
-              topRight: harpyTheme.radius,
+              topLeft: theme.shape.radius,
+              topRight: theme.shape.radius,
             ),
-            onTap: () => router.pushNamed(ChangelogPage.name),
+            onTap: () => context.pushNamed(ChangelogPage.name),
           ),
-          HarpyListTile(
+          RbyListTile(
             leading: const Icon(FeatherIcons.github),
             title: const Text('harpy on GitHub'),
             subtitle: Text('github.com/robertodoering/harpy', style: style),
             onTap: () => launcher('https://github.com/robertodoering/harpy'),
           ),
-          HarpyListTile(
+          RbyListTile(
             title: const Text('harpy on Twitter'),
             subtitle: Text('@harpy_app', style: style),
             leading: const Icon(FeatherIcons.twitter),
             borderRadius: BorderRadius.only(
-              bottomLeft: harpyTheme.radius,
-              bottomRight: harpyTheme.radius,
+              bottomLeft: theme.shape.radius,
+              bottomRight: theme.shape.radius,
             ),
             onTap: isAuthenticated
-                ? () => router.pushNamed(
+                ? () => context.pushNamed(
                       UserPage.name,
                       params: {'handle': 'harpy_app'},
                     )
@@ -153,32 +153,30 @@ class _DonationCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
-    final padding = ref.watch(displayPreferencesProvider).edgeInsets;
     final launcher = ref.watch(launcherProvider);
 
     return Card(
       child: Column(
         children: [
           Padding(
-            padding: padding,
+            padding: theme.spacing.edgeInsets,
             child: Text(
               'if you like harpy, please consider supporting the '
               'development with a donation',
               style: theme.textTheme.subtitle2,
             ),
           ),
-          HarpyListTile(
+          RbyListTile(
             leading: const Icon(FeatherIcons.coffee),
             title: const Text('buy me a coffee'),
             onTap: () => launcher('https://ko-fi.com/robertodoering'),
           ),
-          HarpyListTile(
+          RbyListTile(
             leading: const Icon(FeatherIcons.dollarSign),
             title: const Text('donate via PayPal'),
             borderRadius: BorderRadius.only(
-              bottomLeft: harpyTheme.radius,
-              bottomRight: harpyTheme.radius,
+              bottomLeft: theme.shape.radius,
+              bottomRight: theme.shape.radius,
             ),
             onTap: () => launcher(
               'https://paypal.com/paypalme/robertodoering',
@@ -196,8 +194,6 @@ class _ProCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
-    final display = ref.watch(displayPreferencesProvider);
     final launcher = ref.watch(launcherProvider);
 
     final style = TextStyle(
@@ -210,7 +206,7 @@ class _ProCard extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: display.edgeInsets,
+            padding: theme.spacing.edgeInsets,
             child: Text.rich(
               TextSpan(
                 children: [
@@ -225,12 +221,12 @@ class _ProCard extends ConsumerWidget {
               style: theme.textTheme.subtitle2,
             ),
           ),
-          HarpyListTile(
+          RbyListTile(
             leading: const FlareIcon.shiningStar(),
             title: const Text('harpy pro'),
             borderRadius: BorderRadius.only(
-              bottomLeft: harpyTheme.radius,
-              bottomRight: harpyTheme.radius,
+              bottomLeft: theme.shape.radius,
+              bottomRight: theme.shape.radius,
             ),
             onTap: () => launcher(
               'https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro',
@@ -255,7 +251,7 @@ class _CreditsCard extends ConsumerWidget {
       fontWeight: FontWeight.bold,
     );
 
-    return HarpyListCard(
+    return RbyListCard(
       leading: const Icon(FeatherIcons.mail),
       multilineTitle: true,
       title: Text.rich(
@@ -283,7 +279,7 @@ class _PrivacyPolicyCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final launcher = ref.watch(launcherProvider);
 
-    return HarpyListCard(
+    return RbyListCard(
       leading: const Icon(CupertinoIcons.exclamationmark_shield),
       title: const Text('privacy policy'),
       onTap: () => launcher(

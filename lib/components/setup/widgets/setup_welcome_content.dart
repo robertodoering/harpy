@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 /// Builds the first page for the [SetupPage].
 class SetupWelcomeContent extends ConsumerStatefulWidget {
@@ -28,11 +28,10 @@ class _SetupWelcomeContentState extends ConsumerState<SetupWelcomeContent>
 
     final theme = Theme.of(context);
     final harpyTheme = ref.watch(harpyThemeProvider);
-    final display = ref.watch(displayPreferencesProvider);
     final authentication = ref.watch(authenticationStateProvider);
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: display.paddingValue * 2),
+      padding: EdgeInsets.symmetric(horizontal: theme.spacing.base * 2),
       child: Column(
         children: [
           Expanded(
@@ -54,8 +53,8 @@ class _SetupWelcomeContentState extends ConsumerState<SetupWelcomeContent>
                     ),
                   ),
                 ),
-                verticalSpacer,
-                verticalSpacer,
+                VerticalSpacer.normal,
+                VerticalSpacer.normal,
                 ImmediateSlideAnimation(
                   delay: const Duration(milliseconds: 800),
                   duration: const Duration(milliseconds: 1600),
@@ -79,7 +78,7 @@ class _SetupWelcomeContentState extends ConsumerState<SetupWelcomeContent>
               ],
             ),
           ),
-          verticalSpacer,
+          VerticalSpacer.normal,
           ImmediateSlideAnimation(
             delay: const Duration(milliseconds: 2400),
             duration: const Duration(milliseconds: 900),
@@ -96,15 +95,14 @@ class _SetupWelcomeContentState extends ConsumerState<SetupWelcomeContent>
               ),
             ),
           ),
-          verticalSpacer,
+          VerticalSpacer.normal,
           Expanded(
             child: ImmediateScaleAnimation(
               delay: const Duration(milliseconds: 2800),
               duration: const Duration(milliseconds: 1200),
               curve: Curves.elasticOut,
-              begin: 0,
               child: Center(
-                child: HarpyButton.text(
+                child: RbyButton.text(
                   label: const Text('start'),
                   onTap: widget.onStart,
                 ),

@@ -1,13 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 final applicationStateProvider = StateProvider(
   (ref) => ApplicationState.uninitialized,
@@ -37,11 +34,6 @@ class Application with LoggerMixin {
     VisibilityDetectorController.instance.updateInterval = const Duration(
       milliseconds: 50,
     );
-
-    if (Platform.isAndroid) {
-      // set the webview implementation (used for authentication)
-      WebView.platform = SurfaceAndroidWebView();
-    }
 
     await Future.wait([
       FlutterDisplayMode.setHighRefreshRate().handleError(logErrorHandler),

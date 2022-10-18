@@ -3,24 +3,25 @@ import 'dart:io';
 import 'package:built_collection/built_collection.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class ComposeMedia extends ConsumerWidget {
   const ComposeMedia();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
-    final harpyTheme = ref.watch(harpyThemeProvider);
+    final theme = Theme.of(context);
     final state = ref.watch(composeProvider);
     final notifier = ref.watch(composeProvider.notifier);
 
     return Padding(
-      padding: display.edgeInsets,
+      padding: theme.spacing.edgeInsets,
       child: ClipRRect(
-        borderRadius: harpyTheme.borderRadius,
+        borderRadius: theme.shape.borderRadius,
         child: Stack(
           children: [
             if (state.type == MediaType.image)
@@ -31,7 +32,7 @@ class ComposeMedia extends ConsumerWidget {
               ComposeVideo(media: state.media!.single),
             Align(
               alignment: AlignmentDirectional.topEnd,
-              child: HarpyButton.card(
+              child: RbyButton.card(
                 icon: const Icon(CupertinoIcons.xmark),
                 onTap: notifier.clear,
               ),

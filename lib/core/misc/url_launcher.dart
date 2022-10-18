@@ -4,13 +4,13 @@ import 'package:harpy/core/core.dart';
 import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-typedef UrlLauncher = Future<void> Function(
+typedef UrlLauncher = void Function(
   String url, {
   bool alwaysOpenExternally,
 });
 
 final launcherProvider = Provider<UrlLauncher>(
-  (ref) => (url, {alwaysOpenExternally = false}) async {
+  (ref) => (url, {alwaysOpenExternally = false}) {
     final shouldOpenExternally = alwaysOpenExternally ||
         ref.read(mediaPreferencesProvider).openLinksExternally;
 
@@ -24,7 +24,7 @@ final launcherProvider = Provider<UrlLauncher>(
 
     try {
       if (shouldOpenExternally) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
+        launchUrl(uri, mode: LaunchMode.externalApplication).ignore();
       } else {
         ref.read(routerProvider).pushNamed(
           WebviewPage.name,

@@ -6,8 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
-class UserInfo extends ConsumerWidget {
+class UserInfo extends StatelessWidget {
   const UserInfo({
     required this.user,
     required this.connections,
@@ -19,15 +20,15 @@ class UserInfo extends ConsumerWidget {
   final UserConnectionsNotifier connectionsNotifier;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: display.edgeInsets,
+            padding: theme.spacing.edgeInsets,
             child: _Avatar(user: user),
           ),
           Expanded(
@@ -36,15 +37,15 @@ class UserInfo extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _Name(user: user),
-                smallVerticalSpacer,
+                VerticalSpacer.small,
                 _Handle(user: user),
               ],
             ),
           ),
           AnimatedSize(
-            duration: kShortAnimationDuration,
+            duration: theme.animation.short,
             curve: Curves.easeOutCubic,
-            child: HarpyAnimatedSwitcher(
+            child: RbyAnimatedSwitcher(
               child: connections != null
                   ? _FollowButton(
                       user: user,
@@ -62,7 +63,7 @@ class UserInfo extends ConsumerWidget {
   }
 }
 
-class _Avatar extends ConsumerWidget {
+class _Avatar extends StatelessWidget {
   const _Avatar({
     required this.user,
   });
@@ -70,7 +71,7 @@ class _Avatar extends ConsumerWidget {
   final UserData user;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => _showFullscreenAvatar(context, user: user),
       child: HarpyCircleAvatar(
@@ -184,7 +185,7 @@ class _Name extends StatelessWidget {
   }
 }
 
-class _FollowButton extends ConsumerWidget {
+class _FollowButton extends StatelessWidget {
   const _FollowButton({
     required this.user,
     required this.following,
@@ -196,12 +197,11 @@ class _FollowButton extends ConsumerWidget {
   final UserConnectionsNotifier notifier;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final padding = ref.watch(displayPreferencesProvider).edgeInsets;
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return HarpyButton.text(
-      padding: padding,
+    return RbyButton.text(
+      padding: theme.spacing.edgeInsets,
       label: following
           ? const Text('following')
           : Text(

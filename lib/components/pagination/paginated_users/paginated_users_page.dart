@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 /// Builds a [UserList] for a [PaginatedUsersNotifier].
 ///
@@ -45,7 +45,7 @@ class PaginatedUsersPage extends ConsumerWidget {
                   loading: (_) => [const UserListLoadingSliver()],
                   loadingMore: (_) => [
                     const SliverLoadingIndicator(),
-                    sliverVerticalSpacer,
+                    VerticalSpacer.normalSliver,
                   ],
                   noData: (_) => [
                     SliverFillInfoMessage(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class HomeTabIconDialog extends StatelessWidget {
   const HomeTabIconDialog({
@@ -11,7 +12,7 @@ class HomeTabIconDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HarpyDialog(
+    return RbyDialog(
       title: Text(entry.name.isNotEmpty ? '${entry.name} icon' : 'icon'),
       content: Wrap(
         spacing: 4,
@@ -35,7 +36,7 @@ class _IconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HarpyButton.icon(
+    return RbyButton.transparent(
       icon: HomeTabEntryIcon(iconName),
       onTap: () {
         HapticFeedback.lightImpact();

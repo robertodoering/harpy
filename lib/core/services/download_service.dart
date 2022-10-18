@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:download_manager/download_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 final downloadServiceProvider = Provider(
   (ref) => const DownloadService(),

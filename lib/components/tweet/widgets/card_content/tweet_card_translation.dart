@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class TweetCardTranslation extends StatelessWidget {
   const TweetCardTranslation({
@@ -22,6 +22,8 @@ class TweetCardTranslation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     final buildTranslation =
         tweet.translation != null && tweet.translation!.isTranslated;
 
@@ -32,11 +34,11 @@ class TweetCardTranslation extends StatelessWidget {
             : 0.0;
 
     return AnimatedSize(
-      duration: kShortAnimationDuration,
+      duration: theme.animation.short,
       curve: Curves.easeOutCubic,
       child: AnimatedOpacity(
         opacity: buildTranslation ? 1 : 0,
-        duration: kShortAnimationDuration,
+        duration: theme.animation.short,
         curve: Curves.easeOut,
         child: buildTranslation
             ? Padding(

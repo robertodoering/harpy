@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class UserTabView extends ConsumerWidget {
   const UserTabView({
@@ -15,8 +16,8 @@ class UserTabView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
-    final display = ref.watch(displayPreferencesProvider);
     final authenticatedUser = ref.watch(authenticationStateProvider).user;
 
     final isAuthenticatedUser = user.id == authenticatedUser?.id;
@@ -58,7 +59,7 @@ class UserTabView extends ConsumerWidget {
             SliverToBoxAdapter(
               child: Center(
                 child: HarpyTabBar(
-                  padding: display.edgeInsetsOnly(top: true),
+                  padding: theme.spacing.only(top: true),
                   tabs: tabs,
                 ),
               ),

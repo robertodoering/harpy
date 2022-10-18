@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
-class TweetDetailCard extends ConsumerWidget {
+class TweetDetailCard extends StatelessWidget {
   const TweetDetailCard({
     required this.tweet,
   });
@@ -11,11 +11,11 @@ class TweetDetailCard extends ConsumerWidget {
   final TweetData tweet;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return SliverPadding(
-      padding: display.edgeInsets.copyWith(top: 0),
+      padding: theme.spacing.edgeInsets.copyWith(top: 0),
       sliver: SliverToBoxAdapter(
         child: TweetCard(
           tweet: tweet,

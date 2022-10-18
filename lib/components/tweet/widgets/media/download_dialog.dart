@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class DownloadDialog extends ConsumerStatefulWidget {
   const DownloadDialog({
@@ -34,22 +35,22 @@ class _DownloadDialogState extends ConsumerState<DownloadDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
     final downloadPath = ref.watch(downloadPathProvider);
 
-    return HarpyDialog(
+    return RbyDialog(
       title: Text('download ${widget.type.name}'),
-      contentPadding: display.edgeInsetsOnly(bottom: true),
+      contentPadding: theme.spacing.only(bottom: true),
       content: Column(
         children: [
           Padding(
-            padding: display.edgeInsets,
+            padding: theme.spacing.edgeInsets,
             child: _NameTextField(
               initialName: widget.initialName,
               onChanged: (value) => setState(() => _name = value),
             ),
           ),
-          HarpyListTile(
+          RbyListTile(
             leading: const Icon(CupertinoIcons.folder),
             title: const Text('download location'),
             subtitle: Text(downloadPath.fullPathForType(widget.type) ?? ''),
@@ -63,11 +64,11 @@ class _DownloadDialogState extends ConsumerState<DownloadDialog> {
         ],
       ),
       actions: [
-        HarpyButton.text(
+        RbyButton.text(
           label: const Text('cancel'),
           onTap: Navigator.of(context).pop,
         ),
-        HarpyButton.elevated(
+        RbyButton.elevated(
           label: const Text('download'),
           onTap:
               _name.isNotEmpty ? () => Navigator.of(context).pop(_name) : null,

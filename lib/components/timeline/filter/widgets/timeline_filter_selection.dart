@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class TimelineFilterSelection extends ConsumerStatefulWidget {
   const TimelineFilterSelection({
@@ -55,7 +57,7 @@ class _TimelineFilterSelectionState
   }
 
   void _openFilterCreation(TimelineFilterSelectionNotifier notifier) {
-    ref.read(routerProvider).pushNamed(
+    context.pushNamed(
       TimelineFilterCreation.name,
       extra: {
         // ignore: avoid_types_on_closure_parameters
@@ -74,7 +76,7 @@ class _TimelineFilterSelectionState
       child: CustomScrollView(
         slivers: [
           const HarpySliverAppBar(title: Text('timeline filter')),
-          sliverVerticalSpacer,
+          VerticalSpacer.normalSliver,
           ...?state.mapOrNull(
             noFilters: (_) => [
               _AddNewFilterFillSliver(
@@ -84,7 +86,7 @@ class _TimelineFilterSelectionState
             data: (data) => [
               if (data.activeFilter != null) ...[
                 _ClearFilterCard(onTap: notifier.removeTimelineFilterSelection),
-                sliverVerticalSpacer,
+                VerticalSpacer.normalSliver,
               ],
               if (data.showUnique && data.uniqueName != null) ...[
                 _ToggleUniqueFilterCard(
@@ -92,13 +94,13 @@ class _TimelineFilterSelectionState
                   uniqueName: data.uniqueName!,
                   onChanged: notifier.toggleUnique,
                 ),
-                sliverVerticalSpacer,
+                VerticalSpacer.normalSliver,
               ],
               _TimelineFilterList(
                 notifier: notifier,
                 sortedFilters: data.sortedFilters,
               ),
-              sliverVerticalSpacer,
+              VerticalSpacer.normalSliver,
               _AddNewFilterCard(onTap: () => _openFilterCreation(notifier)),
             ],
           ),
@@ -109,7 +111,7 @@ class _TimelineFilterSelectionState
   }
 }
 
-class _TimelineFilterList extends ConsumerWidget {
+class _TimelineFilterList extends StatelessWidget {
   const _TimelineFilterList({
     required this.notifier,
     required this.sortedFilters,
@@ -119,11 +121,11 @@ class _TimelineFilterList extends ConsumerWidget {
   final BuiltList<SortedTimelineFilter> sortedFilters;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return SliverPadding(
-      padding: display.edgeInsetsSymmetric(horizontal: true),
+      padding: theme.spacing.symmetric(horizontal: true),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (_, index) => index.isEven
@@ -131,7 +133,7 @@ class _TimelineFilterList extends ConsumerWidget {
                   notifier: notifier,
                   sortedFilter: sortedFilters[index ~/ 2],
                 )
-              : verticalSpacer,
+              : VerticalSpacer.normal,
           childCount: sortedFilters.length * 2 - 1,
         ),
       ),
@@ -139,7 +141,7 @@ class _TimelineFilterList extends ConsumerWidget {
   }
 }
 
-class _ClearFilterCard extends ConsumerWidget {
+class _ClearFilterCard extends StatelessWidget {
   const _ClearFilterCard({
     required this.onTap,
   });
@@ -147,14 +149,13 @@ class _ClearFilterCard extends ConsumerWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     return SliverPadding(
-      padding: display.edgeInsetsSymmetric(horizontal: true),
+      padding: theme.spacing.symmetric(horizontal: true),
       sliver: SliverToBoxAdapter(
-        child: HarpyListCard(
+        child: RbyListCard(
           color: Colors.transparent,
           border: Border.all(color: theme.dividerColor),
           title: const Text('remove filter'),
@@ -169,7 +170,7 @@ class _ClearFilterCard extends ConsumerWidget {
   }
 }
 
-class _ToggleUniqueFilterCard extends ConsumerWidget {
+class _ToggleUniqueFilterCard extends StatelessWidget {
   const _ToggleUniqueFilterCard({
     required this.isUnique,
     required this.uniqueName,
@@ -181,21 +182,19 @@ class _ToggleUniqueFilterCard extends ConsumerWidget {
   final ValueChanged<bool> onChanged;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
-    final display = ref.watch(displayPreferencesProvider);
 
     return SliverToBoxAdapter(
       child: Padding(
-        padding: display.edgeInsetsSymmetric(horizontal: true),
+        padding: theme.spacing.symmetric(horizontal: true),
         child: DecoratedBox(
           decoration: BoxDecoration(
             border: Border.all(color: theme.dividerColor),
-            borderRadius: harpyTheme.borderRadius,
+            borderRadius: theme.shape.borderRadius,
           ),
-          child: HarpySwitchTile(
-            borderRadius: harpyTheme.borderRadius,
+          child: RbySwitchTile(
+            borderRadius: theme.shape.borderRadius,
             value: isUnique,
             title: Text.rich(
               TextSpan(
@@ -221,7 +220,7 @@ class _ToggleUniqueFilterCard extends ConsumerWidget {
   }
 }
 
-class _AddNewFilterCard extends ConsumerWidget {
+class _AddNewFilterCard extends StatelessWidget {
   const _AddNewFilterCard({
     required this.onTap,
   });
@@ -229,14 +228,13 @@ class _AddNewFilterCard extends ConsumerWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
 
     return SliverPadding(
-      padding: display.edgeInsetsSymmetric(horizontal: true),
+      padding: theme.spacing.symmetric(horizontal: true),
       sliver: SliverToBoxAdapter(
-        child: HarpyListCard(
+        child: RbyListCard(
           color: Colors.transparent,
           leading: const Icon(CupertinoIcons.add),
           title: const Text('add new filter'),
@@ -248,7 +246,7 @@ class _AddNewFilterCard extends ConsumerWidget {
   }
 }
 
-class _AddNewFilterFillSliver extends ConsumerWidget {
+class _AddNewFilterFillSliver extends StatelessWidget {
   const _AddNewFilterFillSliver({
     required this.onTap,
   });
@@ -256,11 +254,11 @@ class _AddNewFilterFillSliver extends ConsumerWidget {
   final VoidCallback onTap;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return SliverFillRemaining(
       hasScrollBody: false,
       child: Center(
-        child: HarpyButton.icon(
+        child: RbyButton.transparent(
           icon: const Icon(CupertinoIcons.add),
           label: const Text('add new filter'),
           onTap: onTap,

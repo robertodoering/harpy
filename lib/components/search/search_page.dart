@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class SearchPage extends ConsumerWidget {
   const SearchPage();
@@ -21,7 +22,7 @@ class SearchPage extends ConsumerWidget {
   }
 }
 
-class SearchPageContent extends ConsumerWidget {
+class SearchPageContent extends StatelessWidget {
   const SearchPageContent({
     this.scrollToTopOffset,
     this.beginSlivers = const [],
@@ -33,8 +34,8 @@ class SearchPageContent extends ConsumerWidget {
   final List<Widget> endSlivers;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return ScrollToTop(
       bottomPadding: scrollToTopOffset,
@@ -42,18 +43,18 @@ class SearchPageContent extends ConsumerWidget {
         slivers: [
           ...beginSlivers,
           SliverPadding(
-            padding: display.edgeInsets.copyWith(bottom: 0),
+            padding: theme.spacing.edgeInsets.copyWith(bottom: 0),
             sliver: SliverList(
               delegate: SliverChildListDelegate(const [
                 _UserSearchCard(),
-                verticalSpacer,
+                VerticalSpacer.normal,
                 _TweetSearchCard(),
               ]),
             ),
           ),
-          SliverToBoxAdapter(child: Divider(height: display.paddingValue * 2)),
+          SliverToBoxAdapter(child: Divider(height: theme.spacing.base * 2)),
           const TrendsSelectionHeader(),
-          sliverVerticalSpacer,
+          VerticalSpacer.normalSliver,
           const TrendsList(),
           ...endSlivers,
         ],
@@ -62,32 +63,28 @@ class SearchPageContent extends ConsumerWidget {
   }
 }
 
-class _UserSearchCard extends ConsumerWidget {
+class _UserSearchCard extends StatelessWidget {
   const _UserSearchCard();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
-
-    return HarpyListCard(
+  Widget build(BuildContext context) {
+    return RbyListCard(
       leading: const Icon(CupertinoIcons.search),
       title: const Text('users'),
-      onTap: () => router.pushNamed(UserSearchPage.name),
+      onTap: () => context.pushNamed(UserSearchPage.name),
     );
   }
 }
 
-class _TweetSearchCard extends ConsumerWidget {
+class _TweetSearchCard extends StatelessWidget {
   const _TweetSearchCard();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.read(routerProvider);
-
-    return HarpyListCard(
+  Widget build(BuildContext context) {
+    return RbyListCard(
       leading: const Icon(CupertinoIcons.search),
       title: const Text('tweets'),
-      onTap: () => router.pushNamed(TweetSearchPage.name),
+      onTap: () => context.pushNamed(TweetSearchPage.name),
     );
   }
 }

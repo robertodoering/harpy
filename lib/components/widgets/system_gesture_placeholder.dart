@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 /// Places gesture detectors at the horizontal edges to prevent horizontal drag
-/// gestures and at the bottom to prevent vertical drag gestures.
+/// gestures and at vertical edges to prevent vertical drag gestures.
 ///
-/// Used to prevent an overlap of the Android system gestures and scrolling in
+/// Used to prevent an overlap of the system gestures and scrolling in
 /// underlying horizontal or vertical lists.
 class SystemGesturePlaceholder extends StatelessWidget {
   const SystemGesturePlaceholder({
@@ -20,23 +20,35 @@ class SystemGesturePlaceholder extends StatelessWidget {
       children: [
         child,
         Align(
-          alignment: AlignmentDirectional.centerEnd,
+          // ignore: non_directional
+          alignment: Alignment.centerLeft,
           child: SizedBox(
-            width: mediaQuery.size.width * .066,
+            width: mediaQuery.systemGestureInsets.left,
             child: GestureDetector(onHorizontalDragStart: (_) {}),
           ),
         ),
         Align(
-          alignment: AlignmentDirectional.centerEnd,
+          // ignore: non_directional
+          alignment: Alignment.centerRight,
           child: SizedBox(
-            width: mediaQuery.size.width * .066,
+            width: mediaQuery.systemGestureInsets.right,
             child: GestureDetector(onHorizontalDragStart: (_) {}),
+          ),
+        ),
+        Align(
+          alignment: AlignmentDirectional.topCenter,
+          child: SizedBox(
+            height: mediaQuery.systemGestureInsets.top,
+            child: GestureDetector(
+              onHorizontalDragStart: (_) {},
+              onVerticalDragStart: (_) {},
+            ),
           ),
         ),
         Align(
           alignment: AlignmentDirectional.bottomCenter,
           child: SizedBox(
-            height: mediaQuery.size.height * .044,
+            height: mediaQuery.systemGestureInsets.bottom,
             child: GestureDetector(
               onHorizontalDragStart: (_) {},
               onVerticalDragStart: (_) {},

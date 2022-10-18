@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 /// A loading shimmer for a user list with placeholder user cards.
-class UserListLoadingSliver extends ConsumerWidget {
+class UserListLoadingSliver extends StatelessWidget {
   const UserListLoadingSliver();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final display = ref.watch(displayPreferencesProvider);
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
 
     return SliverLoadingShimmer(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: display.paddingValue * 2),
+        padding: EdgeInsets.symmetric(horizontal: theme.spacing.base * 2),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,7 +20,7 @@ class UserListLoadingSliver extends ConsumerWidget {
             25,
             Padding(
               padding: EdgeInsetsDirectional.only(
-                bottom: display.paddingValue * 2,
+                bottom: theme.spacing.base * 2,
               ),
               child: const UserPlaceholder(),
             ),
@@ -40,15 +40,15 @@ class UserPlaceholder extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const PlaceholderBox(width: 42, height: 42, shape: BoxShape.circle),
-        horizontalSpacer,
+        HorizontalSpacer.normal,
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
               PlaceholderBox(widthFactor: .75, height: 15),
-              smallVerticalSpacer,
+              VerticalSpacer.small,
               PlaceholderBox(widthFactor: .3, height: 15),
-              smallVerticalSpacer,
+              VerticalSpacer.small,
               PlaceholderBox(widthFactor: 1, height: 15),
             ],
           ),

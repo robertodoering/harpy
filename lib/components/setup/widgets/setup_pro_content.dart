@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 /// Builds the last page for the setup screen.
 ///
@@ -19,12 +20,10 @@ class SetupProContent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
-    final display = ref.watch(displayPreferencesProvider);
     final launcher = ref.watch(launcherProvider);
 
     return Padding(
-      padding: display.edgeInsets,
+      padding: theme.spacing.edgeInsets,
       child: Column(
         children: [
           Expanded(
@@ -37,44 +36,44 @@ class SetupProContent extends ConsumerWidget {
                   child: Row(
                     children: [
                       const FlareIcon.shiningStar(iconSize: 72),
-                      horizontalSpacer,
+                      HorizontalSpacer.normal,
                       Expanded(
                         child: Text(
                           'harpy pro',
                           style: theme.textTheme.headline2?.copyWith(
-                            color: harpyTheme.colors.onBackground,
+                            color: theme.colorScheme.onBackground,
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: display.paddingValue * 3),
+                SizedBox(height: theme.spacing.base * 3),
                 Text(
                   'support harpy and gain access to exclusive features',
                   style: theme.textTheme.headline5,
                 ),
-                SizedBox(height: display.paddingValue * 2),
+                SizedBox(height: theme.spacing.base * 2),
                 const _FeatureRow(
                   icon: Icons.ad_units_outlined,
                   text: 'no ads',
                 ),
-                SizedBox(height: display.paddingValue * 2),
+                SizedBox(height: theme.spacing.base * 2),
                 const _FeatureRow(
                   icon: Icons.palette_outlined,
                   text: 'fully customizable themes',
                 ),
-                SizedBox(height: display.paddingValue * 2),
+                SizedBox(height: theme.spacing.base * 2),
                 const _FeatureRow(
                   icon: CupertinoIcons.home,
                   text: 'home screen customization',
                 ),
-                SizedBox(height: display.paddingValue * 2),
+                SizedBox(height: theme.spacing.base * 2),
                 const _FeatureRow(
                   icon: CupertinoIcons.textformat,
                   text: 'font customization',
                 ),
-                SizedBox(height: display.paddingValue * 2),
+                SizedBox(height: theme.spacing.base * 2),
                 const _FeatureRow(
                   icon: Icons.more_horiz,
                   text: 'and more coming in the future',
@@ -83,18 +82,18 @@ class SetupProContent extends ConsumerWidget {
             ),
           ),
           Padding(
-            padding: display.edgeInsets,
+            padding: theme.spacing.edgeInsets,
             child: Center(
               child: Wrap(
-                spacing: display.paddingValue,
-                runSpacing: display.paddingValue,
+                spacing: theme.spacing.base,
+                runSpacing: theme.spacing.base,
                 children: [
-                  HarpyButton.text(
+                  RbyButton.text(
                     label: const Text('harpy pro'),
                     icon: const FlareIcon.shiningStar(),
                     onTap: () => _openHarpyPro(launcher),
                   ),
-                  HarpyButton.elevated(
+                  RbyButton.elevated(
                     label: const Text('finish setup'),
                     onTap: () => finishSetup(ref),
                   ),
@@ -128,7 +127,7 @@ class _FeatureRow extends StatelessWidget {
           size: 26,
           color: theme.colorScheme.secondary,
         ),
-        horizontalSpacer,
+        HorizontalSpacer.normal,
         Expanded(
           child: Text(
             text,

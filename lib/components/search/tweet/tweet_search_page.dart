@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 class TweetSearchPage extends ConsumerStatefulWidget {
   const TweetSearchPage({
@@ -31,7 +32,6 @@ class _TweetSearchPageState extends ConsumerState<TweetSearchPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final display = ref.watch(displayPreferencesProvider);
     final state = ref.watch(tweetSearchProvider);
     final notifier = ref.watch(tweetSearchProvider.notifier);
 
@@ -44,7 +44,7 @@ class _TweetSearchPageState extends ConsumerState<TweetSearchPage> {
                 UserScrollDirection.of(context)?.idle();
                 await notifier.refresh();
               },
-              edgeOffset: HarpySliverAppBar.height(ref) + display.paddingValue,
+              edgeOffset: RbySliverAppBar.height(context) + theme.spacing.base,
               child: TweetList(
                 state.tweets.toList(),
                 beginSlivers: [
@@ -53,7 +53,7 @@ class _TweetSearchPageState extends ConsumerState<TweetSearchPage> {
                     onSubmitted: (value) => notifier.search(customQuery: value),
                     onClear: notifier.clear,
                     actions: [
-                      HarpyButton.icon(
+                      RbyButton.transparent(
                         icon: state.filter != null
                             ? Icon(
                                 Icons.filter_alt,
@@ -61,7 +61,7 @@ class _TweetSearchPageState extends ConsumerState<TweetSearchPage> {
                               )
                             : const Icon(Icons.filter_alt_outlined),
                         onTap: () => _openSearchFilter(
-                          ref,
+                          context,
                           initialFilter: state.filter,
                           notifier: notifier,
                         ),
@@ -71,11 +71,11 @@ class _TweetSearchPageState extends ConsumerState<TweetSearchPage> {
                   ...?state.mapOrNull(
                     initial: (_) => [
                       SliverFillInfoMessage(
-                        primaryMessage: HarpyButton.text(
+                        primaryMessage: RbyButton.text(
                           icon: const Icon(Icons.filter_alt_outlined),
                           label: const Text('advanced query'),
                           onTap: () => _openSearchFilter(
-                            ref,
+                            context,
                             initialFilter: state.filter,
                             notifier: notifier,
                           ),
@@ -83,7 +83,7 @@ class _TweetSearchPageState extends ConsumerState<TweetSearchPage> {
                       )
                     ],
                     loading: (_) => const [
-                      sliverVerticalSpacer,
+                      VerticalSpacer.normalSliver,
                       TweetListLoadingSliver(),
                     ],
                     noData: (_) => const [
@@ -114,13 +114,13 @@ class _TweetSearchPageState extends ConsumerState<TweetSearchPage> {
 }
 
 void _openSearchFilter(
-  WidgetRef ref, {
+  BuildContext context, {
   required TweetSearchFilterData? initialFilter,
   required TweetSearchNotifier notifier,
 }) {
-  FocusScope.of(ref.context).unfocus();
+  FocusScope.of(context).unfocus();
 
-  ref.read(routerProvider).pushNamed(
+  context.pushNamed(
     TweetSearchFilter.name,
     extra: {
       'initialFilter': initialFilter,

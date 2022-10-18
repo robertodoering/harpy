@@ -3,7 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 class ChangelogDialog extends StatelessWidget {
   const ChangelogDialog({
@@ -37,11 +37,11 @@ class ChangelogDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HarpyDialog(
+    return RbyDialog(
       title: const Text("what's new?"),
       content: ChangelogWidget(data: data),
       actions: [
-        HarpyButton.text(
+        RbyButton.text(
           label: const Text('ok'),
           onTap: Navigator.of(context).pop,
         ),

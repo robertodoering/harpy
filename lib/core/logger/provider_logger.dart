@@ -24,9 +24,9 @@ class ProviderLogger extends ProviderObserver {
     Object? newValue,
     ProviderContainer container,
   ) {
-    if (provider.name != null) {
-      _log.info(_msg('updated', provider));
-    }
+    if (provider.name == null) return;
+
+    _log.info(_msg('updated', provider));
 
     if (newValue is AsyncData) {
       _log.info('         ${newValue.value}');

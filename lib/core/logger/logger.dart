@@ -1,10 +1,11 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/foundation.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:harpy/core/core.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
+import 'package:rby/rby.dart';
 
 /// A convenience mixin to expose a [Logger] instance for classes named after
 /// their type.

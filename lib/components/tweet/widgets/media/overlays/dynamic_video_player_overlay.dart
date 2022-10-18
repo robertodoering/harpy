@@ -5,8 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
-import 'package:harpy/rby/rby.dart';
+import 'package:rby/rby.dart';
 
 /// Overlay for video players where the UI elements automatically hide to avoid
 /// obscuring the content.
@@ -72,6 +71,8 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       // eat all tap gestures that are not handled otherwise (e.g. tapping on
       // the overlay)
@@ -102,11 +103,11 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
                 ignoring: !_showActions,
                 child: AnimatedSlide(
                   offset: _showActions ? Offset.zero : const Offset(0, .33),
-                  duration: kShortAnimationDuration,
+                  duration: theme.animation.short,
                   curve: Curves.easeOut,
                   child: AnimatedOpacity(
                     opacity: _showActions ? 1 : 0,
-                    duration: kShortAnimationDuration,
+                    duration: theme.animation.short,
                     curve: Curves.easeInOut,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -116,7 +117,7 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
                           data: widget.data,
                           notifier: widget.notifier,
                           children: [
-                            smallHorizontalSpacer,
+                            HorizontalSpacer.small,
                             VideoPlayerPlaybackButton(
                               notifier: widget.notifier,
                               data: widget.data,
@@ -125,7 +126,7 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
                               notifier: widget.notifier,
                               data: widget.data,
                             ),
-                            smallHorizontalSpacer,
+                            HorizontalSpacer.small,
                             VideoPlayerProgressText(data: widget.data),
                             const Spacer(),
                             if (widget.data.qualities.length > 1)
@@ -137,7 +138,7 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
                               const VideoPlayerCloseFullscreenButton()
                             else
                               VideoPlayerFullscreenButton(tweet: widget.tweet),
-                            smallHorizontalSpacer,
+                            HorizontalSpacer.small,
                           ],
                         ),
                       ],
@@ -148,10 +149,10 @@ class _DynamicVideoPlayerOverlayState extends State<DynamicVideoPlayerOverlay>
             ),
           ),
           if (widget.data.isBuffering)
-            const ImmediateOpacityAnimation(
-              delay: Duration(milliseconds: 500),
-              duration: kLongAnimationDuration,
-              child: MediaThumbnailIcon(
+            ImmediateOpacityAnimation(
+              delay: const Duration(milliseconds: 500),
+              duration: theme.animation.long,
+              child: const MediaThumbnailIcon(
                 icon: CircularProgressIndicator(),
               ),
             ),

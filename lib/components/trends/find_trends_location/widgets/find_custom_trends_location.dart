@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 import 'package:tuple/tuple.dart';
 
 /// Content for the [FindTrendsLocationDialog] for entering custom coordinates.
-class FindCustomTrendsLocation extends ConsumerStatefulWidget {
+class FindCustomTrendsLocation extends StatefulWidget {
   const FindCustomTrendsLocation({
     required this.onSearch,
   });
@@ -13,12 +12,11 @@ class FindCustomTrendsLocation extends ConsumerStatefulWidget {
   final ValueChanged<Tuple2<String, String>> onSearch;
 
   @override
-  ConsumerState<FindCustomTrendsLocation> createState() =>
+  State<FindCustomTrendsLocation> createState() =>
       _FindCustomTrendsLocationState();
 }
 
-class _FindCustomTrendsLocationState
-    extends ConsumerState<FindCustomTrendsLocation> {
+class _FindCustomTrendsLocationState extends State<FindCustomTrendsLocation> {
   final _form = GlobalKey<FormState>();
 
   String _latitude = '';
@@ -31,7 +29,7 @@ class _FindCustomTrendsLocationState
 
   @override
   Widget build(BuildContext context) {
-    final display = ref.watch(displayPreferencesProvider);
+    final theme = Theme.of(context);
 
     return Form(
       key: _form,
@@ -40,12 +38,12 @@ class _FindCustomTrendsLocationState
         child: Column(
           children: [
             AnimatedSize(
-              duration: kShortAnimationDuration,
+              duration: theme.animation.short,
               alignment: AlignmentDirectional.topCenter,
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                  vertical: display.smallPaddingValue,
-                  horizontal: display.paddingValue,
+                  vertical: theme.spacing.small,
+                  horizontal: theme.spacing.base,
                 ),
                 child: Column(
                   children: [
@@ -64,7 +62,7 @@ class _FindCustomTrendsLocationState
                       validator: _latitudeValidator,
                       onChanged: (value) => setState(() => _latitude = value),
                     ),
-                    verticalSpacer,
+                    VerticalSpacer.normal,
                     TextFormField(
                       keyboardType: const TextInputType.numberWithOptions(
                         decimal: true,
@@ -80,12 +78,12 @@ class _FindCustomTrendsLocationState
                       validator: _longitudeValidator,
                       onChanged: (value) => setState(() => _longitude = value),
                     ),
-                    verticalSpacer,
+                    VerticalSpacer.normal,
                   ],
                 ),
               ),
             ),
-            HarpyButton.elevated(
+            RbyButton.elevated(
               label: const Text('confirm'),
               onTap: _validate
                   ? () => widget.onSearch(Tuple2(_latitude, _longitude))

@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 class TweetCardQuote extends ConsumerStatefulWidget {
   const TweetCardQuote({
@@ -32,9 +33,6 @@ class _TweetCardQuoteState extends ConsumerState<TweetCardQuote> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final harpyTheme = ref.watch(harpyThemeProvider);
-    final display = ref.watch(displayPreferencesProvider);
-
     final provider = tweetProvider(widget.tweet.quote!.originalId);
     final tweet = ref.watch(provider) ?? widget.tweet.quote!;
     final notifier = ref.watch(provider.notifier);
@@ -46,17 +44,17 @@ class _TweetCardQuoteState extends ConsumerState<TweetCardQuote> {
       onTap: () => delegates.onShowTweet?.call(ref),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          borderRadius: harpyTheme.borderRadius,
+          borderRadius: theme.shape.borderRadius,
           border: Border.all(color: theme.dividerColor),
         ),
         child: ClipRRect(
-          borderRadius: harpyTheme.borderRadius,
+          borderRadius: theme.shape.borderRadius,
           child: TweetCardContent(
             tweet: tweet,
             notifier: notifier,
             delegates: delegates,
-            outerPadding: display.smallPaddingValue,
-            innerPadding: display.smallPaddingValue / 2,
+            outerPadding: theme.spacing.small,
+            innerPadding: theme.spacing.small / 2,
             config: kDefaultTweetCardQuoteConfig,
             index: widget.index,
           ),

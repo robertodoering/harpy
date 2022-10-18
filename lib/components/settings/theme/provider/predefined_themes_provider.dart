@@ -11,7 +11,7 @@ final predefinedThemesProvider = Provider.autoDispose(
           fontSizeDelta: ref.watch(displayPreferencesProvider).fontSizeDelta,
           displayFont: ref.watch(displayPreferencesProvider).displayFont,
           bodyFont: ref.watch(displayPreferencesProvider).bodyFont,
-          paddingValue: ref.watch(displayPreferencesProvider).paddingValue,
+          compact: ref.watch(displayPreferencesProvider).compactMode,
         ),
       )
       .toBuiltList(),
@@ -26,7 +26,7 @@ final predefinedProThemesProvider = Provider.autoDispose(
           fontSizeDelta: ref.watch(displayPreferencesProvider).fontSizeDelta,
           displayFont: ref.watch(displayPreferencesProvider).displayFont,
           bodyFont: ref.watch(displayPreferencesProvider).bodyFont,
-          paddingValue: ref.watch(displayPreferencesProvider).paddingValue,
+          compact: ref.watch(displayPreferencesProvider).compactMode,
         ),
       )
       .toBuiltList(),
