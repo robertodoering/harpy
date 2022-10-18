@@ -14,7 +14,7 @@ dependencies:
   any_link_preview: ^2.0.9
   built_collection: ^5.1.1
   collection: ^1.15.0
-  connectivity_plus: ^2.0.2
+  connectivity_plus: ^3.0.0
   cupertino_icons: ^1.0.4
   dart_twitter_api: ^0.5.4
   device_info_plus: ^4.0.0
