@@ -8,6 +8,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 part 'download_path_provider.freezed.dart';
 part 'download_path_provider.g.dart';

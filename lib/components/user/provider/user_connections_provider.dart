@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 /// Provides the [UserConnection] for a list of users.
 ///

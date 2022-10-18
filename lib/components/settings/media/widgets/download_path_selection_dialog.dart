@@ -45,17 +45,15 @@ class _DownloadPathSelectionDialogState
             (entry) => entry.type == widget.type,
           );
 
-          if (entry != null) {
-            return _PathSelection(
-              type: widget.type,
-              mediaPaths: mediaPaths,
-              entry: entry,
-            );
-          } else {
-            return const LoadingError(
-              message: Text('error loading download paths'),
-            );
-          }
+          return entry != null
+              ? _PathSelection(
+                  type: widget.type,
+                  mediaPaths: mediaPaths,
+                  entry: entry,
+                )
+              : const LoadingError(
+                  message: Text('error loading download paths'),
+                );
         },
         error: () => const LoadingError(
           message: Text('error loading download paths'),

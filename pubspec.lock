@@ -930,7 +930,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "5b877e532a413e9832288db0d059af51a6858891"
+      resolved-ref: "051221fd6f9df7b19bd2644a53d00f3d7d6dc3f1"
       url: "https://github.com/robertodoering/rby.dart"
     source: git
     version: "0.0.1"
