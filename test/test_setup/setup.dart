@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:harpy/main.dart';
+import 'package:rby/rby.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -34,9 +35,9 @@ Future<Widget> buildAppBase(
           routes: [
             GoRoute(
               path: '/',
-              pageBuilder: (_, state) => HarpyPage(
+              pageBuilder: (_, state) => RbyPage(
                 key: state.pageKey,
-                child: child,
+                builder: (_) => child,
               ),
             ),
           ],

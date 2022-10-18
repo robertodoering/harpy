@@ -67,10 +67,6 @@ class HarpyTheme {
           textTheme: text.textTheme,
 
           //
-          splashColor: colors.secondary.withOpacity(.1),
-          highlightColor: colors.secondary.withOpacity(.1),
-
-          //
           iconTheme: IconThemeData(
             color: colors.onBackground,
             opacity: 1,

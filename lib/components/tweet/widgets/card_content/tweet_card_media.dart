@@ -173,7 +173,7 @@ class _MediaConstrainedHeight extends ConsumerWidget {
   }
 }
 
-/// Creates a hero tag for the media which is unique for each [HarpyPage].
+/// Creates a hero tag for the media which is unique for each [RbyPage].
 ///
 /// Note: One tweet can have the same media data (e.g. a retweet and the
 ///       original tweet). To avoid having the same hero tag we need to
@@ -188,7 +188,7 @@ String mediaHeroTag(
 
   final buffer = StringBuffer('${tweet.hashCode}${media.hashCode}');
 
-  if (routeSettings is HarpyPage && routeSettings.key is ValueKey) {
+  if (routeSettings is RbyPage && routeSettings.key is ValueKey) {
     final key = routeSettings.key! as ValueKey;
     // key = current route path
     buffer.write('${key.value}');

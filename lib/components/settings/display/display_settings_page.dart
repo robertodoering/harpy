@@ -36,15 +36,11 @@ class DisplaySettingsPage extends ConsumerWidget {
           ),
           SliverList(
             delegate: SliverChildListDelegate.fixed([
-              AnimatedPadding(
-                duration: theme.animation.short,
-                curve: Curves.easeInOut,
+              Padding(
                 padding: theme.spacing.edgeInsets,
                 child: const PreviewTweetCard(),
               ),
-              AnimatedPadding(
-                duration: theme.animation.short,
-                curve: Curves.easeInOut,
+              Padding(
                 padding: theme.spacing.edgeInsets.copyWith(top: 0),
                 child: const _DisplaySettingsList(),
               )

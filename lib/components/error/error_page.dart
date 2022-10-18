@@ -5,7 +5,7 @@ import 'package:rby/rby.dart';
 
 /// Shown when the navigator was unable to navigate to a page.
 ///
-/// E.g. when parsing the route's arguments throw an exception.
+/// E.g. when parsing the route arguments throw an exception.
 class ErrorPage extends StatelessWidget {
   const ErrorPage({
     this.error,

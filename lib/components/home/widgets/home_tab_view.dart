@@ -8,8 +8,6 @@ import 'package:rby/rby.dart';
 class HomeTabView extends ConsumerWidget {
   const HomeTabView();
 
-  static const _indexOffset = 1;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
@@ -26,7 +24,7 @@ class HomeTabView extends ConsumerWidget {
 
     return HomeTabController(
       length: configuration.visibleEntries.length + 2,
-      initialIndex: _indexOffset,
+      initialIndex: 1,
       child: _HomeTabListener(
         child: Stack(
           children: [
@@ -126,16 +124,10 @@ class _HomeTabListenerState extends State<_HomeTabListener> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (_controller == null) {
-      _controller = HomeTabController.of(context)
-        ?..animation?.addListener(_listener);
+    _controller ??= HomeTabController.of(context)
+      ?..animation?.addListener(_listener);
 
-      assert(_controller != null);
-    }
-
-    _userScrollDirection ??= UserScrollDirection.of(context);
-
-    assert(_userScrollDirection != null);
+    _userScrollDirection ??= UserScrollDirection.of(context)!;
   }
 
   @override

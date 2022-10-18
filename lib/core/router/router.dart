@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 final routeObserver = Provider(
   name: 'RouteObserver',
@@ -16,9 +17,9 @@ final routerProvider = Provider(
   (ref) => GoRouter(
     routes: ref.watch(routesProvider),
     redirect: (state) => handleRedirect(ref, state),
-    errorPageBuilder: (_, state) => HarpyPage(
+    errorPageBuilder: (_, state) => RbyPage(
       pageRouteType: PageRouteType.fade,
-      child: ErrorPage(error: state.error),
+      builder: (_) => ErrorPage(error: state.error),
     ),
     observers: [
       ref.watch(routeObserver),
@@ -375,20 +376,20 @@ final routesProvider = Provider(
   ],
 );
 
-HarpyPage<T> _createPage<T>({
+RbyPage<T> _createPage<T>({
   required Widget child,
   required GoRouterState state,
   bool fullscreenDialog = false,
 }) {
   final pageRouteType = state.queryParams['transition'] == 'fade'
       ? PageRouteType.fade
-      : PageRouteType.harpy;
+      : PageRouteType.slide;
 
-  return HarpyPage(
-    child: child,
+  return RbyPage(
     key: ValueKey(state.location),
     restorationId: state.location,
     pageRouteType: pageRouteType,
     fullscreenDialog: fullscreenDialog,
+    builder: (_) => child,
   );
 }
