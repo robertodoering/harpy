@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <color name="black">#000000</color>
+  <color name="ic_background">#ffffff</color>
   <color name="ic_launcher_background">#0b0a0f</color>
 
   <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
