@@ -23,9 +23,11 @@ class _TweetSearchPageState extends ConsumerState<TweetSearchPage> {
     super.initState();
 
     if (widget.initialQuery != null) {
-      ref
-          .read(tweetSearchProvider.notifier)
-          .search(customQuery: widget.initialQuery);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref
+            .read(tweetSearchProvider.notifier)
+            .search(customQuery: widget.initialQuery);
+      });
     }
   }
 
