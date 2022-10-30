@@ -17,7 +17,7 @@ dependencies:
   connectivity_plus: ^2.0.2
   cupertino_icons: ^1.0.4
   dart_twitter_api: ^0.5.4
-  device_info_plus: ^6.0.0
+  device_info_plus: ^8.0.0
   download_manager:
     git: https://github.com/robertodoering/download_manager
   dynamic_color: ^1.4.0
