@@ -24,7 +24,7 @@ class LikesTimelineNotifier extends TimelineNotifier {
     required super.twitterApi,
     required String userId,
   }) : _userId = userId {
-    loadInitial();
+    load(clearPrevious: true);
   }
 
   final String _userId;

@@ -19,7 +19,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     ChangelogDialog.maybeShow(ref);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(mentionsTimelineProvider.notifier).loadInitial();
+      ref.read(mentionsTimelineProvider.notifier).load(clearPrevious: true);
     });
   }
 
