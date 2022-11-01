@@ -107,7 +107,7 @@ abstract class TimelineNotifier<T extends Object>
             .then((tweets) => handleTweets(tweets, filter))
             .handleError((e, st) => twitterErrorHandler(ref, e, st));
         if (moreTweets != null) {
-          timeLineTweets.addAll(moreTweets);
+          timeLineTweets.addAll(moreTweets.skip(1));
         } else {
           // probably rate limit exceeded.
           break;
