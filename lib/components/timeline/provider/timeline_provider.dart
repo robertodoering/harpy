@@ -99,6 +99,10 @@ abstract class TimelineNotifier<T extends Object>
     } else {
       final timeLineTweets = <TweetData>[];
       while (restoredTweet == null) {
+        final lastId = int.tryParse(maxId ?? '');
+        if (lastId != null) {
+          maxId = '${lastId - 1}';
+        }
         final moreTweets = await request(maxId: maxId)
             .then((moreTweets) {
               if (moreTweets.isNotEmpty) maxId = moreTweets.last.idStr;
@@ -107,7 +111,7 @@ abstract class TimelineNotifier<T extends Object>
             .then((tweets) => handleTweets(tweets, filter))
             .handleError((e, st) => twitterErrorHandler(ref, e, st));
         if (moreTweets != null) {
-          timeLineTweets.addAll(moreTweets.skip(1));
+          timeLineTweets.addAll(moreTweets);
         } else {
           // probably rate limit exceeded.
           break;
