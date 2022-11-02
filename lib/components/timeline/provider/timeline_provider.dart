@@ -351,5 +351,6 @@ extension on TimelineStateData {
     if (firstTweet != null) {
       return int.tryParse(firstTweet.originalId);
     }
+    return null;
   }
 }
