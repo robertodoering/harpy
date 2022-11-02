@@ -123,12 +123,16 @@ abstract class TimelineNotifier<T extends Object>
       log.fine('found ${tweets.length} tweets');
 
       if (tweets.isNotEmpty) {
-        if (restoredTweet != null && tweets.indexOf(restoredTweet) > 1) {
+        int? restoredTweetIndex;
+        if (restoredTweet != null) {
+          restoredTweetIndex = tweets.indexOf(restoredTweet);
+        }
+        if (restoredTweetIndex != null && restoredTweetIndex > 1) {
           state = TimelineState.data(
-            tweets: tweets.sublist(0, tweets.indexOf(restoredTweet)),
+            tweets: tweets.sublist(0, restoredTweetIndex),
             maxId: maxId,
-            initialResultsCount: tweets.indexOf(restoredTweet),
-            initialResultsLastId: restoredTweet.originalId,
+            initialResultsCount: restoredTweetIndex,
+            initialResultsLastId: restoredTweet!.originalId,
             isInitialResult: true,
             customData: buildCustomData(tweets),
           );
@@ -140,7 +144,7 @@ abstract class TimelineNotifier<T extends Object>
             await Future<void>.delayed(const Duration(milliseconds: 1000));
             state = currentState.copyWith(
               tweets: currentState.tweets
-                  .followedBy(tweets.sublist(tweets.indexOf(restoredTweet)))
+                  .followedBy(tweets.sublist(restoredTweetIndex))
                   .toBuiltList(),
               maxId: maxId,
               isInitialResult: false,
