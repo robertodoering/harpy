@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:collection/collection.dart';
 import 'package:dart_twitter_api/twitter_api.dart';
@@ -68,99 +70,65 @@ abstract class TimelineNotifier<T extends Object>
   bool get restoreInitialPosition => false;
 
   @protected
+  bool get restoreRefreshPosition => false;
+
+  @protected
   int get restoredTweetId => 0;
 
   @protected
   T? buildCustomData(BuiltList<TweetData> tweets) => null;
+
+  Future<void> loadInitial() async {
+    if (state is! TimelineStateInitial) return;
+    log.fine('loading initial timeline');
+    state = const TimelineState.loading();
+
+    if (!restoreInitialPosition || restoredTweetId == 0) {
+      // the timeline position either shouldn't be restored or the restored
+      // tweet id is not available (= 0, e.g first open) -> load normally
+      return load();
+    }
+
+    return loadAndRestore(restoredTweetId);
+  }
 
   Future<void> load({
     bool clearPrevious = false,
   }) async {
     log.fine('loading timeline');
 
+    final currentState = state;
+
     if (clearPrevious) {
       state = const TimelineState.loading();
     }
 
-    String? maxId;
-    BuiltList<TweetData>? tweets;
-    TweetData? restoredTweet;
-
-    if (!restoreInitialPosition || restoredTweetId == 0) {
-      // the timeline position either shouldn't be restored or the restored
-      // tweet id is not available (= 0, e.g first open) -> load normally
-      tweets = await request()
-          .then((tweets) {
-            if (tweets.isNotEmpty) maxId = tweets.last.idStr;
-            return tweets;
-          })
-          .then((tweets) => handleTweets(tweets, filter))
-          .handleError((e, st) => twitterErrorHandler(ref, e, st));
-    } else {
-      final timeLineTweets = <TweetData>[];
-      while (restoredTweet == null) {
-        final lastId = int.tryParse(maxId ?? '');
-        if (lastId != null) {
-          maxId = '${lastId - 1}';
-        }
-        final moreTweets = await request(maxId: maxId)
-            .then((moreTweets) {
-              if (moreTweets.isNotEmpty) maxId = moreTweets.last.idStr;
-              return moreTweets;
-            })
-            .then((tweets) => handleTweets(tweets, filter))
-            .handleError((e, st) => twitterErrorHandler(ref, e, st));
-        if (moreTweets != null) {
-          timeLineTweets.addAll(moreTweets);
-        } else {
-          // probably rate limit exceeded.
-          break;
-        }
-        restoredTweet = timeLineTweets.firstWhereOrNull(
-          (tweet) => int.tryParse(tweet.originalId)! <= restoredTweetId,
-        );
+    if (currentState is TimelineStateData<T> && restoreRefreshPosition) {
+      final minId = currentState._requestMinId;
+      if (minId != null) {
+        return loadAndRestore(minId);
       }
-      tweets = BuiltList.of(timeLineTweets);
     }
+
+    String? maxId;
+
+    final tweets = await request()
+        .then((tweets) {
+          if (tweets.isNotEmpty) maxId = tweets.last.idStr;
+          return tweets;
+        })
+        .then((tweets) => handleTweets(tweets, filter))
+        .handleError((e, st) => twitterErrorHandler(ref, e, st));
 
     if (tweets != null) {
       log.fine('found ${tweets.length} tweets');
 
       if (tweets.isNotEmpty) {
-        int? restoredTweetIndex;
-        if (restoredTweet != null) {
-          restoredTweetIndex = tweets.indexOf(restoredTweet);
-        }
-        if (restoredTweetIndex != null && restoredTweetIndex > 1) {
-          state = TimelineState.data(
-            tweets: tweets.sublist(0, restoredTweetIndex),
-            maxId: maxId,
-            initialResultsCount: restoredTweetIndex,
-            initialResultsLastId: restoredTweet!.originalId,
-            isInitialResult: true,
-            customData: buildCustomData(tweets),
-          );
-
-          final currentState = state;
-          if (currentState is TimelineStateData<T>) {
-            state = TimelineState.loadingMore(data: currentState);
-            //wait to ensure that the jump in timeline happened
-            await Future<void>.delayed(const Duration(milliseconds: 1000));
-            state = currentState.copyWith(
-              tweets: currentState.tweets
-                  .followedBy(tweets.sublist(restoredTweetIndex))
-                  .toBuiltList(),
-              maxId: maxId,
-              isInitialResult: false,
-            );
-          }
-        } else {
-          state = TimelineState.data(
-            tweets: tweets,
-            maxId: maxId,
-            customData: buildCustomData(tweets),
-          );
-        }
+        state = TimelineState.data(
+          tweets: tweets,
+          maxId: maxId,
+          customData: buildCustomData(tweets),
+        );
       } else {
         state = const TimelineState.noData();
       }
@@ -214,6 +182,80 @@ abstract class TimelineNotifier<T extends Object>
         );
       }
     }
+  }
+
+  Future<void> loadAndRestore(int tweetId) async {
+    final tweets = await _loadTweetsSince(tweetId);
+    if (tweets.isNotEmpty) {
+      log.fine('found ${tweets.length} tweets');
+
+      final maxId = tweets.last.originalId;
+      final restoredTweet = tweets.firstWhereOrNull(
+        (tweet) => int.tryParse(tweet.originalId)! <= tweetId,
+      );
+      int? restoredTweetIndex;
+      if (restoredTweet != null) {
+        restoredTweetIndex = tweets.indexOf(restoredTweet);
+      }
+      if (restoredTweetIndex != null && restoredTweetIndex > 1) {
+        state = TimelineState.data(
+          tweets: tweets.sublist(0, restoredTweetIndex),
+          maxId: maxId,
+          initialResultsCount: restoredTweetIndex,
+          initialResultsLastId: restoredTweet!.originalId,
+          isInitialResult: true,
+          customData: buildCustomData(tweets),
+        );
+
+        final currentState = state;
+        if (currentState is TimelineStateData<T>) {
+          state = TimelineState.loadingMore(data: currentState);
+          //wait to ensure that the jump in timeline happened
+          await Future<void>.delayed(const Duration(milliseconds: 1000));
+          state = currentState.copyWith(
+            tweets: currentState.tweets
+                .followedBy(tweets.sublist(restoredTweetIndex))
+                .toBuiltList(),
+            maxId: maxId,
+            isInitialResult: false,
+          );
+        }
+      } else {
+        state = TimelineState.data(
+          tweets: tweets,
+          maxId: maxId,
+          customData: buildCustomData(tweets),
+        );
+      }
+    } else {
+      state = const TimelineState.error();
+    }
+  }
+
+  Future<BuiltList<TweetData>> _loadTweetsSince(int tweetId) async {
+    final timeLineTweets = <TweetData>[];
+    int? lastId;
+    String? maxId;
+    while (lastId == null || lastId > tweetId) {
+      if (lastId != null) {
+        maxId = '${lastId - 1}';
+      }
+      final moreTweets = await request(maxId: maxId)
+          .then((moreTweets) {
+            if (moreTweets.isNotEmpty) maxId = moreTweets.last.idStr;
+            return moreTweets;
+          })
+          .then((tweets) => handleTweets(tweets, filter))
+          .handleError((e, st) => twitterErrorHandler(ref, e, st));
+      if (moreTweets != null) {
+        timeLineTweets.addAll(moreTweets);
+      } else {
+        // probably rate limit exceeded.
+        break;
+      }
+      lastId = int.tryParse(maxId ?? '');
+    }
+    return BuiltList.of(timeLineTweets);
   }
 }
 
@@ -301,6 +343,13 @@ extension on TimelineStateData {
       return '${lastId - 1}';
     } else {
       return null;
+    }
+  }
+
+  int? get _requestMinId {
+    final firstTweet = tweets.firstOrNull;
+    if (firstTweet != null) {
+      return int.tryParse(firstTweet.originalId);
     }
   }
 }

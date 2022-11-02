@@ -36,6 +36,8 @@ class GeneralPreferencesNotifier extends StateNotifier<GeneralPreferences> {
               'floatingComposeButton',
               false,
             ),
+            homeTimelineRefreshBehavior:
+                preferences.getBool('timelineRefreshBehavior', false),
             hideHomeAppBar: preferences.getBool('hideHomeTabBar', true),
             bottomAppBar: preferences.getBool('bottomAppBar', false),
           ),
@@ -49,6 +51,7 @@ class GeneralPreferencesNotifier extends StateNotifier<GeneralPreferences> {
     setPerformanceMode(false);
     setCrashReports(true);
     setHomeTimelinePositionBehavior(2);
+    setHomeTimelineRefreshBehavior(false);
     setFloatingComposeButton(false);
     setHideHomeAppbar(true);
     setBottomAppBar(false);
@@ -72,6 +75,11 @@ class GeneralPreferencesNotifier extends StateNotifier<GeneralPreferences> {
   void setHomeTimelinePositionBehavior(int value) {
     state = state.copyWith(homeTimelinePositionBehavior: value);
     _preferences.setInt('timelinePositionBehavior', value);
+  }
+
+  void setHomeTimelineRefreshBehavior(bool value) {
+    state = state.copyWith(homeTimelineRefreshBehavior: value);
+    _preferences.setBool('timelineRefreshBehavior', value);
   }
 
   void setFloatingComposeButton(bool value) {
@@ -136,6 +144,9 @@ class GeneralPreferences with _$GeneralPreferences {
 
     /// Whether a floating compose button should show in the home screen.
     required bool floatingComposeButton,
+
+    /// Whether the home timeline should restore its position after refresh.
+    required bool homeTimelineRefreshBehavior,
 
     /// Whether the home app bar should automatically hide when scrolling.
     required bool hideHomeAppBar,

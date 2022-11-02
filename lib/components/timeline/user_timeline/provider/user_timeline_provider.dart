@@ -24,7 +24,7 @@ class UserTimelineNotifier extends TimelineNotifier {
     required super.twitterApi,
     required String userId,
   }) : _userId = userId {
-    load(clearPrevious: true);
+    loadInitial();
   }
 
   final String _userId;

@@ -24,7 +24,7 @@ class ListTimelineNotifier extends TimelineNotifier {
     required super.twitterApi,
     required String listId,
   }) : _listId = listId {
-    load(clearPrevious: true);
+    loadInitial();
   }
 
   final String _listId;
