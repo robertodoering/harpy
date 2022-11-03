@@ -119,6 +119,19 @@ class _GeneralSettingsList extends ConsumerWidget {
           ),
         ),
         VerticalSpacer.normal,
+        Card(
+          child: RbySwitchTile(
+            leading: const Icon(CupertinoIcons.refresh),
+            title: const Text('restore home timeline position on refresh'),
+            subtitle: const Text(
+              'restores your position in the home timeline after a refresh',
+            ),
+            value: general.homeTimelineRefreshBehavior,
+            borderRadius: theme.shape.borderRadius,
+            onChanged: generalNotifier.setHomeTimelineRefreshBehavior,
+          ),
+        ),
+        VerticalSpacer.normal,
         ExpansionCard(
           title: const Text('home app bar'),
           children: [

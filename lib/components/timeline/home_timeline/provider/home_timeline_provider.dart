@@ -45,6 +45,10 @@ class HomeTimelineNotifier extends TimelineNotifier {
       ref.read(generalPreferencesProvider).keepLastHomeTimelinePosition;
 
   @override
+  bool get restoreRefreshPosition =>
+      ref.read(generalPreferencesProvider).homeTimelineRefreshBehavior;
+
+  @override
   int get restoredTweetId =>
       ref.read(tweetVisibilityPreferencesProvider).lastVisibleTweet;
 
