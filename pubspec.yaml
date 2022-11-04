@@ -39,7 +39,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_markdown: ^0.6.10
-  flutter_riverpod: ^2.0.0
+  flutter_riverpod: ^2.1.1
   freezed_annotation: ^2.1.0
   go_router: ^4.0.0 # TODO: update once redirecting with deeplink is fixed
   google_fonts: ^3.0.0

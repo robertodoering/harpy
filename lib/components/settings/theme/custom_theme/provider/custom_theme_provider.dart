@@ -8,14 +8,14 @@ final _nameRegex = RegExp(r'^[a-zA-Z0-9-_ ]+$');
 final customThemeProvider = StateNotifierProvider.autoDispose
     .family<CustomThemeNotifier, HarpyThemeData, int?>(
   (ref, themeId) {
-    final harpyTheme = ref.watch(harpyThemeProvider);
     final customThemes = ref.watch(customHarpyThemesProvider);
 
     HarpyThemeData baseThemeData;
 
     if (themeId == null) {
       // creating new theme, base on currently selected theme
-      baseThemeData = harpyTheme.data.copyWith(name: 'new theme');
+      baseThemeData =
+          ref.read(harpyThemeProvider).data.copyWith(name: 'new theme');
     } else {
       // editing existing custom theme
       baseThemeData = customThemes[themeId - 10];

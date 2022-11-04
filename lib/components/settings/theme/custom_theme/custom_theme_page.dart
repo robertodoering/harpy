@@ -5,7 +5,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:rby/rby.dart';
 
-class CustomThemePage extends ConsumerWidget {
+class CustomThemePage extends ConsumerStatefulWidget {
   const CustomThemePage({
     required this.themeId,
   });
@@ -16,11 +16,23 @@ class CustomThemePage extends ConsumerWidget {
   static const name = 'custom_theme';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CustomThemePage> createState() => _CustomThemePageState();
+}
+
+class _CustomThemePageState extends ConsumerState<CustomThemePage> {
+  Key _scopeKey = UniqueKey();
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final display = ref.watch(displayPreferencesProvider);
-    final customThemeData = ref.watch(customThemeProvider(themeId));
-    final notifier = ref.watch(customThemeProvider(themeId).notifier);
+    final customThemeData = ref.watch(customThemeProvider(widget.themeId));
+    final notifier = ref.watch(customThemeProvider(widget.themeId).notifier);
+
+    ref.listen(customThemeProvider(widget.themeId), (_, __) {
+      // workaround to rebuild the provider scope with the new customThemeData
+      if (mounted) setState(() => _scopeKey = UniqueKey());
+    });
 
     final harpyTheme = HarpyTheme(
       data: customThemeData,
@@ -31,10 +43,9 @@ class CustomThemePage extends ConsumerWidget {
     );
 
     return ProviderScope(
+      key: _scopeKey,
       overrides: [
-        harpyThemeProvider.overrideWithProvider(
-          StateProvider((ref) => harpyTheme),
-        ),
+        harpyThemeProvider.overrideWith((ref) => harpyTheme),
       ],
       child: Theme(
         data: harpyTheme.themeData,
@@ -48,7 +59,10 @@ class CustomThemePage extends ConsumerWidget {
                   HarpySliverAppBar(
                     title: const Text('custom theme'),
                     actions: [
-                      _SaveThemeAction(themeId: themeId, notifier: notifier),
+                      _SaveThemeAction(
+                        themeId: widget.themeId,
+                        notifier: notifier,
+                      ),
                     ],
                   ),
                   SliverPadding(

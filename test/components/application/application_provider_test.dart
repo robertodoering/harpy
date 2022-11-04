@@ -18,7 +18,9 @@ void main() {
         overrides: [
           sharedPreferencesProvider.overrideWithValue(sharedPreferences),
           routerProvider.overrideWithValue(MockRouter()),
-          connectivityProvider.overrideWithProvider(mockConnectivityNotifier),
+          connectivityProvider.overrideWith(
+            (ref) => MockConnectivityNotifier(),
+          ),
         ],
       );
       addTearDown(container.dispose);
@@ -42,12 +44,11 @@ void main() {
         overrides: [
           sharedPreferencesProvider.overrideWithValue(sharedPreferences),
           routerProvider.overrideWithValue(MockRouter()),
-          connectivityProvider.overrideWithProvider(mockConnectivityNotifier),
-          authenticationStateProvider.overrideWithProvider(
-            StateProvider(
-              (ref) => AuthenticationState.authenticated(user: harpyAppUser),
-              name: 'MockAuthenticationStateProvider',
-            ),
+          connectivityProvider.overrideWith(
+            (ref) => MockConnectivityNotifier(),
+          ),
+          authenticationStateProvider.overrideWith(
+            (ref) => AuthenticationState.authenticated(user: harpyAppUser),
           ),
         ],
       );

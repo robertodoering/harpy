@@ -12,11 +12,6 @@ class MockApplication extends Mock implements Application {
   }
 }
 
-final mockConnectivityNotifier =
-    StateNotifierProvider<MockConnectivityNotifier, ConnectivityResult>(
-  (ref) => MockConnectivityNotifier(),
-);
-
 class MockConnectivityNotifier extends StateNotifier<ConnectivityResult>
     with Mock
     implements ConnectivityNotifier {
