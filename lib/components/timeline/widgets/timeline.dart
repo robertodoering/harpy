@@ -117,7 +117,7 @@ class _TimelineState extends ConsumerState<Timeline> {
 
         _controller!.jumpTo(
           // + extra height to make sure we reach the end
-          maxScrollExtend + mediaQuery.size.height * 3,
+          maxScrollExtend + mediaQuery.size.height,
         );
       });
     }

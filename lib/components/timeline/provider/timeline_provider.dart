@@ -101,13 +101,9 @@ abstract class TimelineNotifier<T extends Object>
 
     if (clearPrevious) {
       state = const TimelineState.loading();
-    }
-
-    if (currentState is TimelineStateData<T> && restoreRefreshPosition) {
+    } else if (currentState is TimelineStateData<T> && restoreRefreshPosition) {
       final minId = currentState._requestMinId;
-      if (minId != null) {
-        return loadAndRestore(minId);
-      }
+      if (minId != null) return loadAndRestore(minId);
     }
 
     String? maxId;
@@ -138,9 +134,7 @@ abstract class TimelineNotifier<T extends Object>
   }
 
   Future<void> loadOlder() async {
-    if (lock()) {
-      return;
-    }
+    if (lock()) return;
 
     final currentState = state;
 
@@ -186,6 +180,7 @@ abstract class TimelineNotifier<T extends Object>
 
   Future<void> loadAndRestore(int tweetId) async {
     final tweets = await _loadTweetsSince(tweetId);
+
     if (tweets.isNotEmpty) {
       log.fine('found ${tweets.length} tweets');
 
@@ -193,12 +188,14 @@ abstract class TimelineNotifier<T extends Object>
       final restoredTweet = tweets.firstWhereOrNull(
         (tweet) => int.tryParse(tweet.originalId)! <= tweetId,
       );
+
       int? restoredTweetIndex;
       if (restoredTweet != null) {
         restoredTweetIndex = tweets.indexOf(restoredTweet);
       }
+
       if (restoredTweetIndex != null && restoredTweetIndex > 1) {
-        state = TimelineState.data(
+        final data = TimelineStateData(
           tweets: tweets.sublist(0, restoredTweetIndex),
           maxId: maxId,
           initialResultsCount: restoredTweetIndex,
@@ -207,19 +204,17 @@ abstract class TimelineNotifier<T extends Object>
           customData: buildCustomData(tweets),
         );
 
-        final currentState = state;
-        if (currentState is TimelineStateData<T>) {
-          state = TimelineState.loadingMore(data: currentState);
-          //wait to ensure that the jump in timeline happened
-          await Future<void>.delayed(const Duration(milliseconds: 1000));
-          state = currentState.copyWith(
-            tweets: currentState.tweets
-                .followedBy(tweets.sublist(restoredTweetIndex))
-                .toBuiltList(),
-            maxId: maxId,
-            isInitialResult: false,
-          );
-        }
+        state = TimelineState.loadingMore(data: data);
+        // wait to ensure that the jump in the timeline happened
+        await Future<void>.delayed(const Duration(milliseconds: 1000));
+
+        state = data.copyWith(
+          tweets: data.tweets
+              .followedBy(tweets.sublist(restoredTweetIndex))
+              .toBuiltList(),
+          maxId: maxId,
+          isInitialResult: false,
+        );
       } else {
         state = TimelineState.data(
           tweets: tweets,
@@ -236,10 +231,11 @@ abstract class TimelineNotifier<T extends Object>
     final timeLineTweets = <TweetData>[];
     int? lastId;
     String? maxId;
-    while (lastId == null || lastId > tweetId) {
-      if (lastId != null) {
-        maxId = '${lastId - 1}';
-      }
+
+    // request up to 600 tweets to find all tweets since `tweetId`
+    for (var i = 0; i < 3 && (lastId == null || lastId > tweetId); i++) {
+      if (lastId != null) maxId = '${lastId - 1}';
+
       final moreTweets = await request(maxId: maxId)
           .then((moreTweets) {
             if (moreTweets.isNotEmpty) maxId = moreTweets.last.idStr;
@@ -247,14 +243,13 @@ abstract class TimelineNotifier<T extends Object>
           })
           .then((tweets) => handleTweets(tweets, filter))
           .handleError((e, st) => twitterErrorHandler(ref, e, st));
-      if (moreTweets != null) {
-        timeLineTweets.addAll(moreTweets);
-      } else {
-        // probably rate limit exceeded.
-        break;
-      }
+
+      if (moreTweets == null) break;
+
+      timeLineTweets.addAll(moreTweets);
       lastId = int.tryParse(maxId ?? '');
     }
+
     return BuiltList.of(timeLineTweets);
   }
 }
@@ -331,6 +326,10 @@ extension TimelineStateExtension on TimelineState {
             value.isInitialResult &&
             value.initialResultsCount != 0 &&
             value.initialResultsCount! > 0,
+        loadingMore: (value) =>
+            value.data.isInitialResult &&
+            value.data.initialResultsCount != 0 &&
+            value.data.initialResultsCount! > 0,
         orElse: () => false,
       );
 }
