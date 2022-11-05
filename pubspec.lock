@@ -600,7 +600,7 @@ packages:
       name: logging
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.1.0"
   markdown:
     dependency: transitive
     description:
@@ -902,7 +902,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "051221fd6f9df7b19bd2644a53d00f3d7d6dc3f1"
+      resolved-ref: "25584a7f05b43a2dba1525b3c5e2fd20b6c8aad9"
       url: "https://github.com/robertodoering/rby.dart"
     source: git
     version: "0.0.1"

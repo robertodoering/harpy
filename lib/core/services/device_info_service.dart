@@ -1,6 +1,5 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/core/core.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:rby/rby.dart';
 

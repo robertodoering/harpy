@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/core/core.dart';
 import 'package:rby/rby.dart';
 import 'package:video_player/video_player.dart';
 

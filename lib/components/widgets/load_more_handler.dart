@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 
 /// Listens to the [controller] and calls the [onLoadMore] callback when
 /// reaching the end of the scrollable.

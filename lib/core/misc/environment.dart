@@ -1,6 +1,6 @@
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 const _fallbackAesKey = 'QpIX8Hr8JAKezBYuP4+zTThm1U3fCiIzsPi9057adZM=';
 

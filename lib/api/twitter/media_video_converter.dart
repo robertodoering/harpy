@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/core/core.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rby/rby.dart';
 
 final mediaVideoConverter = Provider(
   (ref) => MediaVideoConverter(),

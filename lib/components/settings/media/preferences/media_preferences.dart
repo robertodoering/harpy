@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 part 'media_preferences.freezed.dart';
 

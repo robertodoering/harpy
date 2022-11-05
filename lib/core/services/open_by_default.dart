@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/core/core.dart';
 import 'package:rby/rby.dart';
 
 const MethodChannel _channel = MethodChannel(
