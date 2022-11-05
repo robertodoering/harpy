@@ -125,8 +125,8 @@ class _OtherSettingsCard extends ConsumerWidget {
         if (hasUnapprovedDomains)
           const RbyListTile(
             leading: Icon(CupertinoIcons.share),
-            title: Text('open twitter links'),
-            subtitle: Text('allow harpy to open twitter links'),
+            title: Text('open Twitter links'),
+            subtitle: Text('allow harpy to open Twitter links'),
             onTap: showOpenByDefault,
           ),
         if (!usingCustomApi)
