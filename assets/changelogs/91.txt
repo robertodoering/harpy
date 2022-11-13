@@ -1,0 +1,8 @@
+Version 0.9.12
+2022-11-14
+
+- Added option to restore home timeline position on refresh (by S3basuchian)
+  - Can be enabled in `settings › general › restore home timeline position on refresh`
+- Added support for themed icon (by S3basuchian)
+- Fixed custom theme creation not updating while editing
+- Minor bug fixes & improvements
