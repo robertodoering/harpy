@@ -45,9 +45,9 @@ class HarpyTheme {
   late final ThemeData themeData;
 
   void _setupThemeData() {
-    final shapeTheme = RbyShapeTheme(radius: const Radius.circular(16));
+    final shapeTheme = RbyShapeTheme(radius: const Radius.circular(12));
 
-    themeData = RbyTheme(
+    final theme = RbyTheme(
       colorScheme: ColorScheme(
         brightness: colors.brightness,
         primary: colors.primary,
@@ -63,42 +63,44 @@ class HarpyTheme {
       ),
       spacing: RbySpacingTheme(base: _paddingValue),
       shape: shapeTheme,
-    ).data.copyWith(
-          textTheme: text.textTheme,
+    );
 
-          //
-          iconTheme: IconThemeData(
-            color: colors.onBackground,
-            opacity: 1,
-            size: 20 + _fontSizeDelta,
-          ),
-          cardTheme: CardTheme(
-            color: colors.cardColor,
-            shape: shapeTheme.shape,
-            elevation: 0,
-            margin: EdgeInsets.zero,
-          ),
-          snackBarTheme: SnackBarThemeData(
-            backgroundColor: colors.alternateCardColor,
-            actionTextColor: colors.primary,
-            disabledActionTextColor: colors.primary.withOpacity(.5),
-            contentTextStyle: text.textTheme.subtitle2,
-            elevation: 0,
-            shape: shapeTheme.shape,
-            behavior: SnackBarBehavior.floating,
-          ),
-          inputDecorationTheme: InputDecorationTheme(
-            contentPadding: EdgeInsets.all(_paddingValue),
-            border: OutlineInputBorder(borderRadius: shapeTheme.borderRadius),
-          ),
+    themeData = theme.data.copyWith(
+      textTheme: text.textTheme,
 
-          // only used in license page
-          appBarTheme: AppBarTheme(
-            elevation: 0,
-            scrolledUnderElevation: 0,
-            color: colors.averageBackgroundColor,
-          ),
-        );
+      //
+      iconTheme: IconThemeData(
+        color: colors.onBackground,
+        opacity: 1,
+        size: 20 + _fontSizeDelta,
+      ),
+      cardTheme: CardTheme(
+        color: colors.cardColor,
+        shape: shapeTheme.shape,
+        elevation: 0,
+        margin: EdgeInsets.zero,
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: colors.alternateCardColor,
+        actionTextColor: colors.primary,
+        disabledActionTextColor: colors.primary.withOpacity(.5),
+        contentTextStyle: text.textTheme.subtitle2,
+        elevation: 0,
+        shape: shapeTheme.shape,
+        behavior: SnackBarBehavior.floating,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        contentPadding: EdgeInsets.all(_paddingValue),
+        border: OutlineInputBorder(borderRadius: shapeTheme.borderRadius),
+      ),
+
+      // only used in license page
+      appBarTheme: AppBarTheme(
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        color: colors.averageBackgroundColor,
+      ),
+    );
   }
 
   @override
