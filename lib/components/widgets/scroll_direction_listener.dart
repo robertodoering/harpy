@@ -88,7 +88,7 @@ class _ScrollDirectionListenerState
 
     if (mounted && metrics.maxScrollExtent > _maxScrollExtentThreshold) {
       final scrollValue = metrics.pixels;
-      final scrollDirection = scrollValue - _scrollValue < 0
+      final scrollDirection = scrollValue == 0 || scrollValue - _scrollValue < 0
           ? ScrollDirection.forward
           : ScrollDirection.reverse;
 
