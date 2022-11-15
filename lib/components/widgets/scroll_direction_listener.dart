@@ -7,6 +7,10 @@ import 'package:harpy/core/core.dart';
 /// has a `maxScrollExtent` of this threshold.
 const _maxScrollExtentThreshold = 200;
 
+/// Scroll direction changes will only be applied if the affected scroll view
+/// has scrolled through this amount of pixels after changing scroll direction.
+const _scrollDirectionThreshold = 15;
+
 /// Listens to [UserScrollNotification] that bubble up the tree to expose
 /// changes to the [ScrollDirection] to its children.
 ///
@@ -37,7 +41,18 @@ class _ScrollDirectionListenerState
     extends ConsumerState<ScrollDirectionListener> with RouteAware {
   RouteObserver? _observer;
 
+  /// Last known scroll position.
+  double _scrollValue = 0;
+
+  /// Position at which scroll direction changed.
+  double _scrollStart = 0;
+
+  /// Last scroll direction known to the listeners.
   ScrollDirection _direction = ScrollDirection.idle;
+
+  /// Direction in which the user is currently scrolling.
+  /// May be different from [_direction] due to [_scrollDirectionThreshold].
+  ScrollDirection _directionInterim = ScrollDirection.idle;
 
   // Assume scrolling up when a new route gets popped / pushed onto the screen.
   // This is a workaround for scroll direction sensitive animations to prevent
@@ -64,16 +79,31 @@ class _ScrollDirectionListenerState
     super.dispose();
   }
 
-  bool _onNotification(UserScrollNotification notification) {
+  bool _onNotification(ScrollNotification notification) {
     if (widget.depth != null && notification.depth != widget.depth) {
       return false;
     }
 
-    if (mounted &&
-        notification.direction != ScrollDirection.idle &&
-        notification.metrics.maxScrollExtent > _maxScrollExtentThreshold &&
-        _direction != notification.direction) {
-      setState(() => _direction = notification.direction);
+    final metrics = notification.metrics;
+
+    if (mounted && metrics.maxScrollExtent > _maxScrollExtentThreshold) {
+      final scrollValue = metrics.pixels;
+      final scrollDirection = scrollValue == 0 || scrollValue - _scrollValue < 0
+          ? ScrollDirection.forward
+          : ScrollDirection.reverse;
+
+      if (_directionInterim != scrollDirection) {
+        _directionInterim = scrollDirection;
+        _scrollStart = scrollValue;
+      }
+
+      if (_direction != scrollDirection) {
+        if ((scrollValue - _scrollStart).abs() > _scrollDirectionThreshold) {
+          _set(scrollDirection);
+        }
+      }
+
+      _scrollValue = scrollValue;
     }
 
     return false;
@@ -85,7 +115,7 @@ class _ScrollDirectionListenerState
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<UserScrollNotification>(
+    return NotificationListener<ScrollNotification>(
       onNotification: _onNotification,
       child: UserScrollDirection(
         direction: _direction,
