@@ -185,13 +185,17 @@ abstract class TimelineNotifier<T extends Object>
       log.fine('found ${tweets.length} tweets');
 
       final maxId = tweets.last.originalId;
-      final restoredTweet = tweets.firstWhereOrNull(
-        (tweet) => int.tryParse(tweet.originalId)! <= tweetId,
-      );
 
+      TweetData? restoredTweet;
       int? restoredTweetIndex;
-      if (restoredTweet != null) {
-        restoredTweetIndex = tweets.indexOf(restoredTweet);
+
+      for (var i = 0; i < tweets.length; i++) {
+        final id = int.tryParse(tweets[i].originalId);
+        if (id != null && id >= tweetId) {
+          restoredTweet = tweets[i];
+          restoredTweetIndex = i;
+          break;
+        }
       }
 
       if (restoredTweetIndex != null && restoredTweetIndex > 1) {
