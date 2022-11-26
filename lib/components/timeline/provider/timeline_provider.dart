@@ -198,6 +198,13 @@ abstract class TimelineNotifier<T extends Object>
         if (id >= tweetId) {
           restoredTweet = tweets[i];
           restoredTweetIndex = i;
+
+          // Break when finding the exact tweet, otherwise look for an older one
+          // that is still newer than `tweetId`.
+          // This prevents refreshing to falsely identify older tweets as the
+          // refreshTweet if the `tweetId` is from a Tweet that has replies
+          // which pushed it up in the timeline.
+          if (id == tweetId) break;
         } else {
           break;
         }
