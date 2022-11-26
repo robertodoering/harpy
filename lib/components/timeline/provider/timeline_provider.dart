@@ -189,11 +189,16 @@ abstract class TimelineNotifier<T extends Object>
       TweetData? restoredTweet;
       int? restoredTweetIndex;
 
+      // find the tweet with `tweetId`, or the the next tweet that is newer that
+      // `tweetId`
       for (var i = 0; i < tweets.length; i++) {
         final id = int.tryParse(tweets[i].originalId);
-        if (id != null && id >= tweetId) {
+        if (id == null) continue;
+
+        if (id >= tweetId) {
           restoredTweet = tweets[i];
           restoredTweetIndex = i;
+        } else {
           break;
         }
       }
