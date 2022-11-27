@@ -1,0 +1,5 @@
+Version 0.9.13
+2022-11-28
+
+- Added scroll direction change threshold (by ivribalko)
+- Fixed restoring scroll position sometimes didn't work
