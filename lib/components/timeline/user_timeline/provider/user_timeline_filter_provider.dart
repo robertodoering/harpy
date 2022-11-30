@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
-final userTimelineFilterProvider = StateNotifierProvider.autoDispose
-    .family<UserTimelineFilterNotifier, TimelineFilterSelectionState, UserData>(
+final userTimelineFilterProvider = StateNotifierProvider.autoDispose.family<
+    UserTimelineFilterNotifier, TimelineFilterSelectionState, LegacyUserData>(
   (ref, user) => UserTimelineFilterNotifier(
     ref: ref,
     user: user,
@@ -14,10 +14,10 @@ final userTimelineFilterProvider = StateNotifierProvider.autoDispose
 class UserTimelineFilterNotifier extends TimelineFilterSelectionNotifier {
   UserTimelineFilterNotifier({
     required super.ref,
-    required UserData user,
+    required LegacyUserData user,
   }) : _user = user;
 
-  final UserData _user;
+  final LegacyUserData _user;
 
   @override
   ActiveTimelineFilter? get activeFilter =>

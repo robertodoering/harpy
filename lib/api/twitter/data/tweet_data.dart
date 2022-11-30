@@ -10,7 +10,7 @@ part 'tweet_data.freezed.dart';
 class TweetData with _$TweetData {
   factory TweetData({
     required DateTime createdAt,
-    required UserData user,
+    required LegacyUserData user,
 
     /// The original id of this tweet.
     ///
@@ -40,7 +40,7 @@ class TweetData with _$TweetData {
     /// The user that retweeted this tweet.
     ///
     /// `null` when this tweet is not a retweet.
-    UserData? retweeter,
+    LegacyUserData? retweeter,
     TweetData? quote,
     String? quoteUrl,
 
@@ -66,10 +66,10 @@ class TweetData with _$TweetData {
   factory TweetData.fromTweet(Tweet tweet) {
     final originalId = tweet.idStr ?? '';
 
-    UserData? retweeter;
+    LegacyUserData? retweeter;
 
     if (tweet.retweetedStatus != null && tweet.user != null) {
-      retweeter = UserData.fromUser(tweet.user);
+      retweeter = LegacyUserData.fromUser(tweet.user);
       tweet = tweet.retweetedStatus!;
     }
 
@@ -128,7 +128,7 @@ class TweetData with _$TweetData {
       favorited: tweet.favorited ?? false,
       possiblySensitive: tweet.possiblySensitive ?? false,
       lang: tweet.lang ?? 'und',
-      user: UserData.fromUser(tweet.user),
+      user: LegacyUserData.fromUser(tweet.user),
       entities: EntitiesData.fromEntities(tweet.entities),
       // optional
       parentTweetId: tweet.inReplyToStatusIdStr,

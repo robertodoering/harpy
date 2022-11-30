@@ -7,7 +7,7 @@ class UserTimelineFilter extends StatelessWidget {
     required this.user,
   });
 
-  final UserData user;
+  final LegacyUserData user;
 
   static const name = 'user_timeline_filter';
 

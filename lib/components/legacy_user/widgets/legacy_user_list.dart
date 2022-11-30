@@ -5,20 +5,22 @@ import 'package:rby/rby.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 
 /// Builds a [CustomScrollView] for the [users].
-class UserList extends StatelessWidget {
-  const UserList(
+class LegacyUserList extends StatelessWidget {
+  const LegacyUserList(
     this.users, {
     this.beginSlivers = const [],
     this.endSlivers = const [SliverBottomPadding()],
   });
 
-  final List<UserData> users;
+  final List<LegacyUserData> users;
 
   final List<Widget> beginSlivers;
   final List<Widget> endSlivers;
 
   Widget _itemBuilder(BuildContext context, int index) {
-    return index.isEven ? UserCard(users[index ~/ 2]) : VerticalSpacer.normal;
+    return index.isEven
+        ? LegacyUserCard(users[index ~/ 2])
+        : VerticalSpacer.normal;
   }
 
   @override

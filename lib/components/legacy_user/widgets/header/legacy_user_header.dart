@@ -4,18 +4,18 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:rby/rby.dart';
 
-class UserHeader extends StatelessWidget {
-  const UserHeader({
+class LegacyUserHeader extends StatelessWidget {
+  const LegacyUserHeader({
     required this.user,
     required this.notifier,
     required this.connections,
     required this.connectionsNotifier,
   });
 
-  final UserData user;
-  final UserNotifier notifier;
-  final BuiltSet<UserConnection>? connections;
-  final UserConnectionsNotifier connectionsNotifier;
+  final LegacyUserData user;
+  final LegacyUserNotifier notifier;
+  final BuiltSet<LegacyUserConnection>? connections;
+  final LegacyUserConnectionsNotifier connectionsNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class UserHeader extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            UserInfo(
+            LegacyUserInfo(
               user: user,
               connections: connections,
               connectionsNotifier: connectionsNotifier,
@@ -42,7 +42,7 @@ class UserHeader extends StatelessWidget {
               ),
               Padding(
                 padding: theme.spacing.symmetric(horizontal: true),
-                child: UserDescriptionTranslation(user: user),
+                child: LegacyUserDescriptionTranslation(user: user),
               ),
               VerticalSpacer.small,
             ],
@@ -52,13 +52,16 @@ class UserHeader extends StatelessWidget {
               alignment: AlignmentDirectional.topCenter,
               child: Padding(
                 padding: theme.spacing.symmetric(horizontal: true),
-                child: UserAdditionalInfo(user: user, connections: connections),
+                child: LegacyUserAdditionalInfo(
+                  user: user,
+                  connections: connections,
+                ),
               ),
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Expanded(child: UserConnectionsCount(user: user)),
+                Expanded(child: LegacyUserConnectionsCount(user: user)),
                 if (user.hasDescription)
                   UserDescriptionTranslationButton(
                     user: user,

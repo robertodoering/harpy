@@ -16,7 +16,7 @@ class TwitterListData with _$TwitterListData {
     /// Can be 'private' or 'public'.
     @Default('public') String mode,
     @Default('') String description,
-    UserData? user,
+    LegacyUserData? user,
     @Default(false) bool following,
   }) = _TwitterListData;
 
@@ -29,7 +29,7 @@ class TwitterListData with _$TwitterListData {
       memberCount: list.memberCount,
       mode: list.mode ?? 'public',
       description: list.description ?? '',
-      user: list.user != null ? UserData.fromUser(list.user) : null,
+      user: list.user != null ? LegacyUserData.fromUser(list.user) : null,
       following: list.following ?? false,
     );
   }

@@ -19,7 +19,7 @@ class SetupPage extends ConsumerStatefulWidget {
 }
 
 class _SetupPageState extends ConsumerState<SetupPage> {
-  late final _connectionsProvider = userConnectionsProvider(
+  late final _connectionsProvider = legacyUserConnectionsProvider(
     ['harpy_app'].toBuiltList(),
   );
 

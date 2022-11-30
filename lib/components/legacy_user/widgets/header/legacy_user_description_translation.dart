@@ -5,12 +5,12 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:rby/rby.dart';
 
-class UserDescriptionTranslation extends StatelessWidget {
-  const UserDescriptionTranslation({
+class LegacyUserDescriptionTranslation extends StatelessWidget {
+  const LegacyUserDescriptionTranslation({
     required this.user,
   });
 
-  final UserData user;
+  final LegacyUserData user;
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +47,8 @@ class UserDescriptionTranslationButton extends ConsumerWidget {
     required this.notifier,
   });
 
-  final UserData user;
-  final UserNotifier notifier;
+  final LegacyUserData user;
+  final LegacyUserNotifier notifier;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -5,13 +5,13 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:rby/rby.dart';
 
-class UserTabView extends ConsumerWidget {
-  const UserTabView({
+class LegacyUserTabView extends ConsumerWidget {
+  const LegacyUserTabView({
     required this.user,
     required this.headerSlivers,
   });
 
-  final UserData user;
+  final LegacyUserData user;
   final List<Widget> headerSlivers;
 
   @override

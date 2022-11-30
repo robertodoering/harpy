@@ -155,7 +155,7 @@ class TimelineFilterNotifier extends StateNotifier<TimelineFilterState>
   /// If [user] is `null`, the active timeline filter will be used as a generic
   /// timeline filter for all users.
   /// Otherwise the filter will only be active for the unique user.
-  void selectUserTimelineFilter(String uuid, {UserData? user}) {
+  void selectUserTimelineFilter(String uuid, {LegacyUserData? user}) {
     final newActiveFilter = ActiveTimelineFilter(
       uuid: uuid,
       type: TimelineFilterType.user,
@@ -264,7 +264,7 @@ class TimelineFilterNotifier extends StateNotifier<TimelineFilterState>
   ///
   /// If a [user] is specified, only the user timeline filter for the user is
   /// removed.
-  void removeUserTimelineFilter({UserData? user}) {
+  void removeUserTimelineFilter({LegacyUserData? user}) {
     if (user == null) {
       state = state.copyWith(
         activeTimelineFilters: state.activeTimelineFilters

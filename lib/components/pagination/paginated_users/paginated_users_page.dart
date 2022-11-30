@@ -5,7 +5,7 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:rby/rby.dart';
 
-/// Builds a [UserList] for a [PaginatedUsersNotifier].
+/// Builds a [LegacyUserList] for a [PaginatedUsersNotifier].
 ///
 /// For example implementations, see:
 /// * [FollowersPage]
@@ -20,7 +20,7 @@ class PaginatedUsersPage extends ConsumerWidget {
   });
 
   final AutoDisposeStateNotifierProvider<PaginatedUsersNotifier,
-      PaginatedState<BuiltList<UserData>>> provider;
+      PaginatedState<BuiltList<LegacyUserData>>> provider;
 
   final String title;
   final String noDataMessage;
@@ -37,7 +37,7 @@ class PaginatedUsersPage extends ConsumerWidget {
           child: LoadMoreListener(
             listen: state.canLoadMore,
             onLoadMore: notifier.loadMore,
-            child: UserList(
+            child: LegacyUserList(
               state.data?.toList() ?? [],
               beginSlivers: [HarpySliverAppBar(title: Text(title))],
               endSlivers: [

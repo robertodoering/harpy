@@ -19,7 +19,7 @@ void defaultOnUserMentionTap(WidgetRef ref, UserMentionData mention) {
 
   if (!router.location.endsWith(mention.handle)) {
     router.pushNamed(
-      UserPage.name,
+      LegacyUserPage.name,
       params: {'handle': mention.handle},
     );
   }

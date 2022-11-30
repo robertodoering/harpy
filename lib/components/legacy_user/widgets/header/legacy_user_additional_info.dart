@@ -6,11 +6,14 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:rby/rby.dart';
 
-class UserAdditionalInfo extends ConsumerWidget {
-  const UserAdditionalInfo({required this.user, required this.connections});
+class LegacyUserAdditionalInfo extends ConsumerWidget {
+  const LegacyUserAdditionalInfo({
+    required this.user,
+    required this.connections,
+  });
 
-  final UserData user;
-  final BuiltSet<UserConnection>? connections;
+  final LegacyUserData user;
+  final BuiltSet<LegacyUserConnection>? connections;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -49,7 +52,7 @@ class UserAdditionalInfo extends ConsumerWidget {
             ),
           ),
         ),
-      if (connections?.contains(UserConnection.followedBy) ?? false)
+      if (connections?.contains(LegacyUserConnection.followedBy) ?? false)
         _InfoRow(
           icon: Icon(Icons.reply_rounded, color: theme.colorScheme.primary),
           child: Text(

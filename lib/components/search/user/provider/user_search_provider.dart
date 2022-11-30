@@ -34,11 +34,11 @@ class UserSearchNotifier extends StateNotifier<PaginatedState<UsersSearchData>>
   Future<void> _load({
     required String query,
     required int cursor,
-    required Iterable<UserData> oldUsers,
+    required Iterable<LegacyUserData> oldUsers,
   }) async {
     final newUsers = await _twitterApi.userService
         .usersSearch(q: query, count: 20, page: cursor, includeEntities: false)
-        .then((users) => users.map(UserData.fromUser))
+        .then((users) => users.map(LegacyUserData.fromUser))
         .then(
           (users) => users.whereNot(
             (newUser) => oldUsers.any((oldUser) => newUser.id == oldUser.id),
@@ -105,7 +105,7 @@ class UserSearchNotifier extends StateNotifier<PaginatedState<UsersSearchData>>
 @freezed
 class UsersSearchData with _$UsersSearchData {
   const factory UsersSearchData({
-    required BuiltList<UserData> users,
+    required BuiltList<LegacyUserData> users,
     required String query,
   }) = _Data;
 }

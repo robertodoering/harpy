@@ -84,15 +84,15 @@ class Authentication with LoggerMixin {
         const AuthenticationState.unauthenticated();
   }
 
-  /// Requests the [UserData] for the authenticated user.
-  Future<UserData?> _initializeUser(String userId) async {
+  /// Requests the [LegacyUserData] for the authenticated user.
+  Future<LegacyUserData?> _initializeUser(String userId) async {
     final twitterApi = _ref.read(twitterApiProvider);
 
     dynamic error;
 
     final user = await twitterApi.userService
         .usersShow(userId: userId)
-        .then(UserData.fromUser)
+        .then(LegacyUserData.fromUser)
         .handleError((e, st) {
       error = e;
       logErrorHandler(e, st);
@@ -115,7 +115,7 @@ class Authentication with LoggerMixin {
 @freezed
 class AuthenticationState with _$AuthenticationState {
   const factory AuthenticationState.authenticated({
-    required UserData user,
+    required LegacyUserData user,
   }) = _Authenticated;
 
   const factory AuthenticationState.unauthenticated() = _Unauthenticated;
@@ -124,7 +124,7 @@ class AuthenticationState with _$AuthenticationState {
 }
 
 extension AuthenticationStateExtension on AuthenticationState {
-  UserData? get user => mapOrNull(authenticated: (value) => value.user);
+  LegacyUserData? get user => mapOrNull(authenticated: (value) => value.user);
 
   bool get isAuthenticated => this is _Authenticated;
   bool get isAwaitingAuthentication => this is _AwaitingAuthentication;

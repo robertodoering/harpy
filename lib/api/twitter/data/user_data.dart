@@ -5,8 +5,8 @@ import 'package:harpy/api/api.dart';
 part 'user_data.freezed.dart';
 
 @freezed
-class UserData with _$UserData {
-  factory UserData({
+class LegacyUserData with _$LegacyUserData {
+  factory LegacyUserData({
     @Default('') String id,
 
     /// The display name of the user.
@@ -48,8 +48,8 @@ class UserData with _$UserData {
     @Default(false) bool isTranslatingDescription,
   }) = _UserData;
 
-  /// Parses the [UserData] from the [TwitterApi] returned [User] object.
-  factory UserData.fromUser(User? user) {
+  /// Parses the [LegacyUserData] from the [TwitterApi] returned [User] object.
+  factory LegacyUserData.fromUser(User? user) {
     final userUrl = user?.entities?.url?.urls != null &&
             user!.entities!.url!.urls!.isNotEmpty
         ? UrlData.fromUrl(user.entities!.url!.urls!.first)
@@ -58,7 +58,7 @@ class UserData with _$UserData {
     final userDescriptionUrls =
         user?.entities?.description?.urls?.map(UrlData.fromUrl).toList() ?? [];
 
-    return UserData(
+    return LegacyUserData(
       // required
       id: user?.idStr ?? '',
       name: user?.name ?? '',
@@ -82,7 +82,7 @@ class UserData with _$UserData {
     );
   }
 
-  UserData._();
+  LegacyUserData._();
 
   late final hasDescription = description != null && description!.isNotEmpty;
   late final hasUrl = userUrl != null;

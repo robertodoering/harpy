@@ -8,16 +8,16 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:rby/rby.dart';
 
-class UserInfo extends StatelessWidget {
-  const UserInfo({
+class LegacyUserInfo extends StatelessWidget {
+  const LegacyUserInfo({
     required this.user,
     required this.connections,
     required this.connectionsNotifier,
   });
 
-  final UserData user;
-  final BuiltSet<UserConnection>? connections;
-  final UserConnectionsNotifier connectionsNotifier;
+  final LegacyUserData user;
+  final BuiltSet<LegacyUserConnection>? connections;
+  final LegacyUserConnectionsNotifier connectionsNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class UserInfo extends StatelessWidget {
                   ? _FollowButton(
                       user: user,
                       following: connections!.contains(
-                        UserConnection.following,
+                        LegacyUserConnection.following,
                       ),
                       notifier: connectionsNotifier,
                     )
@@ -68,7 +68,7 @@ class _Avatar extends StatelessWidget {
     required this.user,
   });
 
-  final UserData user;
+  final LegacyUserData user;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class _Avatar extends StatelessWidget {
 
 void _showFullscreenAvatar(
   BuildContext context, {
-  required UserData user,
+  required LegacyUserData user,
 }) {
   Navigator.of(context).push<void>(
     HeroDialogRoute(
@@ -124,7 +124,7 @@ class _Handle extends ConsumerWidget {
     required this.user,
   });
 
-  final UserData user;
+  final LegacyUserData user;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -156,7 +156,7 @@ class _Name extends StatelessWidget {
     required this.user,
   });
 
-  final UserData user;
+  final LegacyUserData user;
 
   @override
   Widget build(BuildContext context) {
@@ -192,9 +192,9 @@ class _FollowButton extends StatelessWidget {
     required this.notifier,
   });
 
-  final UserData user;
+  final LegacyUserData user;
   final bool following;
-  final UserConnectionsNotifier notifier;
+  final LegacyUserConnectionsNotifier notifier;
 
   @override
   Widget build(BuildContext context) {

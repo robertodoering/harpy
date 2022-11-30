@@ -5,23 +5,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 
-class UserPage extends ConsumerStatefulWidget {
-  const UserPage({
+class LegacyUserPage extends ConsumerStatefulWidget {
+  const LegacyUserPage({
     required this.handle,
     this.user,
   });
 
   final String handle;
-  final UserData? user;
+  final LegacyUserData? user;
 
   static const name = 'user';
 
   @override
-  ConsumerState<UserPage> createState() => _UserPageState();
+  ConsumerState<LegacyUserPage> createState() => _UserPageState();
 }
 
-class _UserPageState extends ConsumerState<UserPage> {
-  late final _connectionsProvider = userConnectionsProvider(
+class _UserPageState extends ConsumerState<LegacyUserPage> {
+  late final _connectionsProvider = legacyUserConnectionsProvider(
     [widget.handle].toBuiltList(),
   );
 
@@ -30,7 +30,9 @@ class _UserPageState extends ConsumerState<UserPage> {
     super.initState();
 
     SchedulerBinding.instance.addPostFrameCallback(
-      (_) => ref.read(userProvider(widget.handle).notifier).load(widget.user),
+      (_) => ref
+          .read(legacyUserProvider(widget.handle).notifier)
+          .load(widget.user),
     );
 
     final authenticatedUser = ref.read(authenticationStateProvider).user;
@@ -43,8 +45,8 @@ class _UserPageState extends ConsumerState<UserPage> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(userProvider(widget.handle));
-    final notifier = ref.watch(userProvider(widget.handle).notifier);
+    final state = ref.watch(legacyUserProvider(widget.handle));
+    final notifier = ref.watch(legacyUserProvider(widget.handle).notifier);
 
     final connections = ref.watch(_connectionsProvider).values.isNotEmpty
         ? ref.watch(_connectionsProvider).values.first
@@ -53,11 +55,11 @@ class _UserPageState extends ConsumerState<UserPage> {
 
     return HarpyScaffold(
       child: state.when(
-        data: (user) => UserTabView(
+        data: (user) => LegacyUserTabView(
           user: user,
           headerSlivers: [
-            UserAppBar(user: user),
-            UserHeader(
+            LegacyUserAppBar(user: user),
+            LegacyUserHeader(
               user: user,
               notifier: notifier,
               connections: connections,

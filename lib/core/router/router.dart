@@ -106,13 +106,13 @@ final routesProvider = Provider(
       ),
       routes: [
         GoRoute(
-          name: UserPage.name,
+          name: LegacyUserPage.name,
           path: 'user/:handle',
           pageBuilder: (_, state) => _createPage(
             state: state,
-            child: UserPage(
+            child: LegacyUserPage(
               handle: state.params['handle']!,
-              user: state.extra as UserData?,
+              user: state.extra as LegacyUserData?,
             ),
           ),
           routes: [
@@ -149,7 +149,7 @@ final routesProvider = Provider(
               pageBuilder: (_, state) => _createPage(
                 state: state,
                 fullscreenDialog: true,
-                child: UserTimelineFilter(user: state.extra! as UserData),
+                child: UserTimelineFilter(user: state.extra! as LegacyUserData),
               ),
             ),
             GoRoute(

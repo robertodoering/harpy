@@ -6,14 +6,14 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:rby/rby.dart';
 
-/// Provides the [UserConnection] for a list of users.
+/// Provides the [LegacyUserConnection] for a list of users.
 ///
 /// Connections are mapped to the user handle.
-final userConnectionsProvider = StateNotifierProvider.autoDispose.family<
-    UserConnectionsNotifier,
-    BuiltMap<String, BuiltSet<UserConnection>>,
+final legacyUserConnectionsProvider = StateNotifierProvider.autoDispose.family<
+    LegacyUserConnectionsNotifier,
+    BuiltMap<String, BuiltSet<LegacyUserConnection>>,
     BuiltList<String>>(
-  (ref, handles) => UserConnectionsNotifier(
+  (ref, handles) => LegacyUserConnectionsNotifier(
     ref: ref,
     handles: handles,
     twitterApi: ref.watch(twitterApiProvider),
@@ -21,10 +21,10 @@ final userConnectionsProvider = StateNotifierProvider.autoDispose.family<
   name: 'UserConnectionsProvider',
 );
 
-class UserConnectionsNotifier
-    extends StateNotifier<BuiltMap<String, BuiltSet<UserConnection>>>
+class LegacyUserConnectionsNotifier
+    extends StateNotifier<BuiltMap<String, BuiltSet<LegacyUserConnection>>>
     with LoggerMixin {
-  UserConnectionsNotifier({
+  LegacyUserConnectionsNotifier({
     required Ref ref,
     required BuiltList<String> handles,
     required TwitterApi twitterApi,
@@ -43,7 +43,8 @@ class UserConnectionsNotifier
         .friendshipsLookup(screenNames: _handles.toList())
         .then(_mapConnections)
         .handleError(logErrorHandler)
-        .then((value) => value ?? BuiltMap<String, BuiltSet<UserConnection>>());
+        .then((value) =>
+            value ?? BuiltMap<String, BuiltSet<LegacyUserConnection>>());
   }
 
   Future<void> follow(String handle) async {
@@ -52,7 +53,7 @@ class UserConnectionsNotifier
     state = state.rebuild(
       (builder) => builder[handle] = _addOrCreateConnection(
         builder[handle],
-        UserConnection.following,
+        LegacyUserConnection.following,
       ),
     );
 
@@ -66,7 +67,7 @@ class UserConnectionsNotifier
       state = state.rebuild(
         (builder) => builder[handle] = _removeOrCreateConnection(
           builder[handle],
-          UserConnection.following,
+          LegacyUserConnection.following,
         ),
       );
     });
@@ -78,7 +79,7 @@ class UserConnectionsNotifier
     state = state.rebuild(
       (builder) => builder[handle] = _removeOrCreateConnection(
         builder[handle],
-        UserConnection.following,
+        LegacyUserConnection.following,
       ),
     );
 
@@ -92,16 +93,16 @@ class UserConnectionsNotifier
       state = state.rebuild(
         (builder) => builder[handle] = _addOrCreateConnection(
           builder[handle],
-          UserConnection.following,
+          LegacyUserConnection.following,
         ),
       );
     });
   }
 }
 
-BuiltSet<UserConnection> _addOrCreateConnection(
-  BuiltSet<UserConnection>? connections,
-  UserConnection connection,
+BuiltSet<LegacyUserConnection> _addOrCreateConnection(
+  BuiltSet<LegacyUserConnection>? connections,
+  LegacyUserConnection connection,
 ) {
   return connections?.rebuild(
         (builder) => builder.add(connection),
@@ -109,22 +110,22 @@ BuiltSet<UserConnection> _addOrCreateConnection(
       {connection}.toBuiltSet();
 }
 
-BuiltSet<UserConnection> _removeOrCreateConnection(
-  BuiltSet<UserConnection>? connections,
-  UserConnection connection,
+BuiltSet<LegacyUserConnection> _removeOrCreateConnection(
+  BuiltSet<LegacyUserConnection>? connections,
+  LegacyUserConnection connection,
 ) {
   return connections?.rebuild((builder) => builder.remove(connection)) ??
       BuiltSet();
 }
 
-BuiltMap<String, BuiltSet<UserConnection>> _mapConnections(
+BuiltMap<String, BuiltSet<LegacyUserConnection>> _mapConnections(
   List<Friendship> friendships,
 ) {
-  final mappedConnections = <String, BuiltSet<UserConnection>>{};
+  final mappedConnections = <String, BuiltSet<LegacyUserConnection>>{};
 
   for (final friendship in friendships) {
     if (friendship.screenName != null) {
-      final connections = <UserConnection>{};
+      final connections = <LegacyUserConnection>{};
 
       if (friendship.connections != null) {
         connections.addAll(friendship.connections!.map(parseUserConnection));

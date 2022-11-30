@@ -4,27 +4,32 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:rby/rby.dart';
 
-class UserFollowersCount extends StatelessWidget {
-  const UserFollowersCount({
+class LegacyUserConnectionsCount extends StatelessWidget {
+  const LegacyUserConnectionsCount({
     required this.user,
+    this.compact = false,
   });
 
-  final UserData user;
+  final LegacyUserData user;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Wrap(
-      spacing: theme.spacing.base,
-      runSpacing: theme.spacing.small,
-      alignment: WrapAlignment.spaceBetween,
       children: [
         ConnectionCount(
           count: user.friendsCount,
-          builder: (count) => RbyButton.text(
+          builder: (count) => RbyButton.transparent(
             label: Text('$count following'),
-            onTap: () => context.goNamed(
+            padding: compact
+                ? EdgeInsets.symmetric(
+                    horizontal: theme.spacing.base,
+                    vertical: theme.spacing.small,
+                  )
+                : null,
+            onTap: () => context.pushNamed(
               FollowingPage.name,
               params: {'handle': user.handle},
             ),
@@ -32,9 +37,15 @@ class UserFollowersCount extends StatelessWidget {
         ),
         ConnectionCount(
           count: user.followersCount,
-          builder: (count) => RbyButton.text(
+          builder: (count) => RbyButton.transparent(
             label: Text('$count followers'),
-            onTap: () => context.goNamed(
+            padding: compact
+                ? EdgeInsets.symmetric(
+                    horizontal: theme.spacing.base,
+                    vertical: theme.spacing.small,
+                  )
+                : null,
+            onTap: () => context.pushNamed(
               FollowersPage.name,
               params: {'handle': user.handle},
             ),

@@ -13,8 +13,8 @@ class SetupFinishContent extends ConsumerWidget {
     required this.notifier,
   });
 
-  final BuiltSet<UserConnection>? connections;
-  final UserConnectionsNotifier notifier;
+  final BuiltSet<LegacyUserConnection>? connections;
+  final LegacyUserConnectionsNotifier notifier;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -112,8 +112,8 @@ class _FollowHarpy extends StatelessWidget {
     required this.notifier,
   });
 
-  final BuiltSet<UserConnection>? connections;
-  final UserConnectionsNotifier notifier;
+  final BuiltSet<LegacyUserConnection>? connections;
+  final LegacyUserConnectionsNotifier notifier;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +121,7 @@ class _FollowHarpy extends StatelessWidget {
 
     return Card(
       child: RbySwitchTile(
-        value: connections?.contains(UserConnection.following) ?? false,
+        value: connections?.contains(LegacyUserConnection.following) ?? false,
         borderRadius: theme.shape.borderRadius,
         title: Text.rich(
           TextSpan(
@@ -140,7 +140,7 @@ class _FollowHarpy extends StatelessWidget {
         ),
         onChanged: (value) {
           HapticFeedback.lightImpact();
-          (connections?.contains(UserConnection.following) ?? false)
+          (connections?.contains(LegacyUserConnection.following) ?? false)
               ? notifier.unfollow('harpy_app')
               : notifier.follow('harpy_app');
         },

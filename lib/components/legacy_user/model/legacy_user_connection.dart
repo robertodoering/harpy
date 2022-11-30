@@ -1,4 +1,4 @@
-enum UserConnection {
+enum LegacyUserConnection {
   none,
   following,
   followingRequested,
@@ -14,19 +14,19 @@ enum UserConnection {
 /// * `followed_by`
 /// * `blocking`
 /// * `muting`
-UserConnection parseUserConnection(String connectionString) {
+LegacyUserConnection parseUserConnection(String connectionString) {
   switch (connectionString) {
     case 'following':
-      return UserConnection.following;
+      return LegacyUserConnection.following;
     case 'following_requested':
-      return UserConnection.followingRequested;
+      return LegacyUserConnection.followingRequested;
     case 'followed_by':
-      return UserConnection.followedBy;
+      return LegacyUserConnection.followedBy;
     case 'blocking':
-      return UserConnection.blocking;
+      return LegacyUserConnection.blocking;
     case 'muting':
-      return UserConnection.muting;
+      return LegacyUserConnection.muting;
     default:
-      return UserConnection.none;
+      return LegacyUserConnection.none;
   }
 }

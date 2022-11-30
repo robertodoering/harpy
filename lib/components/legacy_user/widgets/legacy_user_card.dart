@@ -4,10 +4,10 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:rby/rby.dart';
 
-class UserCard extends StatelessWidget {
-  const UserCard(this.user);
+class LegacyUserCard extends StatelessWidget {
+  const LegacyUserCard(this.user);
 
-  final UserData user;
+  final LegacyUserData user;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class UserCard extends StatelessWidget {
       child: InkWell(
         borderRadius: theme.shape.borderRadius,
         onTap: () => context.pushNamed(
-          UserPage.name,
+          LegacyUserPage.name,
           params: {'handle': user.handle},
           extra: user,
         ),
@@ -67,7 +67,7 @@ class UserCard extends StatelessWidget {
             ),
             SizedBox(
               width: double.infinity,
-              child: UserConnectionsCount(user: user, compact: true),
+              child: LegacyUserConnectionsCount(user: user, compact: true),
             ),
           ],
         ),

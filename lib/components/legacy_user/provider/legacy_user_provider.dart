@@ -6,21 +6,21 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 import 'package:rby/rby.dart';
 
-final userProvider = StateNotifierProvider.autoDispose
-    .family<UserNotifier, AsyncValue<UserData>, String>(
-  (ref, handle) => UserNotifier(
+final legacyUserProvider = StateNotifierProvider.autoDispose
+    .family<LegacyUserNotifier, AsyncValue<LegacyUserData>, String>(
+  (ref, handle) => LegacyUserNotifier(
     ref: ref,
     handle: handle,
     languagePreferences: ref.watch(languagePreferencesProvider),
     translateService: ref.watch(translateServiceProvider),
     twitterApi: ref.watch(twitterApiProvider),
   ),
-  name: 'UserProvider',
+  name: 'LegacyUserProvider',
 );
 
-class UserNotifier extends StateNotifier<AsyncValue<UserData>>
+class LegacyUserNotifier extends StateNotifier<AsyncValue<LegacyUserData>>
     with LoggerMixin {
-  UserNotifier({
+  LegacyUserNotifier({
     required Ref ref,
     required String handle,
     required LanguagePreferences languagePreferences,
@@ -39,7 +39,7 @@ class UserNotifier extends StateNotifier<AsyncValue<UserData>>
   final TranslateService _translateService;
   final TwitterApi _twitterApi;
 
-  Future<void> load([UserData? user]) async {
+  Future<void> load([LegacyUserData? user]) async {
     if (user != null) {
       log.fine('using initialized user $user');
       state = AsyncData(user);
@@ -48,7 +48,7 @@ class UserNotifier extends StateNotifier<AsyncValue<UserData>>
       state = await AsyncValue.guard(
         () => _twitterApi.userService
             .usersShow(screenName: _handle)
-            .then(UserData.fromUser),
+            .then(LegacyUserData.fromUser),
       );
     }
   }
