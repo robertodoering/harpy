@@ -4,7 +4,7 @@ import 'package:harpy/components/components.dart';
 import 'package:rby/rby.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 
-typedef TweetBuilder = Widget Function(TweetData tweet, int index);
+typedef TweetBuilder = Widget Function(LegacyTweetData tweet, int index);
 
 /// Signature for a function that is called at the end of layout in the list
 /// builder.
@@ -22,7 +22,7 @@ class TweetList extends StatelessWidget {
     super.key,
   });
 
-  final List<TweetData> tweets;
+  final List<LegacyTweetData> tweets;
   final ScrollController? controller;
   final TweetBuilder tweetBuilder;
   final OnLayoutFinished? onLayoutFinished;
@@ -30,7 +30,8 @@ class TweetList extends StatelessWidget {
   final List<Widget> beginSlivers;
   final List<Widget> endSlivers;
 
-  static Widget defaultTweetBuilder(TweetData tweet, int index) => TweetCard(
+  static Widget defaultTweetBuilder(LegacyTweetData tweet, int index) =>
+      TweetCard(
         tweet: tweet,
         index: index,
       );

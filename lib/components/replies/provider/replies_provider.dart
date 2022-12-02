@@ -9,7 +9,7 @@ import 'package:rby/rby.dart';
 part 'replies_provider.freezed.dart';
 
 final repliesProvider = StateNotifierProvider.autoDispose
-    .family<RepliesNotifier, RepliesState, TweetData>(
+    .family<RepliesNotifier, RepliesState, LegacyTweetData>(
   (ref, tweet) => RepliesNotifier(
     ref: ref,
     twitterApi: ref.watch(twitterApiProvider),
@@ -22,7 +22,7 @@ class RepliesNotifier extends StateNotifier<RepliesState> with LoggerMixin {
   RepliesNotifier({
     required Ref ref,
     required TwitterApi twitterApi,
-    required TweetData tweet,
+    required LegacyTweetData tweet,
   })  : _ref = ref,
         _twitterApi = twitterApi,
         _tweet = tweet,
@@ -32,7 +32,7 @@ class RepliesNotifier extends StateNotifier<RepliesState> with LoggerMixin {
 
   final Ref _ref;
   final TwitterApi _twitterApi;
-  final TweetData _tweet;
+  final LegacyTweetData _tweet;
 
   Future<void> load() async {
     log.fine('loading replies for ${_tweet.id}');
@@ -46,8 +46,8 @@ class RepliesNotifier extends StateNotifier<RepliesState> with LoggerMixin {
 
     if (!mounted) return;
 
-    final parent = results[0] as TweetData?;
-    final replies = results[1] as BuiltList<TweetData>?;
+    final parent = results[0] as LegacyTweetData?;
+    final replies = results[1] as BuiltList<LegacyTweetData>?;
 
     if (replies != null) {
       if (replies.isNotEmpty) {
@@ -66,7 +66,7 @@ class RepliesNotifier extends StateNotifier<RepliesState> with LoggerMixin {
     }
   }
 
-  Future<TweetData?> _loadAllParentTweets(TweetData tweet) async {
+  Future<LegacyTweetData?> _loadAllParentTweets(LegacyTweetData tweet) async {
     final parent = await _loadParent(tweet);
 
     if (parent != null) {
@@ -80,7 +80,9 @@ class RepliesNotifier extends StateNotifier<RepliesState> with LoggerMixin {
     }
   }
 
-  Future<BuiltList<TweetData>?> _loadAllReplies(TweetData tweet) async {
+  Future<BuiltList<LegacyTweetData>?> _loadAllReplies(
+    LegacyTweetData tweet,
+  ) async {
     final result = await _twitterApi.tweetSearchService
         .findReplies(tweet)
         .handleError((e, st) => twitterErrorHandler(_ref, e, st));
@@ -94,11 +96,11 @@ class RepliesNotifier extends StateNotifier<RepliesState> with LoggerMixin {
   }
 
   /// Loads the parent of a single [tweet] if one exist.
-  Future<TweetData?> _loadParent(TweetData tweet) async {
+  Future<LegacyTweetData?> _loadParent(LegacyTweetData tweet) async {
     if (tweet.hasParent) {
       final parent = await _twitterApi.tweetService
           .show(id: tweet.parentTweetId!)
-          .then(TweetData.fromTweet)
+          .then(LegacyTweetData.fromTweet)
           .handleError(logErrorHandler);
 
       return parent;
@@ -108,7 +110,7 @@ class RepliesNotifier extends StateNotifier<RepliesState> with LoggerMixin {
   }
 
   /// Loads all parents recursively and adds them as their replies.
-  Future<TweetData> _loadReplyChain(TweetData tweet) async {
+  Future<LegacyTweetData> _loadReplyChain(LegacyTweetData tweet) async {
     final parent = await _loadParent(tweet);
 
     return parent != null
@@ -122,25 +124,25 @@ class RepliesState with _$RepliesState {
   const factory RepliesState.loading() = _Loading;
 
   const factory RepliesState.data({
-    required BuiltList<TweetData> replies,
+    required BuiltList<LegacyTweetData> replies,
 
     /// When the tweet is a reply itself, the [parent] will contain the parent
     /// reply chain.
-    final TweetData? parent,
+    final LegacyTweetData? parent,
   }) = _Data;
 
-  const factory RepliesState.noData({final TweetData? parent}) = _NoData;
-  const factory RepliesState.error({final TweetData? parent}) = _Error;
+  const factory RepliesState.noData({final LegacyTweetData? parent}) = _NoData;
+  const factory RepliesState.error({final LegacyTweetData? parent}) = _Error;
 }
 
 extension RepliesStateExtension on RepliesState {
-  TweetData? get parent => mapOrNull<TweetData?>(
+  LegacyTweetData? get parent => mapOrNull<LegacyTweetData?>(
         data: (value) => value.parent,
         noData: (value) => value.parent,
         error: (value) => value.parent,
       );
 
-  BuiltList<TweetData> get replies => maybeMap(
+  BuiltList<LegacyTweetData> get replies => maybeMap(
         data: (value) => value.replies,
         orElse: BuiltList.new,
       );

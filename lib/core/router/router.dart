@@ -159,7 +159,7 @@ final routesProvider = Provider(
                 state: state,
                 child: TweetDetailPage(
                   id: state.params['id']!,
-                  tweet: state.extra as TweetData?,
+                  tweet: state.extra as LegacyTweetData?,
                 ),
               ),
               routes: [
@@ -288,8 +288,10 @@ final routesProvider = Provider(
           pageBuilder: (_, state) => _createPage(
             state: state,
             child: ComposePage(
-              parentTweet: (state.extra as Map?)?['parentTweet'] as TweetData?,
-              quotedTweet: (state.extra as Map?)?['quotedTweet'] as TweetData?,
+              parentTweet:
+                  (state.extra as Map?)?['parentTweet'] as LegacyTweetData?,
+              quotedTweet:
+                  (state.extra as Map?)?['quotedTweet'] as LegacyTweetData?,
             ),
           ),
         ),

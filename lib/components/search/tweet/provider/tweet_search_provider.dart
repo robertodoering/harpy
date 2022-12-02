@@ -52,7 +52,8 @@ class TweetSearchNotifier extends StateNotifier<TweetSearchState>
           resultType: filter?.resultType.name,
         )
         .then(
-          (result) => result.statuses?.map(TweetData.fromTweet).toBuiltList(),
+          (result) =>
+              result.statuses?.map(LegacyTweetData.fromTweet).toBuiltList(),
         )
         .handleError((e, st) => twitterErrorHandler(_ref, e, st));
 
@@ -95,7 +96,7 @@ class TweetSearchState with _$TweetSearchState {
   }) = _Loading;
 
   const factory TweetSearchState.data({
-    required BuiltList<TweetData> tweets,
+    required BuiltList<LegacyTweetData> tweets,
     required String query,
     required TweetSearchFilterData? filter,
   }) = _Data;
@@ -112,7 +113,7 @@ class TweetSearchState with _$TweetSearchState {
 }
 
 extension TweetSearchStateExtension on TweetSearchState {
-  BuiltList<TweetData> get tweets => maybeMap(
+  BuiltList<LegacyTweetData> get tweets => maybeMap(
         data: (value) => value.tweets,
         orElse: BuiltList.new,
       );

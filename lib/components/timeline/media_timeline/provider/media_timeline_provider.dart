@@ -5,7 +5,7 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
 final mediaTimelineProvider = Provider.autoDispose
-    .family<BuiltList<MediaTimelineEntry>, BuiltList<TweetData>>(
+    .family<BuiltList<MediaTimelineEntry>, BuiltList<LegacyTweetData>>(
   (ref, tweets) {
     ref.cacheFor(const Duration(minutes: 15));
 

@@ -11,7 +11,7 @@ class TweetCardQuote extends ConsumerStatefulWidget {
     this.index,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final int? index;
 
   @override

@@ -24,7 +24,7 @@ class TweetGif extends ConsumerWidget {
     this.onGifLongPress,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final Object heroTag;
   final HeroPlaceholderBuilder? placeholderBuilder;
   final bool compact;

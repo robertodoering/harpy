@@ -40,7 +40,7 @@ class TweetDelegates with _$TweetDelegates {
 }
 
 TweetDelegates defaultTweetDelegates(
-  TweetData tweet,
+  LegacyTweetData tweet,
   TweetNotifier notifier,
 ) {
   return TweetDelegates(

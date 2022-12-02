@@ -18,7 +18,7 @@ class StaticVideoPlayerOverlay extends StatefulWidget {
   });
 
   final Widget child;
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final VideoPlayerNotifier notifier;
   final VideoPlayerStateData data;
   final VoidCallback? onVideoTap;

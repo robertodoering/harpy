@@ -85,7 +85,7 @@ class _PostTweetButtonState extends ConsumerState<_PostTweetButton> {
   Future<void> _showDialog(ComposeState state) async {
     FocusScope.of(context).unfocus();
 
-    final sentTweet = await showDialog<TweetData>(
+    final sentTweet = await showDialog<LegacyTweetData>(
       context: context,
       barrierDismissible: false,
       builder: (context) => PostTweetDialog(

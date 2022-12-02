@@ -13,7 +13,7 @@ class TweetCardLinkPreview extends ConsumerWidget {
     required this.tweet,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

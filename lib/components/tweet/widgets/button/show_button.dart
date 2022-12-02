@@ -12,7 +12,7 @@ class ShowButton extends ConsumerWidget {
     this.foregroundColor,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetActionCallback? onShow;
   final double sizeDelta;
   final Color? foregroundColor;

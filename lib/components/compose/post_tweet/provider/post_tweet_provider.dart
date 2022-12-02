@@ -71,7 +71,7 @@ class PostTweetNotifier extends StateNotifier<PostTweetState> with LoggerMixin {
           inReplyToStatusId: inReplyToStatusId,
           autoPopulateReplyMetadata: true,
         )
-        .then(TweetData.fromTweet)
+        .then(LegacyTweetData.fromTweet)
         .handleError((e, st) {
       if (e is Response) {
         final message = _responseErrorMessage(e.body);
@@ -214,7 +214,7 @@ class PostTweetState with _$PostTweetState {
   }) = PostTweetInProgress;
 
   const factory PostTweetState.success({
-    required TweetData tweet,
+    required LegacyTweetData tweet,
     String? message,
     String? additionalInfo,
   }) = PostTweetSuccess;
@@ -226,7 +226,7 @@ class PostTweetState with _$PostTweetState {
 }
 
 extension PostTweetStateExtension on PostTweetState {
-  TweetData? get tweet => maybeMap(
+  LegacyTweetData? get tweet => maybeMap(
         success: (value) => value.tweet,
         orElse: () => null,
       );

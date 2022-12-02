@@ -7,25 +7,25 @@ import 'package:harpy/core/core.dart';
 
 /// Handles a tweet list response in an isolate.
 ///
-/// Only the parent [TweetData] of a reply chain will be in the returned list
-/// and will include all of its replies.
-Future<BuiltList<TweetData>> handleTweets(
+/// Only the parent [LegacyTweetData] of a reply chain will be in the returned
+/// list and will include all of its replies.
+Future<BuiltList<LegacyTweetData>> handleTweets(
   List<Tweet> tweets, [
   TimelineFilter? filter,
 ]) {
-  return compute<List<dynamic>, BuiltList<TweetData>>(
+  return compute<List<dynamic>, BuiltList<LegacyTweetData>>(
     _isolateHandleTweets,
     <dynamic>[tweets, filter],
   );
 }
 
-BuiltList<TweetData> _isolateHandleTweets(List<dynamic> arguments) {
+BuiltList<LegacyTweetData> _isolateHandleTweets(List<dynamic> arguments) {
   final tweets = arguments[0] as List<Tweet>;
   final filter = arguments[1] as TimelineFilter?;
 
   final tweetDataList = tweets
       .where((tweet) => !_filterTweet(tweet, filter))
-      .map(TweetData.fromTweet)
+      .map(LegacyTweetData.fromTweet)
       .toList();
 
   for (var i = 0; i < tweetDataList.length; i++) {

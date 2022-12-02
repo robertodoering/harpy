@@ -33,7 +33,7 @@ class Timeline extends ConsumerStatefulWidget {
   /// [TimelineState.noData] state.
   final VoidCallback? onChangeFilter;
 
-  final ValueChanged<TweetData>? onUpdatedTweetVisibility;
+  final ValueChanged<LegacyTweetData>? onUpdatedTweetVisibility;
 
   @override
   ConsumerState<Timeline> createState() => _TimelineState();
@@ -64,7 +64,7 @@ class _TimelineState extends ConsumerState<Timeline> {
   }
 
   void _onLayoutFinished({
-    required BuiltList<TweetData> tweets,
+    required BuiltList<LegacyTweetData> tweets,
     required int firstIndex,
     required int lastIndex,
   }) {
@@ -87,7 +87,7 @@ class _TimelineState extends ConsumerState<Timeline> {
     }
   }
 
-  Widget _tweetBuilder(TimelineState state, TweetData tweet, int index) {
+  Widget _tweetBuilder(TimelineState state, LegacyTweetData tweet, int index) {
     return state.showNewTweetsExist(tweet.originalId)
         ? Column(
             mainAxisSize: MainAxisSize.min,

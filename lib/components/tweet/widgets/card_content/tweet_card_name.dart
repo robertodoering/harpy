@@ -11,7 +11,7 @@ class TweetCardName extends ConsumerWidget {
     required this.style,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetActionCallback? onUserTap;
   final TweetCardElementStyle style;
 

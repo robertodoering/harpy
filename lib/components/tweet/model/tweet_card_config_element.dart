@@ -31,7 +31,7 @@ enum TweetCardActionElement {
 }
 
 extension TweetCardElementExtension on TweetCardElement {
-  bool shouldBuild(TweetData tweet, TweetCardConfig config) {
+  bool shouldBuild(LegacyTweetData tweet, TweetCardConfig config) {
     if (config.elements.contains(this)) {
       switch (this) {
         case TweetCardElement.retweeter:

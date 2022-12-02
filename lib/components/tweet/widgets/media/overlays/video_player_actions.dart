@@ -149,7 +149,7 @@ class VideoPlayerFullscreenButton extends StatelessWidget {
     this.padding,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final EdgeInsets? padding;
 
   @override

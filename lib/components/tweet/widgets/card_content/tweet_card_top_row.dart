@@ -20,7 +20,7 @@ class TweetCardTopRow extends ConsumerWidget {
     required this.config,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetDelegates delegates;
 
   final double outerPadding;

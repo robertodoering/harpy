@@ -39,7 +39,7 @@ class TweetVideo extends ConsumerWidget {
     this.compact = false,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final OverlayBuilder overlayBuilder;
   final Object heroTag;
   final HeroPlaceholderBuilder? placeholderBuilder;
@@ -129,7 +129,7 @@ class TweetGalleryVideo extends ConsumerWidget {
     this.onVideoLongPress,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final Object heroTag;
   final VoidCallback? onVideoLongPress;
 
@@ -153,7 +153,7 @@ class TweetFullscreenVideo extends ConsumerStatefulWidget {
     required this.tweet,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
 
   @override
   ConsumerState<TweetFullscreenVideo> createState() => _FullscreenVideoState();

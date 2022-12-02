@@ -9,8 +9,11 @@ final retweetersProvider =
         .watch(twitterApiProvider)
         .tweetService
         .retweets(id: tweetId, count: 100)
-        .then((tweets) =>
-            tweets.map((tweet) => LegacyUserData.fromUser(tweet.user)))
+        .then(
+          (tweets) => tweets.map(
+            (tweet) => LegacyUserData.fromUser(tweet.user),
+          ),
+        )
         .then((value) => value.toBuiltList());
   },
   name: 'RetweetersProvider',

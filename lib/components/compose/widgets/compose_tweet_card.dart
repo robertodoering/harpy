@@ -100,7 +100,7 @@ class _TopRow extends ConsumerWidget {
     final authentication = ref.watch(authenticationStateProvider);
 
     return TweetCardTopRow(
-      tweet: TweetData(
+      tweet: LegacyTweetData(
         createdAt: DateTime.now(),
         user: authentication.user!,
       ),

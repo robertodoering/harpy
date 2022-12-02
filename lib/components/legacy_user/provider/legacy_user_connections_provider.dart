@@ -43,8 +43,10 @@ class LegacyUserConnectionsNotifier
         .friendshipsLookup(screenNames: _handles.toList())
         .then(_mapConnections)
         .handleError(logErrorHandler)
-        .then((value) =>
-            value ?? BuiltMap<String, BuiltSet<LegacyUserConnection>>());
+        .then(
+          (value) =>
+              value ?? BuiltMap<String, BuiltSet<LegacyUserConnection>>(),
+        );
   }
 
   Future<void> follow(String handle) async {

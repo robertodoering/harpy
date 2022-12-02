@@ -14,7 +14,7 @@ Make sure to follow @harpy_app for news and updates about the app''',
 
   @override
   Widget build(BuildContext context) {
-    final tweet = TweetData(
+    final tweet = LegacyTweetData(
       user: LegacyUserData(
         name: 'harpy',
         handle: 'harpy_app',

@@ -4,11 +4,11 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
 
-part 'tweet_data.freezed.dart';
+part 'legacy_tweet_data.freezed.dart';
 
 @freezed
-class TweetData with _$TweetData {
-  factory TweetData({
+class LegacyTweetData with _$LegacyTweetData {
+  factory LegacyTweetData({
     required DateTime createdAt,
     required LegacyUserData user,
 
@@ -41,12 +41,12 @@ class TweetData with _$TweetData {
     ///
     /// `null` when this tweet is not a retweet.
     LegacyUserData? retweeter,
-    TweetData? quote,
+    LegacyTweetData? quote,
     String? quoteUrl,
 
     // custom fields
 
-    @Default(<TweetData>[]) List<TweetData> replies,
+    @Default(<LegacyTweetData>[]) List<LegacyTweetData> replies,
 
     /// The text of this tweet that the user can see.
     ///
@@ -63,7 +63,7 @@ class TweetData with _$TweetData {
     @Default(false) bool isTranslating,
   }) = _TweetData;
 
-  factory TweetData.fromTweet(Tweet tweet) {
+  factory LegacyTweetData.fromTweet(Tweet tweet) {
     final originalId = tweet.idStr ?? '';
 
     LegacyUserData? retweeter;
@@ -73,11 +73,11 @@ class TweetData with _$TweetData {
       tweet = tweet.retweetedStatus!;
     }
 
-    TweetData? quote;
+    LegacyTweetData? quote;
     String? quoteUrl;
 
     if (tweet.quotedStatus != null) {
-      quote = TweetData.fromTweet(tweet.quotedStatus!);
+      quote = LegacyTweetData.fromTweet(tweet.quotedStatus!);
       quoteUrl = tweet.quotedStatusPermalink?.url;
     }
 
@@ -115,7 +115,7 @@ class TweetData with _$TweetData {
       }
     }
 
-    return TweetData(
+    return LegacyTweetData(
       // required
       originalId: originalId,
       id: tweet.idStr ?? '',
@@ -142,7 +142,7 @@ class TweetData with _$TweetData {
     );
   }
 
-  TweetData._();
+  LegacyTweetData._();
 
   /// The [MediaType] for the media of this tweet or `null` if this tweet has no
   /// media.

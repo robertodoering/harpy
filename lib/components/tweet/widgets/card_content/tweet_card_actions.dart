@@ -13,7 +13,7 @@ class TweetCardActions extends ConsumerWidget {
     required this.style,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetDelegates delegates;
   final Set<TweetCardActionElement> actions;
   final EdgeInsets padding;

@@ -11,7 +11,7 @@ class MoreActionsButton extends ConsumerWidget {
     this.foregroundColor,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetActionCallback? onViewMoreActions;
   final double sizeDelta;
   final Color? foregroundColor;
