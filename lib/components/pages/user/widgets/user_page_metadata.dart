@@ -48,7 +48,7 @@ class UserPageMetadata extends StatelessWidget {
     if (children.isEmpty) return const SizedBox();
 
     return Padding(
-      padding: EdgeInsets.only(top: theme.spacing.small),
+      padding: EdgeInsetsDirectional.only(top: theme.spacing.small),
       child: Wrap(
         spacing: theme.spacing.base,
         runSpacing: theme.spacing.small / 2,
