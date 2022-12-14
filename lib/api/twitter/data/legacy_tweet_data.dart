@@ -87,10 +87,10 @@ class LegacyTweetData with _$LegacyTweetData {
     if (tweet.extendedEntities?.media?.isNotEmpty ?? false) {
       for (final media in tweet.extendedEntities!.media!) {
         if (media.type == kMediaPhoto) {
-          mediaData.add(ImageMediaData.fromMedia(media));
+          mediaData.add(ImageMediaData.fromV1(media));
         } else if (mediaData.isEmpty && media.type == kMediaVideo ||
             media.type == kMediaGif) {
-          mediaData.add(VideoMediaData.fromMedia(media));
+          mediaData.add(VideoMediaData.fromV1(media));
           break;
         }
       }
@@ -132,7 +132,7 @@ class LegacyTweetData with _$LegacyTweetData {
       user: tweet.user != null
           ? UserData.fromV1(tweet.user!)
           : const UserData(id: '', name: '', handle: ''),
-      entities: EntitiesData.fromEntities(tweet.entities),
+      entities: EntitiesData.fromV1(tweet.entities),
       // optional
       parentTweetId: tweet.inReplyToStatusIdStr,
       retweeter: retweeter,

@@ -1,5 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:dart_twitter_api/twitter_api.dart' as v1;
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
@@ -37,7 +37,7 @@ class ImageMediaData with _$ImageMediaData, MediaData {
     required double aspectRatioDouble,
   }) = _ImageMediaData;
 
-  factory ImageMediaData.fromMedia(Media media) {
+  factory ImageMediaData.fromV1(v1.Media media) {
     final aspectRatioDouble =
         (media.sizes?.large?.w ?? 16) / (media.sizes?.large?.h ?? 9);
 
@@ -79,15 +79,15 @@ class VideoMediaData with _$VideoMediaData, MediaData {
     required double aspectRatioDouble,
     required Duration? duration,
 
-    /// The video variants sorted by their quality (best quality first).
-    required List<Variant> variants,
+    /// The video urls sorted by their quality (best quality first).
+    required List<String> variants,
 
     /// The url for a thumbnail image of the video.
     required ImageMediaData thumbnail,
     required MediaType type,
   }) = _VideoMediaData;
 
-  factory VideoMediaData.fromMedia(Media media) {
+  factory VideoMediaData.fromV1(v1.Media media) {
     final aspectRatio = media.videoInfo?.aspectRatio ?? [];
 
     final aspectRatioDouble =
@@ -116,7 +116,11 @@ class VideoMediaData with _$VideoMediaData, MediaData {
       duration: durationMillis != null
           ? Duration(milliseconds: durationMillis)
           : null,
-      variants: variants ?? [],
+      variants: variants
+              ?.map((variant) => variant.url)
+              .whereType<String>()
+              .toList() ??
+          [],
       thumbnail: thumbnail,
       type: media.type == kMediaGif ? MediaType.gif : MediaType.video,
     );
@@ -138,5 +142,5 @@ class VideoMediaData with _$VideoMediaData, MediaData {
 
   /// The url of the variant with the best quality.
   @override
-  late final bestUrl = variants.isNotEmpty ? variants.first.url ?? '' : '';
+  late final bestUrl = variants.isNotEmpty ? variants.first : '';
 }

@@ -55,11 +55,11 @@ class UserData with _$UserData {
   factory UserData.fromV1(v1.User user) {
     final userUrl =
         user.entities?.url?.urls != null && user.entities!.url!.urls!.isNotEmpty
-            ? UrlData.fromUrl(user.entities!.url!.urls!.first)
+            ? UrlData.fromV1(user.entities!.url!.urls!.first)
             : null;
 
     final userDescriptionUrls =
-        user.entities?.description?.urls?.map(UrlData.fromUrl).toList() ?? [];
+        user.entities?.description?.urls?.map(UrlData.fromV1).toList() ?? [];
 
     return UserData(
       id: user.idStr ?? '',

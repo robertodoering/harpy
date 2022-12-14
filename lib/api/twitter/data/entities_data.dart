@@ -1,4 +1,4 @@
-import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:dart_twitter_api/twitter_api.dart' as v1;
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:twitter_api_v2/twitter_api_v2.dart' as v2;
 
@@ -13,20 +13,6 @@ class EntitiesData with _$EntitiesData {
     @Default(<UrlData>[]) List<UrlData> urls,
     @Default(<UserMentionData>[]) List<UserMentionData> userMentions,
   }) = _EntitiesData;
-
-  factory EntitiesData.fromEntities(Entities? entities) {
-    final hashtags = entities?.hashtags ?? [];
-    final media = entities?.media ?? [];
-    final urls = entities?.urls ?? [];
-    final userMentions = entities?.userMentions ?? [];
-
-    return EntitiesData(
-      hashtags: hashtags.map(TagData.fromHashtag).toList(),
-      media: media.map(EntitiesMediaData.fromMedia).toList(),
-      urls: urls.map(UrlData.fromUrl).toList(),
-      userMentions: userMentions.map(UserMentionData.fromUserMention).toList(),
-    );
-  }
 
   factory EntitiesData.fromV2UserDescriptionEntity(
     v2.UserDescriptionEntity userDescriptionEntity,
@@ -59,6 +45,20 @@ class EntitiesData with _$EntitiesData {
       urls: urls.map(UrlData.fromV2).toList(),
     );
   }
+
+  factory EntitiesData.fromV1(v1.Entities? entities) {
+    final hashtags = entities?.hashtags ?? [];
+    final media = entities?.media ?? [];
+    final urls = entities?.urls ?? [];
+    final userMentions = entities?.userMentions ?? [];
+
+    return EntitiesData(
+      hashtags: hashtags.map(TagData.fromV1).toList(),
+      media: media.map(EntitiesMediaData.fromV1).toList(),
+      urls: urls.map(UrlData.fromV1).toList(),
+      userMentions: userMentions.map(UserMentionData.fromV1).toList(),
+    );
+  }
 }
 
 @freezed
@@ -68,14 +68,14 @@ class TagData with _$TagData {
     required String text,
   }) = _TagData;
 
-  factory TagData.fromHashtag(Hashtag hashtag) {
+  factory TagData.fromV2(v2.Tag tag) {
+    return TagData(text: tag.tag);
+  }
+
+  factory TagData.fromV1(v1.Hashtag hashtag) {
     return TagData(
       text: hashtag.text ?? '',
     );
-  }
-
-  factory TagData.fromV2(v2.Tag tag) {
-    return TagData(text: tag.tag);
   }
 }
 
@@ -87,7 +87,7 @@ class EntitiesMediaData with _$EntitiesMediaData {
     required String url,
   }) = _EntitiesMediaData;
 
-  factory EntitiesMediaData.fromMedia(Media media) {
+  factory EntitiesMediaData.fromV1(v1.Media media) {
     return EntitiesMediaData(
       url: media.url ?? '',
     );
@@ -112,7 +112,7 @@ class UrlData with _$UrlData {
     required String url,
   }) = _UrlData;
 
-  factory UrlData.fromUrl(Url url) {
+  factory UrlData.fromV1(v1.Url url) {
     return UrlData(
       displayUrl: url.displayUrl ?? '',
       expandedUrl: url.expandedUrl ?? '',
@@ -136,13 +136,13 @@ class UserMentionData with _$UserMentionData {
     required String handle,
   }) = _UserMentionData;
 
-  factory UserMentionData.fromUserMention(UserMention userMention) {
+  factory UserMentionData.fromV2(v2.Mention mention) {
+    return UserMentionData(handle: mention.username);
+  }
+
+  factory UserMentionData.fromV1(v1.UserMention userMention) {
     return UserMentionData(
       handle: userMention.screenName ?? '',
     );
-  }
-
-  factory UserMentionData.fromV2(v2.Mention mention) {
-    return UserMentionData(handle: mention.username);
   }
 }

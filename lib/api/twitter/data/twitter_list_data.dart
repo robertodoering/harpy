@@ -1,4 +1,4 @@
-import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:dart_twitter_api/twitter_api.dart' as v1;
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 
@@ -20,7 +20,7 @@ class TwitterListData with _$TwitterListData {
     @Default(false) bool following,
   }) = _TwitterListData;
 
-  factory TwitterListData.fromTwitterList(TwitterList list) {
+  factory TwitterListData.fromV1(v1.TwitterList list) {
     return TwitterListData(
       name: list.name ?? '',
       createdAt: list.createdAt,

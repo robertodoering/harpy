@@ -266,7 +266,7 @@ void main() {
             createdAt: DateTime.now(),
             user: userDataHarpy,
             media: [
-              VideoMediaData.fromMedia(
+              VideoMediaData.fromV1(
                 Media()
                   ..type = kMediaVideo
                   ..videoInfo = (VideoInfo()
@@ -300,7 +300,7 @@ void main() {
             createdAt: DateTime.now(),
             user: userDataHarpy,
             media: [
-              VideoMediaData.fromMedia(
+              VideoMediaData.fromV1(
                 Media()
                   ..type = kMediaGif
                   ..videoInfo = (VideoInfo()

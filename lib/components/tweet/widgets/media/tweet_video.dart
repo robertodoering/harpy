@@ -22,7 +22,7 @@ VideoPlayerArguments _videoArguments(VideoMediaData mediaData) {
   return VideoPlayerArguments(
     urls: BuiltMap({
       for (var i = 0; i < min(3, mediaData.variants.length); i++)
-        _qualityNames[i]: mediaData.variants[i].url!,
+        _qualityNames[i]: mediaData.variants[i],
     }),
     loop: false,
     isVideo: true,

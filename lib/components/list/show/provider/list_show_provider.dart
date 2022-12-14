@@ -59,16 +59,15 @@ class ListShowNotifier extends StateNotifier<ListShowState> with LoggerMixin {
     String? subscriptionsCursor;
 
     if (paginatedOwnerships != null) {
-      ownerships = paginatedOwnerships.lists!
-          .map(TwitterListData.fromTwitterList)
-          .toBuiltList();
+      ownerships =
+          paginatedOwnerships.lists!.map(TwitterListData.fromV1).toBuiltList();
 
       ownershipsCursor = paginatedOwnerships.nextCursorStr;
     }
 
     if (paginatedSubscriptions != null) {
       subscriptions = paginatedSubscriptions.lists!
-          .map(TwitterListData.fromTwitterList)
+          .map(TwitterListData.fromV1)
           .toBuiltList();
 
       subscriptionsCursor = paginatedSubscriptions.nextCursorStr;
@@ -112,9 +111,8 @@ class ListShowNotifier extends StateNotifier<ListShowState> with LoggerMixin {
           .handleError((e, st) => twitterErrorHandler(_ref, e, st));
 
       if (paginatedOwnerships != null) {
-        final newOwnerships = paginatedOwnerships.lists!
-            .map(TwitterListData.fromTwitterList)
-            .toList();
+        final newOwnerships =
+            paginatedOwnerships.lists!.map(TwitterListData.fromV1).toList();
 
         final ownerships =
             currentState.ownerships.followedBy(newOwnerships).toBuiltList();
@@ -154,7 +152,7 @@ class ListShowNotifier extends StateNotifier<ListShowState> with LoggerMixin {
 
       if (paginatedSubscriptions != null) {
         final newSubscriptions =
-            paginatedSubscriptions.lists!.map(TwitterListData.fromTwitterList);
+            paginatedSubscriptions.lists!.map(TwitterListData.fromV1);
 
         final subscriptions =
             state.subscriptions.followedBy(newSubscriptions).toBuiltList();
