@@ -17,7 +17,7 @@ void main() {
         TweetCard(
           tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser,
+            user: userDataHarpy,
           ),
         ),
         wrapper: buildListItemBase,
@@ -35,7 +35,7 @@ void main() {
         TweetCard(
           tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser.copyWith(
+            user: userDataHarpy.copyWith(
               name: 'Harpy with a really long name, like, really long.',
               handle: 'harpy_app_userhandle_size_is_normally_limited',
             ),
@@ -55,7 +55,7 @@ void main() {
         TweetCard(
           tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser.copyWith(
+            user: userDataHarpy.copyWith(
               name: '',
               handle: '',
             ),
@@ -75,7 +75,7 @@ void main() {
         TweetCard(
           tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser.copyWith(
+            user: userDataHarpy.copyWith(
               name: '\u064E',
               handle: '',
             ),
@@ -97,7 +97,7 @@ void main() {
             createdAt: DateTime.now(),
             text: 'Hello World!',
             visibleText: 'Hello World!',
-            user: harpyAppUser,
+            user: userDataHarpy,
           ),
         ),
         wrapper: buildListItemBase,
@@ -118,7 +118,7 @@ void main() {
             text: 'Hello World!',
             visibleText: 'Hello World!',
             lang: 'en',
-            user: harpyAppUser,
+            user: userDataHarpy,
           ),
         ),
         wrapper: (child) => buildListItemBase(
@@ -148,7 +148,7 @@ void main() {
               languageCode: 'de',
               original: 'en',
             ),
-            user: harpyAppUser,
+            user: userDataHarpy,
           ),
         ),
         wrapper: (child) => buildListItemBase(
@@ -179,7 +179,7 @@ void main() {
               original: '',
               text: '',
             ),
-            user: harpyAppUser,
+            user: userDataHarpy,
           ),
         ),
         wrapper: (child) => buildListItemBase(
@@ -200,7 +200,7 @@ void main() {
         TweetCard(
           tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser,
+            user: userDataHarpy,
             media: [
               ImageMediaData(
                 baseUrl: 'yellow.png',
@@ -226,7 +226,7 @@ void main() {
         TweetCard(
           tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser,
+            user: userDataHarpy,
             media: [
               ImageMediaData(
                 baseUrl: 'red.png',
@@ -264,7 +264,7 @@ void main() {
         TweetCard(
           tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser,
+            user: userDataHarpy,
             media: [
               VideoMediaData.fromMedia(
                 Media()
@@ -298,7 +298,7 @@ void main() {
         TweetCard(
           tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser,
+            user: userDataHarpy,
             media: [
               VideoMediaData.fromMedia(
                 Media()
@@ -327,13 +327,13 @@ void main() {
           tweet: LegacyTweetData(
             originalId: '1',
             createdAt: DateTime.now(),
-            user: harpyAppUser,
+            user: userDataHarpy,
             text: 'text',
             visibleText: 'text',
             quote: LegacyTweetData(
               originalId: '2',
               createdAt: DateTime.now(),
-              user: harpyAppUser,
+              user: userDataHarpy,
               text: 'quote text',
               visibleText: 'quote text',
             ),

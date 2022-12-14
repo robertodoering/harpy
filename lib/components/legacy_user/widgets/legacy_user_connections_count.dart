@@ -10,7 +10,7 @@ class LegacyUserConnectionsCount extends StatelessWidget {
     this.compact = false,
   });
 
-  final LegacyUserData user;
+  final UserData user;
   final bool compact;
 
   @override
@@ -20,7 +20,7 @@ class LegacyUserConnectionsCount extends StatelessWidget {
     return Wrap(
       children: [
         ConnectionCount(
-          count: user.friendsCount,
+          count: user.followingCount,
           builder: (count) => RbyButton.transparent(
             label: Text('$count following'),
             padding: compact

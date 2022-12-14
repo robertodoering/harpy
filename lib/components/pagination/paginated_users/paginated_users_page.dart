@@ -20,7 +20,7 @@ class PaginatedUsersPage extends ConsumerWidget {
   });
 
   final AutoDisposeStateNotifierProvider<PaginatedUsersNotifier,
-      PaginatedState<BuiltList<LegacyUserData>>> provider;
+      PaginatedState<BuiltList<UserData>>> provider;
 
   final String title;
   final String noDataMessage;

@@ -11,7 +11,7 @@ part 'legacy_tweet_data.freezed.dart';
 class LegacyTweetData with _$LegacyTweetData {
   factory LegacyTweetData({
     required DateTime createdAt,
-    required LegacyUserData user,
+    required UserData user,
 
     /// The original id of this tweet.
     ///
@@ -41,7 +41,7 @@ class LegacyTweetData with _$LegacyTweetData {
     /// The user that retweeted this tweet.
     ///
     /// `null` when this tweet is not a retweet.
-    LegacyUserData? retweeter,
+    UserData? retweeter,
     LegacyTweetData? quote,
     String? quoteUrl,
 
@@ -67,10 +67,10 @@ class LegacyTweetData with _$LegacyTweetData {
   factory LegacyTweetData.fromTweet(Tweet tweet) {
     final originalId = tweet.idStr ?? '';
 
-    LegacyUserData? retweeter;
+    UserData? retweeter;
 
     if (tweet.retweetedStatus != null && tweet.user != null) {
-      retweeter = LegacyUserData.fromUser(tweet.user);
+      retweeter = UserData.fromV1(tweet.user!);
       tweet = tweet.retweetedStatus!;
     }
 
@@ -129,7 +129,9 @@ class LegacyTweetData with _$LegacyTweetData {
       favorited: tweet.favorited ?? false,
       possiblySensitive: tweet.possiblySensitive ?? false,
       lang: tweet.lang ?? 'und',
-      user: LegacyUserData.fromUser(tweet.user),
+      user: tweet.user != null
+          ? UserData.fromV1(tweet.user!)
+          : const UserData(id: '', name: '', handle: ''),
       entities: EntitiesData.fromEntities(tweet.entities),
       // optional
       parentTweetId: tweet.inReplyToStatusIdStr,

@@ -15,12 +15,14 @@ Make sure to follow @harpy_app for news and updates about the app''',
   @override
   Widget build(BuildContext context) {
     final tweet = LegacyTweetData(
-      user: LegacyUserData(
+      user: UserData(
         name: 'harpy',
         handle: 'harpy_app',
         id: '1068105113284300800',
-        profileImageUrl: 'https://pbs.twimg.com/profile_images/'
-            '1356691241140957190/N03_GPid_400x400.jpg',
+        profileImage: UserProfileImage.fromUrl(
+          'https://pbs.twimg.com/profile_images/'
+          '1356691241140957190/N03_GPid_400x400.jpg',
+        ),
       ),
       text: text,
       visibleText: text,

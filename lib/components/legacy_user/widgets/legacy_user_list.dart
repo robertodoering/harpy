@@ -12,7 +12,7 @@ class LegacyUserList extends StatelessWidget {
     this.endSlivers = const [SliverBottomPadding()],
   });
 
-  final List<LegacyUserData> users;
+  final List<UserData> users;
 
   final List<Widget> beginSlivers;
   final List<Widget> endSlivers;

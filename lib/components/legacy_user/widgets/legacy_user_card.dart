@@ -7,7 +7,7 @@ import 'package:rby/rby.dart';
 class LegacyUserCard extends StatelessWidget {
   const LegacyUserCard(this.user);
 
-  final LegacyUserData user;
+  final UserData user;
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +35,11 @@ class LegacyUserCard extends StatelessWidget {
               leadingPadding: theme.spacing.edgeInsets.copyWith(
                 bottom: theme.spacing.small,
               ),
-              leading: HarpyCircleAvatar(
-                imageUrl: user.profileImageUrl,
-              ),
+              leading: user.profileImage?.normal != null
+                  ? HarpyCircleAvatar(
+                      imageUrl: user.profileImage!.normal!.toString(),
+                    )
+                  : null,
               title: Text(
                 user.name,
                 softWrap: false,
@@ -52,11 +54,11 @@ class LegacyUserCard extends StatelessWidget {
                     softWrap: false,
                     overflow: TextOverflow.fade,
                   ),
-                  if (user.hasDescription) ...[
+                  if (user.description != null) ...[
                     VerticalSpacer.small,
                     TwitterText(
                       user.description!,
-                      entities: user.userDescriptionEntities,
+                      entities: user.descriptionEntities,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       entityStyle: const TextStyle(),

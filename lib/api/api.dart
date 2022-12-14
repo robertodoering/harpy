@@ -4,7 +4,6 @@ export 'translate/translate_service.dart';
 export 'translate/translate_service_provider.dart';
 export 'twitter/data/entities_data.dart';
 export 'twitter/data/legacy_tweet_data.dart';
-export 'twitter/data/legacy_user_data.dart';
 export 'twitter/data/media_data.dart';
 export 'twitter/data/relationship_data.dart';
 export 'twitter/data/tweet_data.dart';

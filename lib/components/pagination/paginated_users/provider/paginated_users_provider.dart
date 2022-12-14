@@ -14,18 +14,18 @@ import 'package:rby/rby.dart';
 /// * [FollowingNotifier]
 /// * [ListsMembersNotifier]
 abstract class PaginatedUsersNotifier
-    extends StateNotifier<PaginatedState<BuiltList<LegacyUserData>>>
+    extends StateNotifier<PaginatedState<BuiltList<UserData>>>
     with
         RequestLock,
         LoggerMixin,
-        PaginatedNotifierMixin<PaginatedUsers, BuiltList<LegacyUserData>> {
+        PaginatedNotifierMixin<PaginatedUsers, BuiltList<UserData>> {
   PaginatedUsersNotifier(super.initialState);
 
   @override
   Future<void> onInitialResponse(PaginatedUsers response) async {
     log.fine('received initial paginated users response');
 
-    final users = response.users?.map(LegacyUserData.fromUser).toBuiltList();
+    final users = response.users?.map(UserData.fromV1).toBuiltList();
 
     if (users == null || users.isEmpty) {
       state = const PaginatedState.noData();
@@ -42,12 +42,12 @@ abstract class PaginatedUsersNotifier
   @override
   Future<void> onMoreResponse(
     PaginatedUsers response,
-    BuiltList<LegacyUserData> data,
+    BuiltList<UserData> data,
   ) async {
     log.fine('received loading more paginated users response');
 
     final users =
-        response.users?.map(LegacyUserData.fromUser) ?? const Iterable.empty();
+        response.users?.map(UserData.fromV1) ?? const Iterable.empty();
 
     final cursor = int.tryParse(response.nextCursorStr ?? '');
 

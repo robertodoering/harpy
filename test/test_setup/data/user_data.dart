@@ -1,11 +1,5 @@
 import 'package:harpy/api/api.dart';
 
-final harpyAppUser = LegacyUserData(
-  name: 'Harpy',
-  handle: 'harpy_app',
-  profileImageUrl: 'harpy_avatar.png',
-);
-
 final userDataHarpy = UserData(
   id: '12345',
   name: 'harpy',

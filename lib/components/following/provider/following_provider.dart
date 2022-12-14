@@ -5,8 +5,8 @@ import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
-final followingProvider = StateNotifierProvider.autoDispose.family<
-    FollowingNotifier, PaginatedState<BuiltList<LegacyUserData>>, String>(
+final followingProvider = StateNotifierProvider.autoDispose
+    .family<FollowingNotifier, PaginatedState<BuiltList<UserData>>, String>(
   (ref, handle) => FollowingNotifier(
     ref: ref,
     twitterApi: ref.watch(twitterApiProvider),

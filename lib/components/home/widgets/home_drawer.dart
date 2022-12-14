@@ -114,11 +114,13 @@ class _AuthenticatedUser extends ConsumerWidget {
           padding: theme.spacing.edgeInsets,
           child: Row(
             children: [
-              HarpyCircleAvatar(
-                radius: 28,
-                imageUrl: user.appropriateUserImageUrl,
-              ),
-              HorizontalSpacer.normal,
+              if (user.profileImage?.bigger != null) ...[
+                HarpyCircleAvatar(
+                  radius: 28,
+                  imageUrl: user.profileImage!.bigger!.toString(),
+                ),
+                HorizontalSpacer.normal,
+              ],
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +160,7 @@ class _ConnectionsCount extends ConsumerWidget {
       children: [
         Expanded(
           child: ConnectionCount(
-            count: user.friendsCount,
+            count: user.followingCount,
             builder: (count) => RbyListCard(
               title: FittedBox(child: Text('$count  following')),
               onTap: () => context.pushNamed(

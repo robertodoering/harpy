@@ -146,8 +146,7 @@ final routesProvider = Provider(
               pageBuilder: (_, state) => _createPage(
                 state: state,
                 fullscreenDialog: true,
-                // TODO: fix user data type
-                child: UserTimelineFilter(user: state.extra! as LegacyUserData),
+                child: UserTimelineFilter(user: state.extra! as UserData),
               ),
             ),
             GoRoute(

@@ -38,7 +38,7 @@ class TweetCardName extends ConsumerWidget {
                 ),
               ),
             ),
-            if (tweet.user.verified) ...[
+            if (tweet.user.isVerified) ...[
               const SizedBox(width: 2),
               Icon(
                 CupertinoIcons.checkmark_seal_fill,

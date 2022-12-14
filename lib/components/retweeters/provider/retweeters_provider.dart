@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 
 final retweetersProvider =
-    FutureProvider.autoDispose.family<BuiltList<LegacyUserData>, String>(
+    FutureProvider.autoDispose.family<BuiltList<UserData>, String>(
   (ref, tweetId) async {
     return ref
         .watch(twitterApiProvider)
@@ -11,10 +11,10 @@ final retweetersProvider =
         .retweets(id: tweetId, count: 100)
         .then(
           (tweets) => tweets.map(
-            (tweet) => LegacyUserData.fromUser(tweet.user),
+            (tweet) => tweet.user != null ? UserData.fromV1(tweet.user!) : null,
           ),
         )
-        .then((value) => value.toBuiltList());
+        .then((value) => value.whereType<UserData>().toBuiltList());
   },
   name: 'RetweetersProvider',
 );
