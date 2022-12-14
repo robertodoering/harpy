@@ -54,9 +54,8 @@ TweetDelegates defaultTweetDelegates(
 
       if (!router.location.endsWith(tweet.user.handle)) {
         router.pushNamed(
-          LegacyUserPage.name,
+          UserPage.name,
           params: {'handle': tweet.user.handle},
-          extra: tweet.user,
         );
       }
     },
@@ -65,9 +64,8 @@ TweetDelegates defaultTweetDelegates(
 
       if (!router.location.endsWith(tweet.retweeter!.handle)) {
         router.pushNamed(
-          LegacyUserPage.name,
+          UserPage.name,
           params: {'handle': tweet.retweeter!.handle},
-          extra: tweet.retweeter,
         );
       }
     },

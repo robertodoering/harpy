@@ -106,9 +106,8 @@ class _AuthenticatedUser extends ConsumerWidget {
     return InkWell(
       borderRadius: theme.shape.borderRadius,
       onTap: () => context.pushNamed(
-        LegacyUserPage.name,
+        UserPage.name,
         params: {'handle': user.handle},
-        extra: user,
       ),
       child: Card(
         child: Padding(
@@ -241,9 +240,8 @@ class _Entries extends ConsumerWidget {
         leading: const Icon(CupertinoIcons.person),
         title: const Text('profile'),
         onTap: () => context.pushNamed(
-          LegacyUserPage.name,
+          UserPage.name,
           params: {'handle': user.handle},
-          extra: user,
         ),
       ),
       VerticalSpacer.normal,

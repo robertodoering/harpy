@@ -1,38 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:rby/rby.dart';
 
-class LegacyUserDescriptionTranslation extends StatelessWidget {
-  const LegacyUserDescriptionTranslation({
-    required this.user,
+class UserPageDescriptionTranslation extends StatelessWidget {
+  const UserPageDescriptionTranslation({
+    required this.data,
   });
 
-  final LegacyUserData user;
+  final UserPageData data;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    final translation = data.descriptionTranslationState.maybeWhen(
+      translated: (translation) => translation,
+      orElse: () => null,
+    );
+
     return AnimatedSize(
       duration: theme.animation.short,
       curve: Curves.easeOutCubic,
       child: AnimatedOpacity(
-        opacity: user.descriptionTranslation != null ? 1 : 0,
+        opacity: translation != null ? 1 : 0,
         duration: theme.animation.short,
         curve: Curves.easeOut,
-        child: user.descriptionTranslation != null &&
-                user.descriptionTranslation!.isTranslated
+        child: translation != null
             ? Padding(
-                padding: EdgeInsetsDirectional.only(
-                  top: theme.spacing.small,
-                ),
+                padding: EdgeInsetsDirectional.only(top: theme.spacing.small),
                 child: TranslatedText(
-                  user.descriptionTranslation!.text,
-                  language: user.descriptionTranslation!.language,
-                  entities: user.userDescriptionEntities,
+                  translation.text,
+                  language: translation.language,
+                  entities: data.user.descriptionEntities,
                 ),
               )
             : const SizedBox(width: double.infinity),
@@ -41,22 +42,24 @@ class LegacyUserDescriptionTranslation extends StatelessWidget {
   }
 }
 
-class UserDescriptionTranslationButton extends ConsumerWidget {
-  const UserDescriptionTranslationButton({
-    required this.user,
+class UserPageDescriptionTranslationButton extends ConsumerWidget {
+  const UserPageDescriptionTranslationButton({
+    required this.data,
     required this.notifier,
   });
 
-  final LegacyUserData user;
-  final LegacyUserNotifier notifier;
+  final UserPageData data;
+  final UserPageNotifier notifier;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final iconTheme = IconTheme.of(context);
+    final theme = Theme.of(context);
     final harpyTheme = ref.watch(harpyThemeProvider);
 
-    final active =
-        user.descriptionTranslation != null || user.isTranslatingDescription;
+    final active = data.descriptionTranslationState.maybeMap(
+      untranslated: (_) => false,
+      orElse: () => true,
+    );
 
     return TweetActionButton(
       active: active,
@@ -71,7 +74,7 @@ class UserDescriptionTranslationButton extends ConsumerWidget {
         start: Colors.tealAccent,
         end: Colors.lightBlueAccent,
       ),
-      iconSize: iconTheme.size!,
+      iconSize: theme.iconTheme.size!,
       activeColor: harpyTheme.colors.translate,
       activate: () {
         HapticFeedback.lightImpact();

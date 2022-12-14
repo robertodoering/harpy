@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:harpy/api/api.dart';
 import 'package:twitter_api_v2/twitter_api_v2.dart' as v2;
 
 part 'user_data.freezed.dart';
@@ -10,14 +11,16 @@ class UserData with _$UserData {
     required String name,
     required String handle,
     String? description,
-    Uri? url,
-    Uri? profileImageUrl,
+    EntitiesData? descriptionEntities,
+    UrlData? url,
+    UserProfileImage? profileImage,
     String? location,
     @Default(false) bool isProtected,
     @Default(false) bool isVerified,
     @Default(0) int followersCount,
     @Default(0) int followingCount,
     @Default(0) int tweetCount,
+    DateTime? createdAt,
   }) = _UserData;
 
   factory UserData.fromV2(v2.UserData user) {
@@ -25,10 +28,18 @@ class UserData with _$UserData {
       id: user.id,
       name: user.name,
       handle: user.username,
-      description: user.description,
-      url: user.url != null ? Uri.tryParse(user.url!) : null,
-      profileImageUrl: user.profileImageUrl != null
-          ? Uri.tryParse(user.profileImageUrl!)
+      description: user.description?.isEmpty ?? false ? null : user.description,
+      descriptionEntities: user.entities?.description != null
+          ? EntitiesData.fromV2UserDescriptionEntity(
+              user.entities!.description!,
+            )
+          : null,
+      url: user.entities?.url?.urls != null &&
+              user.entities!.url!.urls.isNotEmpty
+          ? UrlData.fromV2(user.entities!.url!.urls.first)
+          : null,
+      profileImage: user.profileImageUrl != null
+          ? UserProfileImage.fromV2(user.profileImageUrl!)
           : null,
       location: user.location,
       isProtected: user.isProtected ?? false,
@@ -36,6 +47,26 @@ class UserData with _$UserData {
       followersCount: user.publicMetrics?.followersCount ?? 0,
       followingCount: user.publicMetrics?.followingCount ?? 0,
       tweetCount: user.publicMetrics?.tweetCount ?? 0,
+      createdAt: user.createdAt,
+    );
+  }
+}
+
+@freezed
+class UserProfileImage with _$UserProfileImage {
+  const factory UserProfileImage({
+    required Uri? mini,
+    required Uri? normal,
+    required Uri? bigger,
+    required Uri? original,
+  }) = _UserProfileImage;
+
+  factory UserProfileImage.fromV2(String profileImageUrl) {
+    return UserProfileImage(
+      mini: Uri.tryParse(profileImageUrl.replaceAll('_normal', '_mini')),
+      normal: Uri.tryParse(profileImageUrl),
+      bigger: Uri.tryParse(profileImageUrl.replaceAll('_normal', '_bigger')),
+      original: Uri.tryParse(profileImageUrl.replaceAll('_normal', '')),
     );
   }
 }

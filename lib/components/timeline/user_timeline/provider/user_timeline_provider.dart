@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
+import 'package:rby/rby.dart';
 
 final userTimelineProvider = StateNotifierProvider.autoDispose
     .family<UserTimelineNotifier, TimelineState, String>(
@@ -24,7 +25,8 @@ class UserTimelineNotifier extends TimelineNotifier {
     required super.twitterApi,
     required String userId,
   }) : _userId = userId {
-    loadInitial();
+    // TODO: remove when refactoring timelines
+    if (!isTest) loadInitial();
   }
 
   final String _userId;

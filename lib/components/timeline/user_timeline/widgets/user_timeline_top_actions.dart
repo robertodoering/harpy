@@ -12,7 +12,7 @@ class UserTimelineTopActions extends StatelessWidget {
     required this.user,
   });
 
-  final LegacyUserData user;
+  final UserData user;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class _RefreshButton extends ConsumerWidget {
     required this.user,
   });
 
-  final LegacyUserData user;
+  final UserData user;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,7 +63,7 @@ class _FilterButton extends ConsumerWidget {
     required this.user,
   });
 
-  final LegacyUserData user;
+  final UserData user;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

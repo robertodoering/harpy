@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rby/rby.dart';
 
-class SliverFillLoadingIndicator extends ConsumerWidget {
+class SliverFillLoadingIndicator extends StatelessWidget {
   const SliverFillLoadingIndicator();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return SliverFillRemaining(

@@ -13,13 +13,16 @@ class LegacyUserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    // TODO: show verified / protected icon next to name in user card
+    // TODO: disable connections count if user is protected and not followed by
+    //  the authenticated user
+
     return Card(
       child: InkWell(
         borderRadius: theme.shape.borderRadius,
         onTap: () => context.pushNamed(
-          LegacyUserPage.name,
+          UserPage.name,
           params: {'handle': user.handle},
-          extra: user,
         ),
         child: Column(
           children: [

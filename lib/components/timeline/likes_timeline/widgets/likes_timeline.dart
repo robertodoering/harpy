@@ -7,7 +7,7 @@ class LikesTimeline extends StatelessWidget {
     required this.user,
   });
 
-  final LegacyUserData user;
+  final UserData user;
 
   @override
   Widget build(BuildContext context) {

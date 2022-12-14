@@ -43,8 +43,15 @@ class _MockHttpClientResponse extends Mock implements HttpClientResponse {
   _MockHttpClientResponse(Uri uri) {
     Uint8List imageData;
 
+    String preparePath(String path) {
+      final splitPath = path.split('/');
+      splitPath.insert(splitPath.length - 1, 'test/images');
+
+      return splitPath.join('/');
+    }
+
     try {
-      imageData = File(uri.path).readAsBytesSync();
+      imageData = File(preparePath(uri.path)).readAsBytesSync();
     } catch (e) {
       imageData = kTransparentImage;
     }

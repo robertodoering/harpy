@@ -3,6 +3,7 @@ import 'package:harpy/components/components.dart';
 
 enum TweetCardElement {
   topRow,
+  pinned,
   retweeter,
   avatar,
   name,
@@ -46,6 +47,7 @@ extension TweetCardElementExtension on TweetCardElement {
           return tweet.previewUrl != null;
         case TweetCardElement.topRow:
         case TweetCardElement.translation:
+        case TweetCardElement.pinned:
         case TweetCardElement.actionsButton:
         case TweetCardElement.actionsRow:
         case TweetCardElement.avatar:
@@ -54,14 +56,15 @@ extension TweetCardElementExtension on TweetCardElement {
         case TweetCardElement.details:
           return true;
       }
-    } else {
-      return false;
     }
+
+    return false;
   }
 
   /// Whether the element requires padding to be builds around it.
   bool get requiresPadding {
     switch (this) {
+      case TweetCardElement.pinned:
       case TweetCardElement.retweeter:
       case TweetCardElement.avatar:
       case TweetCardElement.name:

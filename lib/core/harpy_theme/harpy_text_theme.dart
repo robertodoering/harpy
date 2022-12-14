@@ -41,7 +41,7 @@ class HarpyTextTheme {
         displayLarge: _applyDisplayFont(
           const TextStyle(
             fontSize: 64,
-            letterSpacing: 6,
+            letterSpacing: 1.6,
             fontWeight: FontWeight.w300,
             fontFamilyFallback: _fontFamilyFallback,
           ),
@@ -49,7 +49,7 @@ class HarpyTextTheme {
         displayMedium: _applyDisplayFont(
           const TextStyle(
             fontSize: 48,
-            letterSpacing: 2,
+            letterSpacing: 1.3,
             fontWeight: FontWeight.w300,
             fontFamilyFallback: _fontFamilyFallback,
           ),
@@ -66,7 +66,7 @@ class HarpyTextTheme {
         headlineLarge: _applyDisplayFont(
           const TextStyle(
             fontSize: 22,
-            letterSpacing: 2,
+            letterSpacing: 1.3,
             fontWeight: FontWeight.w300,
             fontFamilyFallback: _fontFamilyFallback,
           ),
@@ -74,7 +74,7 @@ class HarpyTextTheme {
         headlineMedium: _applyDisplayFont(
           const TextStyle(
             fontSize: 18,
-            letterSpacing: 2,
+            letterSpacing: 1.3,
             fontWeight: FontWeight.w300,
             fontFamilyFallback: _fontFamilyFallback,
           ),
@@ -82,7 +82,7 @@ class HarpyTextTheme {
         headlineSmall: _applyDisplayFont(
           const TextStyle(
             fontSize: 20,
-            letterSpacing: 2,
+            letterSpacing: 1.3,
             fontWeight: FontWeight.w300,
             fontFamilyFallback: _fontFamilyFallback,
           ),
@@ -92,7 +92,7 @@ class HarpyTextTheme {
         titleLarge: _applyDisplayFont(
           const TextStyle(
             fontSize: 20,
-            letterSpacing: 2,
+            letterSpacing: 1.3,
             fontWeight: FontWeight.w300,
             fontFamilyFallback: _fontFamilyFallback,
           ),

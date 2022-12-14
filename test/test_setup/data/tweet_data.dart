@@ -8,7 +8,7 @@ final exampleTweet = LegacyTweetData(
   user: harpyAppUser,
   media: [
     ImageMediaData(
-      baseUrl: 'test/images/red.png',
+      baseUrl: 'red.png',
       aspectRatioDouble: 1,
     ),
   ],

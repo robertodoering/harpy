@@ -12,6 +12,7 @@ class HarpyTab extends ConsumerStatefulWidget {
     this.cardColor,
     this.selectedCardColor,
     this.selectedForegroundColor,
+    this.enabled = true,
   });
 
   final Widget icon;
@@ -20,6 +21,8 @@ class HarpyTab extends ConsumerStatefulWidget {
   final Color? cardColor;
   final Color? selectedCardColor;
   final Color? selectedForegroundColor;
+
+  final bool enabled;
 
   static double height(BuildContext context) {
     final theme = Theme.of(context);
@@ -120,25 +123,28 @@ class _HarpyTabState extends ConsumerState<HarpyTab>
 
     return AnimatedBuilder(
       animation: _animationController,
-      builder: (_, __) => Card(
-        color: _cardColorAnimation.value,
-        child: Padding(
-          padding: EdgeInsets.all(HarpyTab.tabPadding(theme)),
-          child: IconTheme(
-            data: iconTheme.copyWith(
-              color: _foregroundColorAnimation.value,
-            ),
-            child: DefaultTextStyle(
-              style: theme.textTheme.subtitle1!.copyWith(
+      builder: (_, __) => Opacity(
+        opacity: widget.enabled ? 1 : .5,
+        child: Card(
+          color: _cardColorAnimation.value,
+          child: Padding(
+            padding: EdgeInsets.all(HarpyTab.tabPadding(theme)),
+            child: IconTheme(
+              data: iconTheme.copyWith(
                 color: _foregroundColorAnimation.value,
               ),
-              child: SizedBox(
-                height: iconTheme.size,
-                child: Row(
-                  children: [
-                    widget.icon,
-                    if (widget.text != null) _buildText(),
-                  ],
+              child: DefaultTextStyle(
+                style: theme.textTheme.subtitle1!.copyWith(
+                  color: _foregroundColorAnimation.value,
+                ),
+                child: SizedBox(
+                  height: iconTheme.size,
+                  child: Row(
+                    children: [
+                      widget.icon,
+                      if (widget.text != null) _buildText(),
+                    ],
+                  ),
                 ),
               ),
             ),

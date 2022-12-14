@@ -11,6 +11,7 @@ class HarpyTabBar extends ConsumerStatefulWidget {
     required this.padding,
     this.endWidgets,
     this.controller,
+    this.enabled = true,
   });
 
   final List<Widget> tabs;
@@ -22,6 +23,7 @@ class HarpyTabBar extends ConsumerStatefulWidget {
   final EdgeInsetsGeometry padding;
 
   final TabController? controller;
+  final bool enabled;
 
   @override
   ConsumerState<HarpyTabBar> createState() => _HarpyTapBarState();
@@ -118,7 +120,7 @@ class _HarpyTapBarState extends ConsumerState<HarpyTabBar> {
       index: index,
       child: InkWell(
         borderRadius: theme.shape.borderRadius,
-        onTap: () => _tabController!.animateTo(index),
+        onTap: widget.enabled ? () => _tabController!.animateTo(index) : null,
         child: HarpyTabScope(
           index: index,
           animationValue: _tabAnimationValue(index),

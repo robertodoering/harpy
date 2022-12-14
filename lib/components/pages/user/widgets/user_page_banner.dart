@@ -3,20 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:harpy/components/components.dart';
 import 'package:harpy/core/core.dart';
 
-class LegacyUserBanner extends StatefulWidget {
-  const LegacyUserBanner({
+class UserPageBanner extends StatefulWidget {
+  const UserPageBanner({
     required this.url,
   });
 
   final String url;
 
   @override
-  State<LegacyUserBanner> createState() => _LegacyUserBannerState();
+  State<UserPageBanner> createState() => _UserPageBannerState();
 }
 
-class _LegacyUserBannerState extends State<LegacyUserBanner> {
+class _UserPageBannerState extends State<UserPageBanner> {
   ScrollController? _controller;
-
   bool _enableTap = true;
 
   @override

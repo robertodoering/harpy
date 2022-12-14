@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:harpy/api/api.dart';
 import 'package:harpy/core/core.dart';
+import 'package:twitter_api_v2/twitter_api_v2.dart' as v2;
 
 part 'legacy_tweet_data.freezed.dart';
 
@@ -140,6 +141,35 @@ class LegacyTweetData with _$LegacyTweetData {
       media: mediaData,
       previewUrl: previewUrl,
     );
+  }
+
+  factory LegacyTweetData.fromV2(v2.TweetData tweet, v2.UserData user) {
+    var tweetData = LegacyTweetData.fromTweet(
+      Tweet()
+        ..createdAt = tweet.createdAt
+        ..idStr = tweet.id
+        ..text = tweet.text
+        ..source = tweet.source
+        ..truncated = false
+        ..inReplyToUserIdStr = tweet.inReplyToUserId
+        ..lang = tweet.lang?.code
+        ..fullText = tweet.text
+        ..favoriteCount = tweet.publicMetrics?.likeCount
+        ..retweetCount = tweet.publicMetrics?.retweetCount
+        ..user = (User()
+          ..idStr = user.id
+          ..name = user.name
+          ..screenName = user.username
+          ..profileImageUrlHttps = user.profileImageUrl),
+    );
+
+    if (tweet.entities != null) {
+      tweetData = tweetData.copyWith(
+        entities: EntitiesData.fromV2TweetEntities(tweet.entities!),
+      );
+    }
+
+    return tweetData;
   }
 
   LegacyTweetData._();

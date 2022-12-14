@@ -203,7 +203,7 @@ void main() {
             user: harpyAppUser,
             media: [
               ImageMediaData(
-                baseUrl: 'test/images/yellow.png',
+                baseUrl: 'yellow.png',
                 aspectRatioDouble: 16 / 9,
               ),
             ],
@@ -229,19 +229,19 @@ void main() {
             user: harpyAppUser,
             media: [
               ImageMediaData(
-                baseUrl: 'test/images/red.png',
+                baseUrl: 'red.png',
                 aspectRatioDouble: 16 / 9,
               ),
               ImageMediaData(
-                baseUrl: 'test/images/magenta.png',
+                baseUrl: 'magenta.png',
                 aspectRatioDouble: 16 / 9,
               ),
               ImageMediaData(
-                baseUrl: 'test/images/blue.png',
+                baseUrl: 'blue.png',
                 aspectRatioDouble: 16 / 9,
               ),
               ImageMediaData(
-                baseUrl: 'test/images/aqua.png',
+                baseUrl: 'aqua.png',
                 aspectRatioDouble: 16 / 9,
               ),
             ],
@@ -275,9 +275,9 @@ void main() {
                     ..variants = [
                       Variant()
                         ..bitrate = 1
-                        ..url = 'test/images/red.png',
+                        ..url = 'red.png',
                     ])
-                  ..mediaUrlHttps = 'test/images/red.png',
+                  ..mediaUrlHttps = 'red.png',
               ),
             ],
           ),
@@ -306,7 +306,7 @@ void main() {
                   ..videoInfo = (VideoInfo()
                     ..aspectRatio = [16, 9]
                     ..variants = [])
-                  ..mediaUrlHttps = 'test/images/blue.png',
+                  ..mediaUrlHttps = 'blue.png',
               )
             ],
           ),
