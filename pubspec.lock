@@ -249,10 +249,10 @@ packages:
   dart_twitter_api:
     dependency: "direct main"
     description:
-      path: "../twitter_api"
-      relative: true
-    source: path
-    version: "0.5.7+1"
+      name: dart_twitter_api
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.8"
   dbus:
     dependency: transitive
     description:
@@ -914,9 +914,11 @@ packages:
   rby:
     dependency: "direct main"
     description:
-      path: "../rby.dart"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "3024a6331a3243278729881c79efbd67487f67d8"
+      url: "https://github.com/robertodoering/rby.dart"
+    source: git
     version: "0.0.1"
   riverpod:
     dependency: transitive

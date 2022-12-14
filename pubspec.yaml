@@ -16,9 +16,9 @@ dependencies:
   collection: ^1.15.0
   connectivity_plus: ^2.0.2
   cupertino_icons: ^1.0.4
-  # dart_twitter_api: ^0.5.4
-  dart_twitter_api: 
-    path: ../twitter_api
+  dart_twitter_api: ^0.5.8
+  # dart_twitter_api: 
+  #   path: ../twitter_api
   device_info_plus: ^8.0.0
   download_manager:
     git: https://github.com/robertodoering/download_manager
@@ -61,8 +61,8 @@ dependencies:
     # photo_view fork with better gesture recognition
     git: https://github.com/robertodoering/photo_view.git
   rby:
-    path: ../rby.dart
-    # git: https://github.com/robertodoering/rby.dart
+    git: https://github.com/robertodoering/rby.dart
+    # path: ../rby.dart
   riverpod_annotation: ^1.0.6
   scroll_to_index: ^3.0.0
   sentry_flutter: ^6.9.1
