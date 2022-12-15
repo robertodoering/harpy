@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:harpy/components/components.dart';
 
-import '../../test_setup/devices.dart';
 import '../../test_setup/setup.dart';
 
 void main() {

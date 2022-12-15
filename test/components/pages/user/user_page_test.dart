@@ -6,7 +6,6 @@ import 'package:harpy/components/components.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../test_setup/data/user_data.dart';
-import '../../../test_setup/mocks.dart';
 import '../../../test_setup/setup.dart';
 
 class MockUserPageNotifier extends Mock implements UserPageNotifier {}
