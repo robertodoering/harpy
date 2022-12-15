@@ -19,7 +19,7 @@ final postTweetProvider =
     StateNotifierProvider<PostTweetNotifier, PostTweetState>(
   (ref) => PostTweetNotifier(
     ref: ref,
-    twitterApi: ref.watch(twitterApiProvider),
+    twitterApi: ref.watch(twitterApiV1Provider),
   ),
   name: 'PostTweetProvider',
 );

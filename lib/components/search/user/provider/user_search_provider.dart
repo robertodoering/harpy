@@ -14,7 +14,7 @@ final userSearchProvider = StateNotifierProvider.autoDispose<UserSearchNotifier,
     PaginatedState<UsersSearchData>>(
   (ref) => UserSearchNotifier(
     ref: ref,
-    twitterApi: ref.watch(twitterApiProvider),
+    twitterApi: ref.watch(twitterApiV1Provider),
   ),
   name: 'UserSearchProvider',
 );

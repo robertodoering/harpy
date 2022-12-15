@@ -22,7 +22,7 @@ class UserPageNotifier extends _$UserPageNotifier {
     _languagePreferences = ref.watch(languagePreferencesProvider);
     _translateService = ref.watch(translateServiceProvider);
     _twitterApiV2 = ref.watch(twitterApiV2Provider);
-    final twitterApiV1 = ref.watch(twitterApiProvider);
+    final twitterApiV1 = ref.watch(twitterApiV1Provider);
 
     final responses = await Future.wait([
       _twitterApiV2.users.lookupByName(

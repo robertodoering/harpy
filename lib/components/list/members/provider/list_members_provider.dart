@@ -9,7 +9,7 @@ final listMembersProvider = StateNotifierProvider.autoDispose
     .family<ListsMembersNotifier, PaginatedState<BuiltList<UserData>>, String>(
   (ref, listId) => ListsMembersNotifier(
     ref: ref,
-    twitterApi: ref.watch(twitterApiProvider),
+    twitterApi: ref.watch(twitterApiV1Provider),
     listId: listId,
   ),
   name: 'ListMembersProvider',

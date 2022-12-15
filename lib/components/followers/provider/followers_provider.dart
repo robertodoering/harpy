@@ -9,7 +9,7 @@ final followersProvider = StateNotifierProvider.autoDispose
     .family<FollowersNotifier, PaginatedState<BuiltList<UserData>>, String>(
   (ref, handle) => FollowersNotifier(
     ref: ref,
-    twitterApi: ref.watch(twitterApiProvider),
+    twitterApi: ref.watch(twitterApiV1Provider),
     handle: handle,
   ),
   name: 'FollowersProvider',

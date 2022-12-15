@@ -12,7 +12,7 @@ final homeTimelineProvider =
 
     return HomeTimelineNotifier(
       ref: ref,
-      twitterApi: ref.watch(twitterApiProvider),
+      twitterApi: ref.watch(twitterApiV1Provider),
     );
   },
   name: 'HomeTimelineProvider',

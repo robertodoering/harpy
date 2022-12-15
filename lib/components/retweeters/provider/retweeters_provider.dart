@@ -6,7 +6,7 @@ final retweetersProvider =
     FutureProvider.autoDispose.family<BuiltList<UserData>, String>(
   (ref, tweetId) async {
     return ref
-        .watch(twitterApiProvider)
+        .watch(twitterApiV1Provider)
         .tweetService
         .retweets(id: tweetId, count: 100)
         .then(

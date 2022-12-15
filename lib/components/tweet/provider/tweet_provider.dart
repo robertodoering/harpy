@@ -17,7 +17,7 @@ final tweetProvider = StateNotifierProvider.autoDispose
 
     return TweetNotifier(
       ref: ref,
-      twitterApi: ref.watch(twitterApiProvider),
+      twitterApi: ref.watch(twitterApiV1Provider),
       translateService: ref.watch(translateServiceProvider),
       messageService: ref.watch(messageServiceProvider),
       languagePreferences: ref.watch(languagePreferencesProvider),

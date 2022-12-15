@@ -15,7 +15,7 @@ final trendsProvider = StateNotifierProvider.autoDispose<TrendsNotifier,
 
     return TrendsNotifier(
       ref: ref,
-      twitterApi: ref.watch(twitterApiProvider),
+      twitterApi: ref.watch(twitterApiV1Provider),
       userLocation: ref.watch(userTrendsLocationProvider),
     );
   },

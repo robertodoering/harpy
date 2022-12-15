@@ -11,7 +11,7 @@ final listTimelineProvider = StateNotifierProvider.autoDispose
 
     return ListTimelineNotifier(
       ref: ref,
-      twitterApi: ref.watch(twitterApiProvider),
+      twitterApi: ref.watch(twitterApiV1Provider),
       listId: listId,
     );
   },

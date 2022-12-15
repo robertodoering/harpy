@@ -27,7 +27,7 @@ class FakeUserTimelineNotifier extends UserTimelineNotifier {
 final userTimelineNotifierOverride = userTimelineProvider.overrideWith(
   (ref, arg) => FakeUserTimelineNotifier(
     ref: ref,
-    twitterApi: MockTwitterApi(),
+    twitterApi: MockTwitterApiV1(),
     userId: '',
   ),
 );

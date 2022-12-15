@@ -4,8 +4,8 @@ import 'package:harpy/components/components.dart';
 import 'package:harpy/core/misc/environment.dart';
 import 'package:twitter_api_v2/twitter_api_v2.dart' as v2;
 
-final twitterApiProvider = Provider(
-  name: 'twitterApiProvider',
+final twitterApiV1Provider = Provider(
+  name: 'twitterApiV1Provider',
   (ref) {
     final authPreferences = ref.watch(authPreferencesProvider);
     final key = ref.watch(consumerKeyProvider);

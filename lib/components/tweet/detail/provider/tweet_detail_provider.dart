@@ -7,7 +7,7 @@ final tweetDetailProvider = StateNotifierProvider.family
   name: 'TweetDetailProvider',
   (ref, id) => TweetDetailNotifier(
     id: id,
-    twitterApi: ref.watch(twitterApiProvider),
+    twitterApi: ref.watch(twitterApiV1Provider),
   ),
 );
 

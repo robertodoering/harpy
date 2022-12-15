@@ -16,7 +16,7 @@ final legacyUserConnectionsProvider = StateNotifierProvider.autoDispose.family<
   (ref, handles) => LegacyUserConnectionsNotifier(
     ref: ref,
     handles: handles,
-    twitterApi: ref.watch(twitterApiProvider),
+    twitterApi: ref.watch(twitterApiV1Provider),
   ),
   name: 'UserConnectionsProvider',
 );

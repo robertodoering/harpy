@@ -13,7 +13,7 @@ final tweetSearchProvider =
     StateNotifierProvider.autoDispose<TweetSearchNotifier, TweetSearchState>(
   (ref) => TweetSearchNotifier(
     ref: ref,
-    twitterApi: ref.watch(twitterApiProvider),
+    twitterApi: ref.watch(twitterApiV1Provider),
   ),
   name: 'TweetSearchProvider',
 );

@@ -12,7 +12,7 @@ final likesTimelineProvider = StateNotifierProvider.autoDispose
 
     return LikesTimelineNotifier(
       ref: ref,
-      twitterApi: ref.watch(twitterApiProvider),
+      twitterApi: ref.watch(twitterApiV1Provider),
       userId: userId,
     );
   },

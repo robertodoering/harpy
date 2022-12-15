@@ -12,7 +12,7 @@ final repliesProvider = StateNotifierProvider.autoDispose
     .family<RepliesNotifier, RepliesState, LegacyTweetData>(
   (ref, tweet) => RepliesNotifier(
     ref: ref,
-    twitterApi: ref.watch(twitterApiProvider),
+    twitterApi: ref.watch(twitterApiV1Provider),
     tweet: tweet,
   ),
   name: 'RepliesProvider',

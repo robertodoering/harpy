@@ -8,7 +8,7 @@ import 'package:mime_type/mime_type.dart';
 
 final mediaUploadService = Provider(
   (ref) => MediaUploadService(
-    twitterApi: ref.watch(twitterApiProvider),
+    twitterApi: ref.watch(twitterApiV1Provider),
   ),
   name: 'MediaUploadService',
 );

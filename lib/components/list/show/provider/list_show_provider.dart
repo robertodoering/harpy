@@ -13,7 +13,7 @@ final listShowProvider = StateNotifierProvider.autoDispose
   (ref, handle) => ListShowNotifier(
     handle: handle,
     ref: ref,
-    twitterApi: ref.watch(twitterApiProvider),
+    twitterApi: ref.watch(twitterApiV1Provider),
   ),
   name: 'ListShowProvider',
 );

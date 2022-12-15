@@ -71,7 +71,7 @@ class Authentication with LoggerMixin {
 
     // invalidate token
     _ref
-        .read(twitterApiProvider)
+        .read(twitterApiV1Provider)
         .client
         .post(Uri.https('api.twitter.com', '1.1/oauth/invalidate_token'))
         .handleError(logErrorHandler)
@@ -86,7 +86,7 @@ class Authentication with LoggerMixin {
 
   /// Requests the [UserData] for the authenticated user.
   Future<UserData?> _initializeUser(String userId) async {
-    final twitterApi = _ref.read(twitterApiProvider);
+    final twitterApi = _ref.read(twitterApiV1Provider);
 
     dynamic error;
 
