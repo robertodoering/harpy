@@ -8,7 +8,7 @@ class TweetDetailCard extends StatelessWidget {
     required this.tweet,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
 
   @override
   Widget build(BuildContext context) {

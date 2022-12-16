@@ -33,7 +33,7 @@ class MediaGalleryOverlay extends ConsumerStatefulWidget {
     this.actions = kDefaultOverlayActions,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final MediaData media;
   final TweetDelegates delegates;
   final Widget child;
@@ -203,7 +203,7 @@ class _OverlayTweetActions extends ConsumerWidget {
     required this.actions,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final MediaData media;
   final TweetDelegates delegates;
   final Set<MediaOverlayActions> actions;
@@ -298,7 +298,7 @@ class _OverlayPreviewText extends ConsumerWidget {
     required this.delegates,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetDelegates delegates;
 
   @override

@@ -11,8 +11,8 @@ class ComposeTweetCardWithParent extends StatelessWidget {
     this.quotedTweet,
   }) : assert(parentTweet == null || quotedTweet == null);
 
-  final TweetData? parentTweet;
-  final TweetData? quotedTweet;
+  final LegacyTweetData? parentTweet;
+  final LegacyTweetData? quotedTweet;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class _ParentTweetCard extends ConsumerWidget {
     required this.label,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final String label;
 
   @override

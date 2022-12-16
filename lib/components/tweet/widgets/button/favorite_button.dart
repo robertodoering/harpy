@@ -12,7 +12,7 @@ class FavoriteButton extends ConsumerWidget {
     this.foregroundColor,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetActionCallback? onFavorite;
   final TweetActionCallback? onUnfavorite;
   final double sizeDelta;

@@ -20,7 +20,7 @@ class UserSearchPage extends ConsumerWidget {
           child: LoadMoreListener(
             listen: state.canLoadMore,
             onLoadMore: notifier.loadMore,
-            child: UserList(
+            child: LegacyUserList(
               state.data?.users.toList() ?? [],
               beginSlivers: [
                 SearchAppBar(

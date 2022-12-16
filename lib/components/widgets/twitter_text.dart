@@ -69,7 +69,7 @@ void defaultOnUrlLongPress(WidgetRef ref, UrlData url) {
   );
 }
 
-void defaultOnHashtagTap(WidgetRef ref, HashtagData hashtag) {
+void defaultOnHashtagTap(WidgetRef ref, TagData hashtag) {
   final searchQuery = '#${hashtag.text}';
 
   if (ref.read(tweetSearchProvider) != const TweetSearchState.initial()) {
@@ -126,7 +126,7 @@ class TwitterText extends ConsumerStatefulWidget {
   /// when the tweet includes a quote.
   final String? urlToIgnore;
 
-  final EntityTapped<HashtagData>? onHashtagTap;
+  final EntityTapped<TagData>? onHashtagTap;
   final EntityTapped<UrlData>? onUrlTap;
   final EntityTapped<UrlData> onUrlLongPress;
   final EntityTapped<UserMentionData>? onUserMentionTap;
@@ -192,7 +192,7 @@ class _TwitterTextState extends ConsumerState<TwitterText> {
     String? text;
     GestureRecognizer? recognizer;
 
-    if (value is HashtagData) {
+    if (value is TagData) {
       recognizer = TapGestureRecognizer()
         ..onTap = () => widget.onHashtagTap?.call(ref, value);
 
@@ -375,7 +375,7 @@ class _TwitterTextEntity {
 
   /// The entity value.
   ///
-  /// Types include [HashtagData], [UrlData], [UserMentionData] and
+  /// Types include [TagData], [UrlData], [UserMentionData] and
   /// [EntitiesMediaData].
   final dynamic value;
 }

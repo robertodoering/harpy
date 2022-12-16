@@ -12,7 +12,7 @@ part 'find_trends_location_provider.freezed.dart';
 final findTrendsLocationProvider = StateNotifierProvider.autoDispose<
     FindTrendsLocationNotifier, FindTrendsLocationState>(
   (ref) => FindTrendsLocationNotifier(
-    twitterApi: ref.watch(twitterApiProvider),
+    twitterApi: ref.watch(twitterApiV1Provider),
   ),
   name: 'FindTrendsLocationProvider',
 );

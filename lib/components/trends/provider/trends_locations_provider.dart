@@ -12,7 +12,7 @@ final trendsLocationsProvider = StateNotifierProvider.autoDispose<
     ref.cacheFor(const Duration(minutes: 5));
 
     return TrendsLocationsNotifier(
-      twitterApi: ref.watch(twitterApiProvider),
+      twitterApi: ref.watch(twitterApiV1Provider),
     );
   },
   name: 'TrendsLocationsProvider',

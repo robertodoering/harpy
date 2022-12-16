@@ -12,7 +12,7 @@ class DownloadButton extends ConsumerWidget {
     this.foregroundColor,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final MediaData media;
   final MediaActionCallback? onDownload;
   final double sizeDelta;

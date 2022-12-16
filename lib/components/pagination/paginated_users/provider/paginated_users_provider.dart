@@ -25,7 +25,7 @@ abstract class PaginatedUsersNotifier
   Future<void> onInitialResponse(PaginatedUsers response) async {
     log.fine('received initial paginated users response');
 
-    final users = response.users?.map(UserData.fromUser).toBuiltList();
+    final users = response.users?.map(UserData.fromV1).toBuiltList();
 
     if (users == null || users.isEmpty) {
       state = const PaginatedState.noData();
@@ -47,7 +47,7 @@ abstract class PaginatedUsersNotifier
     log.fine('received loading more paginated users response');
 
     final users =
-        response.users?.map(UserData.fromUser) ?? const Iterable.empty();
+        response.users?.map(UserData.fromV1) ?? const Iterable.empty();
 
     final cursor = int.tryParse(response.nextCursorStr ?? '');
 

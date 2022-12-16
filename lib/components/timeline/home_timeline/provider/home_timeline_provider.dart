@@ -12,7 +12,7 @@ final homeTimelineProvider =
 
     return HomeTimelineNotifier(
       ref: ref,
-      twitterApi: ref.watch(twitterApiProvider),
+      twitterApi: ref.watch(twitterApiV1Provider),
     );
   },
   name: 'HomeTimelineProvider',
@@ -52,7 +52,7 @@ class HomeTimelineNotifier extends TimelineNotifier {
   int get restoredTweetId =>
       ref.read(tweetVisibilityPreferencesProvider).lastVisibleTweet;
 
-  void addTweet(TweetData tweet) {
+  void addTweet(LegacyTweetData tweet) {
     final currentState = state;
 
     if (currentState is TimelineStateData) {
@@ -72,7 +72,7 @@ class HomeTimelineNotifier extends TimelineNotifier {
     }
   }
 
-  void removeTweet(TweetData tweet) {
+  void removeTweet(LegacyTweetData tweet) {
     final currentState = state;
 
     if (currentState is TimelineStateData) {

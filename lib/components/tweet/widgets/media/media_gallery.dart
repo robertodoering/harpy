@@ -13,7 +13,7 @@ class MediaGalleryEntry {
     required this.builder,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetDelegates delegates;
   final MediaData media;
   final WidgetBuilder builder;

@@ -10,7 +10,7 @@ class TranslateButton extends ConsumerWidget {
     this.sizeDelta = 0,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetActionCallback? onTranslate;
   final double sizeDelta;
 
@@ -49,7 +49,7 @@ class TranslateButton extends ConsumerWidget {
 bool _quoteActiveTranslation(
   BuildContext context,
   WidgetRef ref, {
-  required TweetData tweet,
+  required LegacyTweetData tweet,
 }) {
   if (tweet.quote == null) return false;
 

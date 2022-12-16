@@ -14,7 +14,7 @@ final userSearchProvider = StateNotifierProvider.autoDispose<UserSearchNotifier,
     PaginatedState<UsersSearchData>>(
   (ref) => UserSearchNotifier(
     ref: ref,
-    twitterApi: ref.watch(twitterApiProvider),
+    twitterApi: ref.watch(twitterApiV1Provider),
   ),
   name: 'UserSearchProvider',
 );
@@ -38,7 +38,7 @@ class UserSearchNotifier extends StateNotifier<PaginatedState<UsersSearchData>>
   }) async {
     final newUsers = await _twitterApi.userService
         .usersSearch(q: query, count: 20, page: cursor, includeEntities: false)
-        .then((users) => users.map(UserData.fromUser))
+        .then((users) => users.map(UserData.fromV1))
         .then(
           (users) => users.whereNot(
             (newUser) => oldUsers.any((oldUser) => newUser.id == oldUser.id),

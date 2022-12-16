@@ -1,41 +1,79 @@
-import 'package:dart_twitter_api/twitter_api.dart';
+import 'package:dart_twitter_api/twitter_api.dart' as v1;
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:twitter_api_v2/twitter_api_v2.dart' as v2;
 
 part 'entities_data.freezed.dart';
 
 @freezed
 class EntitiesData with _$EntitiesData {
   const factory EntitiesData({
-    @Default(<HashtagData>[]) List<HashtagData> hashtags,
+    @Default(<TagData>[]) List<TagData> hashtags,
+    @Default(<TagData>[]) List<TagData> cashtags,
     @Default(<EntitiesMediaData>[]) List<EntitiesMediaData> media,
     @Default(<UrlData>[]) List<UrlData> urls,
     @Default(<UserMentionData>[]) List<UserMentionData> userMentions,
   }) = _EntitiesData;
 
-  factory EntitiesData.fromEntities(Entities? entities) {
+  factory EntitiesData.fromV2UserDescriptionEntity(
+    v2.UserDescriptionEntity userDescriptionEntity,
+  ) {
+    final hashtags = userDescriptionEntity.hashtags ?? [];
+    final cashtags = userDescriptionEntity.cashtags ?? [];
+    final mentions = userDescriptionEntity.mentions ?? [];
+    final urls = userDescriptionEntity.urls ?? [];
+
+    return EntitiesData(
+      hashtags: hashtags.map(TagData.fromV2).toList(),
+      cashtags: cashtags.map(TagData.fromV2).toList(),
+      userMentions: mentions.map(UserMentionData.fromV2).toList(),
+      urls: urls.map(UrlData.fromV2).toList(),
+    );
+  }
+
+  factory EntitiesData.fromV2TweetEntities(
+    v2.TweetEntities tweetEntities,
+  ) {
+    final hashtags = tweetEntities.hashtags ?? [];
+    final cashtags = tweetEntities.cashtags ?? [];
+    final mentions = tweetEntities.mentions ?? [];
+    final urls = tweetEntities.urls ?? [];
+
+    return EntitiesData(
+      hashtags: hashtags.map(TagData.fromV2).toList(),
+      cashtags: cashtags.map(TagData.fromV2).toList(),
+      userMentions: mentions.map(UserMentionData.fromV2).toList(),
+      urls: urls.map(UrlData.fromV2).toList(),
+    );
+  }
+
+  factory EntitiesData.fromV1(v1.Entities? entities) {
     final hashtags = entities?.hashtags ?? [];
     final media = entities?.media ?? [];
     final urls = entities?.urls ?? [];
     final userMentions = entities?.userMentions ?? [];
 
     return EntitiesData(
-      hashtags: hashtags.map(HashtagData.fromHashtag).toList(),
-      media: media.map(EntitiesMediaData.fromMedia).toList(),
-      urls: urls.map(UrlData.fromUrl).toList(),
-      userMentions: userMentions.map(UserMentionData.fromUserMention).toList(),
+      hashtags: hashtags.map(TagData.fromV1).toList(),
+      media: media.map(EntitiesMediaData.fromV1).toList(),
+      urls: urls.map(UrlData.fromV1).toList(),
+      userMentions: userMentions.map(UserMentionData.fromV1).toList(),
     );
   }
 }
 
 @freezed
-class HashtagData with _$HashtagData {
-  const factory HashtagData({
-    /// Name of the hashtag, minus the leading `#` character.
+class TagData with _$TagData {
+  const factory TagData({
+    /// The text of the hastag or cashtag, minus any leading `#` or `$`.
     required String text,
-  }) = _HashtagData;
+  }) = _TagData;
 
-  factory HashtagData.fromHashtag(Hashtag hashtag) {
-    return HashtagData(
+  factory TagData.fromV2(v2.Tag tag) {
+    return TagData(text: tag.tag);
+  }
+
+  factory TagData.fromV1(v1.Hashtag hashtag) {
+    return TagData(
       text: hashtag.text ?? '',
     );
   }
@@ -49,7 +87,7 @@ class EntitiesMediaData with _$EntitiesMediaData {
     required String url,
   }) = _EntitiesMediaData;
 
-  factory EntitiesMediaData.fromMedia(Media media) {
+  factory EntitiesMediaData.fromV1(v1.Media media) {
     return EntitiesMediaData(
       url: media.url ?? '',
     );
@@ -74,11 +112,19 @@ class UrlData with _$UrlData {
     required String url,
   }) = _UrlData;
 
-  factory UrlData.fromUrl(Url url) {
+  factory UrlData.fromV1(v1.Url url) {
     return UrlData(
       displayUrl: url.displayUrl ?? '',
       expandedUrl: url.expandedUrl ?? '',
       url: url.url ?? '',
+    );
+  }
+
+  factory UrlData.fromV2(v2.Url url) {
+    return UrlData(
+      displayUrl: url.displayUrl,
+      expandedUrl: url.expandedUrl,
+      url: url.url,
     );
   }
 }
@@ -90,7 +136,11 @@ class UserMentionData with _$UserMentionData {
     required String handle,
   }) = _UserMentionData;
 
-  factory UserMentionData.fromUserMention(UserMention userMention) {
+  factory UserMentionData.fromV2(v2.Mention mention) {
+    return UserMentionData(handle: mention.username);
+  }
+
+  factory UserMentionData.fromV1(v1.UserMention userMention) {
     return UserMentionData(
       handle: userMention.screenName ?? '',
     );

@@ -6,7 +6,7 @@ import 'package:harpy/components/components.dart';
 import 'package:rby/rby.dart';
 
 typedef TweetDelegatesCreator = TweetDelegates Function(
-  TweetData tweet,
+  LegacyTweetData tweet,
   TweetNotifier notifier,
 );
 
@@ -19,7 +19,7 @@ class TweetCard extends ConsumerStatefulWidget {
     this.index,
   }) : super(key: ObjectKey(tweet));
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetCardConfig config;
   final TweetDelegatesCreator createDelegates;
   final Color? color;

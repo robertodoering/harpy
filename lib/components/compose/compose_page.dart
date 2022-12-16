@@ -11,10 +11,10 @@ class ComposePage extends ConsumerStatefulWidget {
   }) : assert(parentTweet == null || quotedTweet == null);
 
   /// The tweet that the user is replying to.
-  final TweetData? parentTweet;
+  final LegacyTweetData? parentTweet;
 
   /// The tweet that the user is quoting (aka retweeting with quote).
-  final TweetData? quotedTweet;
+  final LegacyTweetData? quotedTweet;
 
   static const name = 'compose';
 

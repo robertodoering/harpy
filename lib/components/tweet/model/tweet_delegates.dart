@@ -40,7 +40,7 @@ class TweetDelegates with _$TweetDelegates {
 }
 
 TweetDelegates defaultTweetDelegates(
-  TweetData tweet,
+  LegacyTweetData tweet,
   TweetNotifier notifier,
 ) {
   return TweetDelegates(
@@ -56,7 +56,6 @@ TweetDelegates defaultTweetDelegates(
         router.pushNamed(
           UserPage.name,
           params: {'handle': tweet.user.handle},
-          extra: tweet.user,
         );
       }
     },
@@ -67,7 +66,6 @@ TweetDelegates defaultTweetDelegates(
         router.pushNamed(
           UserPage.name,
           params: {'handle': tweet.retweeter!.handle},
-          extra: tweet.retweeter,
         );
       }
     },

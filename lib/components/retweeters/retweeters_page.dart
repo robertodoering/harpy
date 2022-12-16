@@ -18,7 +18,7 @@ class RetweetersPage extends ConsumerWidget {
     return HarpyScaffold(
       child: ScrollDirectionListener(
         child: ScrollToTop(
-          child: UserList(
+          child: LegacyUserList(
             state.whenOrNull(data: (users) => users.toList()) ?? [],
             beginSlivers: const [
               HarpySliverAppBar(title: Text('retweeted by'))

@@ -22,7 +22,7 @@ VideoPlayerArguments _videoArguments(VideoMediaData mediaData) {
   return VideoPlayerArguments(
     urls: BuiltMap({
       for (var i = 0; i < min(3, mediaData.variants.length); i++)
-        _qualityNames[i]: mediaData.variants[i].url!,
+        _qualityNames[i]: mediaData.variants[i],
     }),
     loop: false,
     isVideo: true,
@@ -39,7 +39,7 @@ class TweetVideo extends ConsumerWidget {
     this.compact = false,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final OverlayBuilder overlayBuilder;
   final Object heroTag;
   final HeroPlaceholderBuilder? placeholderBuilder;
@@ -129,7 +129,7 @@ class TweetGalleryVideo extends ConsumerWidget {
     this.onVideoLongPress,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final Object heroTag;
   final VoidCallback? onVideoLongPress;
 
@@ -153,7 +153,7 @@ class TweetFullscreenVideo extends ConsumerStatefulWidget {
     required this.tweet,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
 
   @override
   ConsumerState<TweetFullscreenVideo> createState() => _FullscreenVideoState();

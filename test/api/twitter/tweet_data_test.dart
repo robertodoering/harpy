@@ -5,7 +5,7 @@ import 'package:harpy/api/api.dart';
 void main() {
   group('replyAuthors', () {
     test('returns an empty string when no replies exist', () {
-      final tweetData = TweetData.fromTweet(Tweet());
+      final tweetData = LegacyTweetData.fromTweet(Tweet());
 
       expect(tweetData.replyAuthors, '');
     });
@@ -14,10 +14,10 @@ void main() {
       final firstUser = User()..name = 'First replier';
       final secondUser = User()..name = 'Second replier';
 
-      final tweetData = TweetData.fromTweet(Tweet()).copyWith(
+      final tweetData = LegacyTweetData.fromTweet(Tweet()).copyWith(
         replies: [
-          TweetData.fromTweet(Tweet()..user = firstUser),
-          TweetData.fromTweet(Tweet()..user = secondUser),
+          LegacyTweetData.fromTweet(Tweet()..user = firstUser),
+          LegacyTweetData.fromTweet(Tweet()..user = secondUser),
         ],
       );
 
@@ -28,11 +28,11 @@ void main() {
       final firstUser = User()..name = 'First replier';
       final secondUser = User()..name = 'Second replier';
 
-      final tweetData = TweetData.fromTweet(Tweet()).copyWith(
+      final tweetData = LegacyTweetData.fromTweet(Tweet()).copyWith(
         replies: [
-          TweetData.fromTweet(Tweet()..user = firstUser),
-          TweetData.fromTweet(Tweet()..user = secondUser),
-          TweetData.fromTweet(Tweet()..user = firstUser),
+          LegacyTweetData.fromTweet(Tweet()..user = firstUser),
+          LegacyTweetData.fromTweet(Tweet()..user = secondUser),
+          LegacyTweetData.fromTweet(Tweet()..user = firstUser),
         ],
       );
 
@@ -44,11 +44,11 @@ void main() {
         'replier', () {
       final originalUser = User()..name = 'Original author';
 
-      final tweetData = TweetData.fromTweet(
+      final tweetData = LegacyTweetData.fromTweet(
         Tweet()..user = originalUser,
       ).copyWith(
         replies: [
-          TweetData.fromTweet(Tweet()..user = originalUser),
+          LegacyTweetData.fromTweet(Tweet()..user = originalUser),
         ],
       );
 
@@ -61,13 +61,13 @@ void main() {
       final firstUser = User()..name = 'First replier';
       final secondUser = User()..name = 'Second replier';
 
-      final tweetData = TweetData.fromTweet(
+      final tweetData = LegacyTweetData.fromTweet(
         Tweet()..user = originalUser,
       ).copyWith(
         replies: [
-          TweetData.fromTweet(Tweet()..user = originalUser),
-          TweetData.fromTweet(Tweet()..user = firstUser),
-          TweetData.fromTweet(Tweet()..user = secondUser),
+          LegacyTweetData.fromTweet(Tweet()..user = originalUser),
+          LegacyTweetData.fromTweet(Tweet()..user = firstUser),
+          LegacyTweetData.fromTweet(Tweet()..user = secondUser),
         ],
       );
 
@@ -81,11 +81,11 @@ void main() {
       final firstUser = User()..name = 'First replier';
       final secondUser = User()..name = 'Second replier';
 
-      final tweetData = TweetData.fromTweet(Tweet()).copyWith(
+      final tweetData = LegacyTweetData.fromTweet(Tweet()).copyWith(
         replies: [
-          TweetData.fromTweet(Tweet()..user = firstUser),
-          TweetData.fromTweet(Tweet()..user = firstUser),
-          TweetData.fromTweet(Tweet()..user = secondUser),
+          LegacyTweetData.fromTweet(Tweet()..user = firstUser),
+          LegacyTweetData.fromTweet(Tweet()..user = firstUser),
+          LegacyTweetData.fromTweet(Tweet()..user = secondUser),
         ],
       );
 
@@ -104,15 +104,15 @@ void main() {
       final sixthUser = User()..name = 'Sixth replier';
       final seventhUser = User()..name = 'Seventh replier';
 
-      final tweetData = TweetData.fromTweet(Tweet()).copyWith(
+      final tweetData = LegacyTweetData.fromTweet(Tweet()).copyWith(
         replies: [
-          TweetData.fromTweet(Tweet()..user = firstUser),
-          TweetData.fromTweet(Tweet()..user = secondUser),
-          TweetData.fromTweet(Tweet()..user = thirdUser),
-          TweetData.fromTweet(Tweet()..user = fourthUser),
-          TweetData.fromTweet(Tweet()..user = fifthUser),
-          TweetData.fromTweet(Tweet()..user = sixthUser),
-          TweetData.fromTweet(Tweet()..user = seventhUser),
+          LegacyTweetData.fromTweet(Tweet()..user = firstUser),
+          LegacyTweetData.fromTweet(Tweet()..user = secondUser),
+          LegacyTweetData.fromTweet(Tweet()..user = thirdUser),
+          LegacyTweetData.fromTweet(Tweet()..user = fourthUser),
+          LegacyTweetData.fromTweet(Tweet()..user = fifthUser),
+          LegacyTweetData.fromTweet(Tweet()..user = sixthUser),
+          LegacyTweetData.fromTweet(Tweet()..user = seventhUser),
         ],
       );
 

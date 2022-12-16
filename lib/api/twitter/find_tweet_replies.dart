@@ -21,7 +21,7 @@ extension RepliesExtension on TweetSearchService {
   ///
   /// Throws an exception when the [searchTweets] did not return a 200 response.
   Future<RepliesResult> findReplies(
-    TweetData tweet, [
+    LegacyTweetData tweet, [
     RepliesResult? lastResult,
   ]) async {
     final screenName = tweet.user.handle;
@@ -52,12 +52,12 @@ extension RepliesExtension on TweetSearchService {
       }
     }
 
-    final replies = <TweetData>[];
+    final replies = <LegacyTweetData>[];
 
     // filter found tweets by replies
     for (final reply in result.statuses!) {
       if (reply.inReplyToStatusIdStr == tweet.id) {
-        replies.add(TweetData.fromTweet(reply));
+        replies.add(LegacyTweetData.fromTweet(reply));
       }
     }
 
@@ -85,7 +85,7 @@ class RepliesResult {
   });
 
   /// The list of replies to a tweet.
-  final List<TweetData> replies;
+  final List<LegacyTweetData> replies;
 
   /// The id of the last reply.
   final String? maxId;

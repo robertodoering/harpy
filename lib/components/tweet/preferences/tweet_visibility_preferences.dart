@@ -32,7 +32,7 @@ class TweetVisibilityPreferences with LoggerMixin {
 
   /// Updates tweet visibility based on the home timeline position behavior
   /// setting.
-  void updateVisibleTweet(TweetData tweet) {
+  void updateVisibleTweet(LegacyTweetData tweet) {
     if (_generalPreferences.keepLastHomeTimelinePosition) {
       final id = int.tryParse(tweet.originalId);
 

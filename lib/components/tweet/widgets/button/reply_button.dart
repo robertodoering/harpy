@@ -10,7 +10,7 @@ class Replybutton extends ConsumerWidget {
     this.sizeDelta = 0,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetActionCallback? onComposeReply;
   final double sizeDelta;
 

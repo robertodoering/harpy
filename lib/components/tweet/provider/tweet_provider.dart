@@ -10,14 +10,14 @@ import 'package:harpy/core/core.dart';
 import 'package:http/http.dart';
 import 'package:rby/rby.dart';
 
-final tweetProvider =
-    StateNotifierProvider.autoDispose.family<TweetNotifier, TweetData?, String>(
+final tweetProvider = StateNotifierProvider.autoDispose
+    .family<TweetNotifier, LegacyTweetData?, String>(
   (ref, id) {
     ref.cacheFor(const Duration(minutes: 5));
 
     return TweetNotifier(
       ref: ref,
-      twitterApi: ref.watch(twitterApiProvider),
+      twitterApi: ref.watch(twitterApiV1Provider),
       translateService: ref.watch(translateServiceProvider),
       messageService: ref.watch(messageServiceProvider),
       languagePreferences: ref.watch(languagePreferencesProvider),
@@ -25,7 +25,7 @@ final tweetProvider =
   },
 );
 
-class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
+class TweetNotifier extends StateNotifier<LegacyTweetData?> with LoggerMixin {
   TweetNotifier({
     required Ref ref,
     required TwitterApi twitterApi,
@@ -45,7 +45,7 @@ class TweetNotifier extends StateNotifier<TweetData?> with LoggerMixin {
   final MessageService _messageService;
   final LanguagePreferences _languagePreferences;
 
-  void initialize(TweetData tweet) {
+  void initialize(LegacyTweetData tweet) {
     if (mounted && state == null) state = tweet;
   }
 

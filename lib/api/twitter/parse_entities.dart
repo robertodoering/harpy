@@ -3,7 +3,7 @@ import 'package:harpy/core/core.dart';
 
 /// Parses hashtags and user mentions from the [text].
 EntitiesData parseEntities(String text) {
-  final hashtags = <HashtagData>[];
+  final hashtags = <TagData>[];
   final userMentions = <UserMentionData>[];
 
   // search for hashtags in text, ensure we correctly remove the
@@ -13,7 +13,7 @@ EntitiesData parseEntities(String text) {
 
     if (hashtag != null) {
       hashtags.add(
-        HashtagData(
+        TagData(
           text: hashtag.replaceFirst(RegExp('#|＃'), ''),
         ),
       );

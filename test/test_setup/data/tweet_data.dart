@@ -3,12 +3,12 @@ import 'package:harpy/api/api.dart';
 
 import 'user_data.dart';
 
-final exampleTweet = TweetData(
+final exampleTweet = LegacyTweetData(
   createdAt: DateTime(2021, 07, 29),
-  user: harpyAppUser,
+  user: userDataHarpy,
   media: [
     ImageMediaData(
-      baseUrl: 'test/images/red.png',
+      baseUrl: 'red.png',
       aspectRatioDouble: 1,
     ),
   ],

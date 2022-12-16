@@ -13,7 +13,7 @@ class TweetDetailPage extends ConsumerStatefulWidget {
   });
 
   final String id;
-  final TweetData? tweet;
+  final LegacyTweetData? tweet;
 
   static const name = 'detail';
 
@@ -57,7 +57,7 @@ class _TweetDetailContent extends ConsumerWidget {
     required this.tweet,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

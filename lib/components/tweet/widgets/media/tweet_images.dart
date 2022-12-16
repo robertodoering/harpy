@@ -13,7 +13,7 @@ class TweetImages extends ConsumerWidget {
     this.onImageLongPress,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetDelegates delegates;
   final int? tweetIndex;
   final IndexedVoidCallback? onImageLongPress;
@@ -21,7 +21,7 @@ class TweetImages extends ConsumerWidget {
   void _onImageTap(
     BuildContext context, {
     required int index,
-    required TweetData tweet,
+    required LegacyTweetData tweet,
   }) {
     final theme = Theme.of(context);
 

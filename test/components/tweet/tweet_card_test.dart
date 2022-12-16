@@ -15,9 +15,9 @@ void main() {
         (tester) async {
       await tester.pumpWidgetBuilder(
         TweetCard(
-          tweet: TweetData(
+          tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser,
+            user: userDataHarpy,
           ),
         ),
         wrapper: buildListItemBase,
@@ -33,9 +33,9 @@ void main() {
     testGoldens('builds top row with long name', (tester) async {
       await tester.pumpWidgetBuilder(
         TweetCard(
-          tweet: TweetData(
+          tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser.copyWith(
+            user: userDataHarpy.copyWith(
               name: 'Harpy with a really long name, like, really long.',
               handle: 'harpy_app_userhandle_size_is_normally_limited',
             ),
@@ -53,9 +53,9 @@ void main() {
     testGoldens('builds top row with empty name and handle', (tester) async {
       await tester.pumpWidgetBuilder(
         TweetCard(
-          tweet: TweetData(
+          tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser.copyWith(
+            user: userDataHarpy.copyWith(
               name: '',
               handle: '',
             ),
@@ -73,9 +73,9 @@ void main() {
     testGoldens('builds top row with zero width name', (tester) async {
       await tester.pumpWidgetBuilder(
         TweetCard(
-          tweet: TweetData(
+          tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser.copyWith(
+            user: userDataHarpy.copyWith(
               name: '\u064E',
               handle: '',
             ),
@@ -93,11 +93,11 @@ void main() {
     testGoldens('builds text', (tester) async {
       await tester.pumpWidgetBuilder(
         TweetCard(
-          tweet: TweetData(
+          tweet: LegacyTweetData(
             createdAt: DateTime.now(),
             text: 'Hello World!',
             visibleText: 'Hello World!',
-            user: harpyAppUser,
+            user: userDataHarpy,
           ),
         ),
         wrapper: buildListItemBase,
@@ -113,12 +113,12 @@ void main() {
         (tester) async {
       await tester.pumpWidgetBuilder(
         TweetCard(
-          tweet: TweetData(
+          tweet: LegacyTweetData(
             createdAt: DateTime.now(),
             text: 'Hello World!',
             visibleText: 'Hello World!',
             lang: 'en',
-            user: harpyAppUser,
+            user: userDataHarpy,
           ),
         ),
         wrapper: (child) => buildListItemBase(
@@ -137,7 +137,7 @@ void main() {
     testGoldens('builds translation', (tester) async {
       await tester.pumpWidgetBuilder(
         TweetCard(
-          tweet: TweetData(
+          tweet: LegacyTweetData(
             createdAt: DateTime.now(),
             text: 'Hello World!',
             visibleText: 'Hello World!',
@@ -148,7 +148,7 @@ void main() {
               languageCode: 'de',
               original: 'en',
             ),
-            user: harpyAppUser,
+            user: userDataHarpy,
           ),
         ),
         wrapper: (child) => buildListItemBase(
@@ -168,7 +168,7 @@ void main() {
         (tester) async {
       await tester.pumpWidgetBuilder(
         TweetCard(
-          tweet: TweetData(
+          tweet: LegacyTweetData(
             createdAt: DateTime.now(),
             text: 'Hello World!',
             visibleText: 'Hello World!',
@@ -179,7 +179,7 @@ void main() {
               original: '',
               text: '',
             ),
-            user: harpyAppUser,
+            user: userDataHarpy,
           ),
         ),
         wrapper: (child) => buildListItemBase(
@@ -198,12 +198,12 @@ void main() {
     testGoldens('builds media with 1 image', (tester) async {
       await tester.pumpWidgetBuilder(
         TweetCard(
-          tweet: TweetData(
+          tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser,
+            user: userDataHarpy,
             media: [
               ImageMediaData(
-                baseUrl: 'test/images/yellow.png',
+                baseUrl: 'yellow.png',
                 aspectRatioDouble: 16 / 9,
               ),
             ],
@@ -224,24 +224,24 @@ void main() {
     testGoldens('builds media with 4 images', (tester) async {
       await tester.pumpWidgetBuilder(
         TweetCard(
-          tweet: TweetData(
+          tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser,
+            user: userDataHarpy,
             media: [
               ImageMediaData(
-                baseUrl: 'test/images/red.png',
+                baseUrl: 'red.png',
                 aspectRatioDouble: 16 / 9,
               ),
               ImageMediaData(
-                baseUrl: 'test/images/magenta.png',
+                baseUrl: 'magenta.png',
                 aspectRatioDouble: 16 / 9,
               ),
               ImageMediaData(
-                baseUrl: 'test/images/blue.png',
+                baseUrl: 'blue.png',
                 aspectRatioDouble: 16 / 9,
               ),
               ImageMediaData(
-                baseUrl: 'test/images/aqua.png',
+                baseUrl: 'aqua.png',
                 aspectRatioDouble: 16 / 9,
               ),
             ],
@@ -262,11 +262,11 @@ void main() {
     testGoldens('builds media with video', (tester) async {
       await tester.pumpWidgetBuilder(
         TweetCard(
-          tweet: TweetData(
+          tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser,
+            user: userDataHarpy,
             media: [
-              VideoMediaData.fromMedia(
+              VideoMediaData.fromV1(
                 Media()
                   ..type = kMediaVideo
                   ..videoInfo = (VideoInfo()
@@ -275,9 +275,9 @@ void main() {
                     ..variants = [
                       Variant()
                         ..bitrate = 1
-                        ..url = 'test/images/red.png',
+                        ..url = 'red.png',
                     ])
-                  ..mediaUrlHttps = 'test/images/red.png',
+                  ..mediaUrlHttps = 'red.png',
               ),
             ],
           ),
@@ -296,17 +296,17 @@ void main() {
     testGoldens('builds media with gif', (tester) async {
       await tester.pumpWidgetBuilder(
         TweetCard(
-          tweet: TweetData(
+          tweet: LegacyTweetData(
             createdAt: DateTime.now(),
-            user: harpyAppUser,
+            user: userDataHarpy,
             media: [
-              VideoMediaData.fromMedia(
+              VideoMediaData.fromV1(
                 Media()
                   ..type = kMediaGif
                   ..videoInfo = (VideoInfo()
                     ..aspectRatio = [16, 9]
                     ..variants = [])
-                  ..mediaUrlHttps = 'test/images/blue.png',
+                  ..mediaUrlHttps = 'blue.png',
               )
             ],
           ),
@@ -324,16 +324,16 @@ void main() {
     testGoldens('builds quote', (tester) async {
       await tester.pumpWidgetBuilder(
         TweetCard(
-          tweet: TweetData(
+          tweet: LegacyTweetData(
             originalId: '1',
             createdAt: DateTime.now(),
-            user: harpyAppUser,
+            user: userDataHarpy,
             text: 'text',
             visibleText: 'text',
-            quote: TweetData(
+            quote: LegacyTweetData(
               originalId: '2',
               createdAt: DateTime.now(),
-              user: harpyAppUser,
+              user: userDataHarpy,
               text: 'quote text',
               visibleText: 'quote text',
             ),

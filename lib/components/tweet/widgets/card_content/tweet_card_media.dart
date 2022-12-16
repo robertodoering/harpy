@@ -14,7 +14,7 @@ class TweetCardMedia extends ConsumerWidget {
     this.index,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetDelegates delegates;
   final int? index;
 
@@ -119,7 +119,7 @@ class _MediaConstrainedHeight extends ConsumerWidget {
     required this.child,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final Widget child;
 
   Widget _constrainedAspectRatio(double aspectRatio) {
@@ -180,7 +180,7 @@ class _MediaConstrainedHeight extends ConsumerWidget {
 ///       differentiate based on the tweet as well.
 String mediaHeroTag(
   BuildContext context, {
-  required TweetData tweet,
+  required LegacyTweetData tweet,
   required MediaData media,
   int? index,
 }) {

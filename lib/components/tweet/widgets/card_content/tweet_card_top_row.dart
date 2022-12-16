@@ -20,7 +20,7 @@ class TweetCardTopRow extends ConsumerWidget {
     required this.config,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetDelegates delegates;
 
   final double outerPadding;
@@ -30,6 +30,7 @@ class TweetCardTopRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final pinned = TweetCardElement.pinned.shouldBuild(tweet, config);
     final retweeter = TweetCardElement.retweeter.shouldBuild(tweet, config);
     final avatar = TweetCardElement.avatar.shouldBuild(tweet, config);
     final name = TweetCardElement.name.shouldBuild(tweet, config);
@@ -48,6 +49,11 @@ class TweetCardTopRow extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: outerPadding),
+              if (pinned) ...[
+                TweetCardPinned(style: TweetCardElement.pinned.style(config)),
+                if (retweeter || (avatar && name && handle))
+                  SizedBox(height: innerPadding),
+              ],
               if (retweeter) ...[
                 TweetCardRetweeter(
                   tweet: tweet,

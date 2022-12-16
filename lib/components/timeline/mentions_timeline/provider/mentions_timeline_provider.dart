@@ -12,7 +12,7 @@ final mentionsTimelineProvider = StateNotifierProvider.autoDispose<
 
     return MentionsTimelineNotifier(
       ref: ref,
-      twitterApi: ref.watch(twitterApiProvider),
+      twitterApi: ref.watch(twitterApiV1Provider),
     );
   },
   name: 'MentionsTimelineProvider',
@@ -34,7 +34,7 @@ class MentionsTimelineNotifier extends TimelineNotifier<bool> {
   }
 
   @override
-  bool? buildCustomData(BuiltList<TweetData> tweets) {
+  bool? buildCustomData(BuiltList<LegacyTweetData> tweets) {
     final newId = int.tryParse(tweets.first.originalId);
     final lastId =
         ref.read(tweetVisibilityPreferencesProvider).lastViewedMention;

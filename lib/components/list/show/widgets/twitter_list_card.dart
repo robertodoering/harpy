@@ -107,13 +107,15 @@ class _ListUser extends StatelessWidget {
 
     return Row(
       children: [
-        HarpyCircleAvatar(
-          // use the normal sized profile image instead of the bigger one for
-          // the small circle avatar
-          imageUrl: list.user!.profileImageUrl,
-          radius: 8,
-        ),
-        HorizontalSpacer.small,
+        if (list.user!.profileImage?.normal != null) ...[
+          HarpyCircleAvatar(
+            // use the normal sized profile image instead of the bigger one for
+            // the small circle avatar
+            imageUrl: list.user!.profileImage!.normal!.toString(),
+            radius: 8,
+          ),
+          HorizontalSpacer.small,
+        ],
         Flexible(
           child: Text(
             list.user!.name,

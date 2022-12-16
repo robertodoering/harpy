@@ -12,7 +12,7 @@ class TweetCardReplies extends ConsumerWidget {
     required this.color,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
 
   /// The color alternated depending on the parent cards color.
   final Color? color;

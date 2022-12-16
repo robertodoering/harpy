@@ -10,7 +10,7 @@ class TweetCardActionsButton extends StatelessWidget {
     required this.style,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetDelegates delegates;
   final EdgeInsets padding;
   final TweetCardElementStyle style;

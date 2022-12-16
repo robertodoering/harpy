@@ -108,18 +108,19 @@ class _AuthenticatedUser extends ConsumerWidget {
       onTap: () => context.pushNamed(
         UserPage.name,
         params: {'handle': user.handle},
-        extra: user,
       ),
       child: Card(
         child: Padding(
           padding: theme.spacing.edgeInsets,
           child: Row(
             children: [
-              HarpyCircleAvatar(
-                radius: 28,
-                imageUrl: user.appropriateUserImageUrl,
-              ),
-              HorizontalSpacer.normal,
+              if (user.profileImage?.bigger != null) ...[
+                HarpyCircleAvatar(
+                  radius: 28,
+                  imageUrl: user.profileImage!.bigger!.toString(),
+                ),
+                HorizontalSpacer.normal,
+              ],
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +160,7 @@ class _ConnectionsCount extends ConsumerWidget {
       children: [
         Expanded(
           child: ConnectionCount(
-            count: user.friendsCount,
+            count: user.followingCount,
             builder: (count) => RbyListCard(
               title: FittedBox(child: Text('$count  following')),
               onTap: () => context.pushNamed(
@@ -243,7 +244,6 @@ class _Entries extends ConsumerWidget {
         onTap: () => context.pushNamed(
           UserPage.name,
           params: {'handle': user.handle},
-          extra: user,
         ),
       ),
       VerticalSpacer.normal,

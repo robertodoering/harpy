@@ -9,7 +9,7 @@ class TweetCardDetails extends StatelessWidget {
     required this.style,
   });
 
-  final TweetData tweet;
+  final LegacyTweetData tweet;
   final TweetCardElementStyle style;
 
   @override

@@ -48,7 +48,7 @@ void main() {
             (ref) => MockConnectivityNotifier(),
           ),
           authenticationStateProvider.overrideWith(
-            (ref) => AuthenticationState.authenticated(user: harpyAppUser),
+            (ref) => AuthenticationState.authenticated(user: userDataHarpy),
           ),
         ],
       );

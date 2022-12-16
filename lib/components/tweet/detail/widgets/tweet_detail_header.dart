@@ -14,10 +14,10 @@ class TweetDetailHeader extends StatelessWidget {
   });
 
   /// The original tweet that is a reply to [parent].
-  final TweetData tweet;
+  final LegacyTweetData tweet;
 
   /// The parent of [tweet] which is displayed in a [TweetCard].
-  final TweetData? parent;
+  final LegacyTweetData? parent;
 
   @override
   Widget build(BuildContext context) {
