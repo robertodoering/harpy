@@ -179,12 +179,12 @@ Widget? _leading(
   } else if (route is PageRoute<dynamic> && route.fullscreenDialog) {
     child = RbyButton.transparent(
       icon: theme.iconData.close(context),
-      onTap: Navigator.of(context).maybePop,
+      onTap: Navigator.of(context).pop,
     );
   } else if (Navigator.of(context).canPop()) {
     child = RbyButton.transparent(
       icon: theme.iconData.back(context),
-      onTap: Navigator.of(context).maybePop,
+      onTap: Navigator.of(context).pop,
     );
   }
 
