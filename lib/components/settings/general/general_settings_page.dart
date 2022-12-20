@@ -90,6 +90,16 @@ class _GeneralSettingsList extends ConsumerWidget {
         VerticalSpacer.normal,
         Card(
           child: RbySwitchTile(
+            leading: const Icon(Icons.access_time),
+            title: const Text('always use 24-hour time format'),
+            value: general.alwaysUse24HourFormat,
+            borderRadius: theme.shape.borderRadius,
+            onChanged: generalNotifier.setAlwaysUse24HourFormat,
+          ),
+        ),
+        VerticalSpacer.normal,
+        Card(
+          child: RbySwitchTile(
             leading: const Icon(FeatherIcons.feather),
             title: const Text('floating compose button'),
             subtitle: const Text(
