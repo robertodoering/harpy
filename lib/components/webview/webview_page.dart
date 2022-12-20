@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:harpy/components/components.dart';
+import 'package:rby/rby.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebviewPage extends ConsumerWidget {
@@ -56,6 +57,8 @@ class _WebView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return WillPopScope(
       onWillPop: () async {
         if (state.canGoBack) {
@@ -65,14 +68,30 @@ class _WebView extends StatelessWidget {
 
         return true;
       },
-      child: WebView(
-        initialUrl: initialUrl,
-        javascriptMode: JavascriptMode.unrestricted,
-        onWebViewCreated: notifier.onWebViewCreated,
-        onPageStarted: notifier.onPageStarted,
-        onPageFinished: notifier.onPageFinished,
-        gestureRecognizers: const {Factory(EagerGestureRecognizer.new)},
-        backgroundColor: Colors.transparent,
+      child: Stack(
+        alignment: AlignmentDirectional.topCenter,
+        children: [
+          const Center(child: CircularProgressIndicator()),
+          WebView(
+            initialUrl: initialUrl,
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: notifier.onWebViewCreated,
+            onPageStarted: notifier.onPageStarted,
+            onPageFinished: notifier.onPageFinished,
+            onProgress: notifier.onProgress,
+            gestureRecognizers: const {Factory(EagerGestureRecognizer.new)},
+            backgroundColor: Colors.transparent,
+          ),
+          AnimatedSwitcher(
+            duration: theme.animation.short,
+            child: state.loading
+                ? LinearProgressIndicator(
+                    value: state.progress / 100,
+                    backgroundColor: Colors.transparent,
+                  )
+                : null,
+          ),
+        ],
       ),
     );
   }

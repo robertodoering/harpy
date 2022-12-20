@@ -27,6 +27,11 @@ class WebViewStateNotifier extends StateNotifier<WebViewState> {
   Future<void> onPageStarted(String url) async {
     state = state.copyWith(
       currentUrl: url,
+      loading: true,
+      progress: 0,
+    );
+
+    state = state.copyWith(
       canGoBack: await _controller?.canGoBack() ?? false,
       canGoForward: await _controller?.canGoForward() ?? false,
     );
@@ -35,8 +40,16 @@ class WebViewStateNotifier extends StateNotifier<WebViewState> {
   Future<void> onPageFinished(String url) async {
     state = state.copyWith(
       currentUrl: url,
+      loading: false,
+    );
+
+    state = state.copyWith(
       title: await _controller?.getTitle(),
     );
+  }
+
+  void onProgress(int progress) {
+    state = state.copyWith(progress: progress);
   }
 
   Future<void> reload() async {
@@ -59,6 +72,8 @@ class WebViewState with _$WebViewState {
     @Default(false) bool canGoBack,
     @Default(false) bool canGoForward,
     String? title,
+    @Default(false) bool loading,
+    @Default(0) int progress,
   }) = _WebViewState;
 
   WebViewState._();
