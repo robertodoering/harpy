@@ -230,7 +230,6 @@ export 'tweet/widgets/tweet_list.dart';
 export 'tweet/widgets/tweet_list_info_message.dart';
 export 'webview/provider/web_view_provider.dart';
 export 'webview/webview_page.dart';
-export 'webview/widgets/harpy_web_view.dart';
 export 'webview/widgets/web_view_actions.dart';
 export 'widgets/badge.dart';
 export 'widgets/bubble_animation.dart';

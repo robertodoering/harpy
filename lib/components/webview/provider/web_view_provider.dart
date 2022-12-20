@@ -20,7 +20,7 @@ class WebViewStateNotifier extends StateNotifier<WebViewState> {
 
   late final WebViewController? _controller;
 
-  Future<void> onControllerCreated(WebViewController controller) async {
+  Future<void> onWebViewCreated(WebViewController controller) async {
     _controller = controller;
   }
 

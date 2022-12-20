@@ -62,10 +62,10 @@ final routesProvider = Provider(
     ),
     GoRoute(
       name: WebviewPage.name,
-      path: WebviewPage.path,
+      path: '/webview',
       pageBuilder: (_, state) => _createPage(
-        fullscreenDialog: true,
         state: state,
+        fullscreenDialog: true,
         child: WebviewPage(
           initialUrl: state.queryParams['initialUrl']!,
         ),
