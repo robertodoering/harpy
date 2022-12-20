@@ -49,7 +49,6 @@ class WebViewStateNotifier extends StateNotifier<WebViewState> {
   }
 
   void onProgress(int progress) {
-    print('progress: $progress');
     state = state.copyWith(progress: progress);
   }
 
