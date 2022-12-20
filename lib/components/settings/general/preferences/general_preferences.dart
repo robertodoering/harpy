@@ -41,6 +41,10 @@ class GeneralPreferencesNotifier extends StateNotifier<GeneralPreferences> {
                 preferences.getBool('timelineRefreshBehavior', false),
             hideHomeAppBar: preferences.getBool('hideHomeTabBar', true),
             bottomAppBar: preferences.getBool('bottomAppBar', false),
+            alwaysUse24HourFormat: preferences.getBool(
+              'alwaysUse24HourFormat',
+              false,
+            ),
           ),
         );
 
@@ -56,6 +60,7 @@ class GeneralPreferencesNotifier extends StateNotifier<GeneralPreferences> {
     setFloatingComposeButton(false);
     setHideHomeAppbar(true);
     setBottomAppBar(false);
+    setAlwaysUse24HourFormat(false);
   }
 
   void setShowChangelogDialog(bool value) {
@@ -96,6 +101,11 @@ class GeneralPreferencesNotifier extends StateNotifier<GeneralPreferences> {
   void setBottomAppBar(bool value) {
     state = state.copyWith(bottomAppBar: value);
     _preferences.setBool('bottomAppBar', value);
+  }
+
+  void setAlwaysUse24HourFormat(bool value) {
+    state = state.copyWith(alwaysUse24HourFormat: value);
+    _preferences.setBool('alwaysUse24HourFormat', value);
   }
 
   void updateLastShownVersion() {
@@ -155,6 +165,7 @@ class GeneralPreferences with _$GeneralPreferences {
     /// Whether the app bar should be built at the bottom of the home screen
     /// instead of the top.
     required bool bottomAppBar,
+    required bool alwaysUse24HourFormat,
   }) = _GeneralPreferences;
 
   GeneralPreferences._();

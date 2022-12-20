@@ -126,7 +126,7 @@ class _CreatedAtRelativeTimeState extends State<_CreatedAtRelativeTime> {
   }
 }
 
-class _CreatedAtAbsoluteTime extends StatelessWidget {
+class _CreatedAtAbsoluteTime extends ConsumerWidget {
   const _CreatedAtAbsoluteTime({
     required this.localCreatedAt,
     this.sizeDelta = 0,
@@ -136,15 +136,19 @@ class _CreatedAtAbsoluteTime extends StatelessWidget {
   final double sizeDelta;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final l10n = Localizations.of<MaterialLocalizations>(
       context,
       MaterialLocalizations,
     )!;
+    final general = ref.watch(generalPreferencesProvider);
 
     final date = l10n.formatCompactDate(localCreatedAt);
-    final time = l10n.formatTimeOfDay(TimeOfDay.fromDateTime(localCreatedAt));
+    final time = l10n.formatTimeOfDay(
+      TimeOfDay.fromDateTime(localCreatedAt),
+      alwaysUse24HourFormat: general.alwaysUse24HourFormat,
+    );
 
     return FittedBox(
       child: Text(

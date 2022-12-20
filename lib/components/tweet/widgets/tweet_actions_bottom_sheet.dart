@@ -20,10 +20,12 @@ void showTweetActionsBottomSheet(
     ref.context,
     MaterialLocalizations,
   )!;
+  final general = ref.watch(generalPreferencesProvider);
 
   final date = l10n.formatFullDate(tweet.createdAt.toLocal());
   final time = l10n.formatTimeOfDay(
     TimeOfDay.fromDateTime(tweet.createdAt.toLocal()),
+    alwaysUse24HourFormat: general.alwaysUse24HourFormat,
   );
 
   showRbyBottomSheet<void>(
