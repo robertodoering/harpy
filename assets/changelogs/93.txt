@@ -7,7 +7,7 @@ Version 0.10.0
   - Added pinned Tweet (not yet fully displayed)
   - Added support for protected users
 - Improved in-app webview
-  - Handle system back to go back in web view when possible
+  - Handle system back to go back in webview when possible
   - Added loading animations
 - Added 'always use 24-hour time format' setting
   - Can be enabled in `settings › general › always use 24-hour time format`  
