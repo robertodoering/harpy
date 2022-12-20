@@ -1,0 +1,13 @@
+Version 0.10.0
+2022-12-20
+
+- Updated user page 
+  - Now uses the new Twitter API v2
+  - Re-designed parts of the UI
+  - Added pinned Tweet (not yet fully displayed)
+  - Added support for protected users
+- Improved in-app webview
+  - Handle system back to go back in web view when possible
+  - Added loading animations
+- Added 'always use 24-hour time format' setting
+  - Can be enabled in `settings › general › always use 24-hour time format`  
