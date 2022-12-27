@@ -86,7 +86,7 @@ class _WebView extends StatelessWidget {
             duration: theme.animation.short,
             child: state.loading
                 ? LinearProgressIndicator(
-                    value: state.progress / 100,
+                    value: state.loading ? state.progress / 100 : 1,
                     backgroundColor: Colors.transparent,
                   )
                 : null,

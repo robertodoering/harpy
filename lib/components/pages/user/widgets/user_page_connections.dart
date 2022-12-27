@@ -8,14 +8,18 @@ class UserPageConnections extends StatelessWidget {
   const UserPageConnections({
     required this.user,
     required this.relationship,
+    required this.isAuthenticatedUser,
   });
 
   final UserData user;
   final RelationshipData? relationship;
+  final bool isAuthenticatedUser;
 
   @override
   Widget build(BuildContext context) {
-    final enableTap = !user.isProtected || (relationship?.following ?? true);
+    final enableTap = isAuthenticatedUser ||
+        !user.isProtected ||
+        (relationship?.following ?? true);
 
     return Row(
       children: [

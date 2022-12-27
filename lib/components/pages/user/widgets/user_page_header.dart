@@ -65,6 +65,7 @@ class UserPageHeader extends StatelessWidget {
             UserPageConnections(
               user: data.user,
               relationship: data.relationship,
+              isAuthenticatedUser: isAuthenticatedUser,
             ),
           ],
         ),

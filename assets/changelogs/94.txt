@@ -1,0 +1,5 @@
+Version 0.10.1
+2022-12-27
+
+- Fix unable to view an authenticated users own protected profile
+- Small webview style improvements

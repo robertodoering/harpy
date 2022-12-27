@@ -21,8 +21,9 @@ class UserPageTabView extends ConsumerWidget {
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
 
-    final canViewProfile =
-        !data.user.isProtected || (data.relationship?.following ?? true);
+    final canViewProfile = isAuthenticatedUser ||
+        !data.user.isProtected ||
+        (data.relationship?.following ?? true);
 
     final children = [
       if (!canViewProfile)
