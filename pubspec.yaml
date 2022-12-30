@@ -11,7 +11,7 @@ environment:
 
 dependencies:
   android_path_provider: ^0.3.0
-  any_link_preview: ^2.0.9
+  any_link_preview: ^3.0.0
   built_collection: ^5.1.1
   collection: ^1.15.0
   connectivity_plus: ^2.0.2
