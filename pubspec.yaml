@@ -47,7 +47,7 @@ dependencies:
   google_fonts: ^3.0.0
   http: ^0.13.3
   humanizer: ^2.0.0
-  intl: ^0.17.0
+  intl: ^0.18.0
   json_annotation: ^4.5.0
   location: ^4.4.0
   logging: ^1.0.1
@@ -104,6 +104,9 @@ dev_dependencies:
   json_serializable: ^6.0.1
   mocktail: ^0.3.0
   riverpod_generator: ^1.0.6
+
+dependency_overrides:  
+  intl: ^0.18.0
 
 flutter:
   uses-material-design: true
