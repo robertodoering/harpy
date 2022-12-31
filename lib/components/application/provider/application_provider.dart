@@ -49,6 +49,8 @@ class Application with LoggerMixin {
       log.fine('authenticated after initialization');
 
       if (redirect != null) {
+        // TODO: should push as we don't want to build the stack when deep
+        //  linking into the app
         _ref.read(routerProvider).go(redirect);
       } else {
         _ref.read(routerProvider).goNamed(
