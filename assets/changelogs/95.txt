@@ -1,0 +1,4 @@
+Version 0.10.2
+2023-xx-xx
+
+- Fix webview background sometimes transparent
