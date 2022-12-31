@@ -80,7 +80,6 @@ class _WebView extends StatelessWidget {
             onPageFinished: notifier.onPageFinished,
             onProgress: notifier.onProgress,
             gestureRecognizers: const {Factory(EagerGestureRecognizer.new)},
-            backgroundColor: Colors.transparent,
           ),
           AnimatedSwitcher(
             duration: theme.animation.short,
