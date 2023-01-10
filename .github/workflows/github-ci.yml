@@ -1,0 +1,73 @@
+name: CD
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  flutter-channel: "stable"
+
+jobs:
+  build_apk:
+    name: Build harpy free .apk
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 11
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: ${{ env.flutter-channel }}
+
+      - name: Storing key.properties
+        run: echo "${{ secrets.KEY_PROPERTIES_PRO }}" | base64 --decode > android/key.properties
+
+      - name: Storing keystore
+        run: echo "${{ secrets.KEYSTORE_PRO }}" | base64 --decode > android/key.jks
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate files
+        run: flutter pub run build_runner build
+
+      - name: Build APK
+        run: > 
+          flutter build apk
+          --split-per-abi 
+          --release
+          --flavor pro
+          --dart-define flavor=pro
+          --dart-define twitter_consumer_key=${{ secrets.CONSUMER_KEY_PRO }}
+          --dart-define twitter_consumer_secret=${{ secrets.CONSUMER_SECRET_PRO }}
+          --dart-define sentry_dsn=${{ secrets.SENTRY_DSN_PRO }}
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - Test for build apk CD
+          draft: false
+          prerelease: false
+
+      - name: Upload .apks to artifacts
+        uses: svenstaro/upload-release-action@v2
+        with:
+          tag: ${{ github.ref }}
+          asset_name: "app bundle"
+          overwrite: true
+          file_glob: true
+          file: build/app/outputs/flutter-apk/app-*
