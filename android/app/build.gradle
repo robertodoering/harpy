@@ -20,6 +20,7 @@ def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
   keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
   hasKeyStore = true
+  println ">>> has kry.properties <<<"
 } else {
   println "+++"
   println "No keystore defined. The app will not be signed."
