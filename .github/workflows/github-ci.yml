@@ -12,6 +12,7 @@ jobs:
   build_apk:
     name: Build harpy pro .apk
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
       - uses: actions/checkout@v3
 
