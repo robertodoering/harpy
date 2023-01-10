@@ -15,6 +15,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - Test for build apk CD
+          draft: false
+          prerelease: false
+
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
@@ -48,20 +62,6 @@ jobs:
           --dart-define twitter_consumer_key=${{ secrets.CONSUMER_KEY_PRO }}
           --dart-define twitter_consumer_secret=${{ secrets.CONSUMER_SECRET_PRO }}
           --dart-define sentry_dsn=${{ secrets.SENTRY_DSN_PRO }}
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Changes in this Release
-            - Test for build apk CD
-          draft: false
-          prerelease: false
 
       - name: Upload .apks to artifacts
         uses: svenstaro/upload-release-action@v2
