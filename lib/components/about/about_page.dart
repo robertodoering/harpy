@@ -267,6 +267,7 @@ class _CreditsCard extends ConsumerWidget {
       onTap: () => launcher(
         'mailto:support@harpyapp.com?'
         'subject=${isPro ? "harpy pro" : "harpy"}',
+        alwaysOpenExternally: true,
       ),
     );
   }
