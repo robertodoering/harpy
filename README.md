@@ -19,7 +19,8 @@ a feature rich Twitter experience built with <a href="https://flutter.dev/">Flut
 <p align="center">
   <a href="https://github.com/robertodoering/harpy/stargazers"><img src="https://img.shields.io/github/stars/robertodoering/harpy?color=8B00FD&logo=github"/></a>
   <a href="https://github.com/robertodoering/harpy/releases"><img src="https://img.shields.io/github/v/release/robertodoering/harpy?color=BC0492"/></a>
-  <a href="https://play.google.com/store/apps/details?id=com.robertodoering.harpy.free"><img src="https://img.shields.io/endpoint?color=DE0747&logo=google-play&logoColor=BC0492&url=https%3A%2F%2Fplayshields.herokuapp.com%2Fplay%3Fi%3Dcom.robertodoering.harpy.free%26l%3Dinstalls%26m%3D%24installs"/></a>
+  <a href="https://play.google.com/store/apps/details?id=com.robertodoering.harpy.free"><img src="https://img.shields.io/endpoint?color=DE0747&logo=google-play&logoColor=BC0492&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.robertodoering.harpy.free%26l%3Dfree%2520installs%26m%3D%24totalinstalls"/></a>
+  <a href="https://play.google.com/store/apps/details?id=com.robertodoering.harpy.free"><img src="https://img.shields.io/endpoint?color=DE0747&logo=google-play&logoColor=BC0492&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.robertodoering.harpy.pro%26l%3Dpro%2520installs%26m%3D%24totalinstalls"/></a>
   <a href="https://github.com/robertodoering/harpy/commits/master"><img src="https://img.shields.io/github/commits-since/robertodoering/harpy/latest?color=F2091C"/></a>
   <a href="https://github.com/robertodoering/harpy/commits/master"><img src="https://img.shields.io/github/commit-activity/m/robertodoering/harpy?color=FD0A04"/></a>
 </p>
@@ -28,16 +29,15 @@ a feature rich Twitter experience built with <a href="https://flutter.dev/">Flut
    <img src="https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true"/>
   </a>
   
-  <a href="https://github.com/robertodoering/harpy/actions/workflows/flutter_pr.yml">
-   <img src="https://github.com/robertodoering/harpy/actions/workflows/flutter_pr.yml/badge.svg"/>
+  <a href="https://github.com/robertodoering/harpy/actions/workflows/flutter_push.yml">
+   <img src="https://github.com/robertodoering/harpy/actions/workflows/flutter_push.yml/badge.svg"/>
   </a>
 </p>
 
 <br>
 
 <p align="center">
-harpy is in active development. Check out the <a href="https://github.com/robertodoering/harpy/projects/1">project</a> for more
-information about upcoming features.
+harpy is no longer in active development after Twitter's decision to disallow third party Twitter clients.
 </p>
 
 <br>
@@ -61,7 +61,7 @@ information about upcoming features.
 
 **harpy** is an alternative Twitter client that focuses on a nice user experience with unique features.
 
-This project has been in development since 2018 and aims to be a good example for a medium-large sized Flutter app with a focus on code quality and maintainability.
+This project has been in development since late 2018 and aims to be a good example for a medium-large sized Flutter app with a focus on code quality and maintainability.
 
 It's currently available on the PlayStore as a [free](https://play.google.com/store/apps/details?id=com.robertodoering.harpy.free) and a paid [pro](https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro) version and is used by over 50.000 users.
 

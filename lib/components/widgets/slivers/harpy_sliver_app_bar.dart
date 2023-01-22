@@ -144,14 +144,22 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
         child: Padding(
           padding: EdgeInsetsDirectional.only(top: topPadding),
           child: NavigationToolbar(
-            leading: _leading(context, leading: leading),
+            leading: _leading(
+              context,
+              leading: leading,
+              paddingValue: paddingValue,
+            ),
             middle: title != null
                 ? DefaultTextStyle(
                     style: titleStyle,
                     child: fittedTitle ? FittedBox(child: title) : title!,
                   )
                 : null,
-            trailing: _trailing(context, actions: actions),
+            trailing: _trailing(
+              context,
+              actions: actions,
+              paddingValue: paddingValue,
+            ),
             middleSpacing: paddingValue / 2,
           ),
         ),
@@ -163,6 +171,7 @@ class _SliverHeaderDelegate extends SliverPersistentHeaderDelegate {
 Widget? _leading(
   BuildContext context, {
   required Widget? leading,
+  required double paddingValue,
 }) {
   final theme = Theme.of(context);
   final route = ModalRoute.of(context);
@@ -188,13 +197,18 @@ Widget? _leading(
     );
   }
 
-  if (child != null) return child;
-  return null;
+  if (child == null) return null;
+
+  return Padding(
+    padding: EdgeInsetsDirectional.only(start: paddingValue),
+    child: child,
+  );
 }
 
 Widget? _trailing(
   BuildContext context, {
   required List<Widget>? actions,
+  required double paddingValue,
 }) {
   final theme = Theme.of(context);
 
@@ -213,6 +227,10 @@ Widget? _trailing(
     );
   }
 
-  if (child != null) return child;
-  return null;
+  if (child == null) return null;
+
+  return Padding(
+    padding: EdgeInsetsDirectional.only(end: paddingValue),
+    child: child,
+  );
 }
