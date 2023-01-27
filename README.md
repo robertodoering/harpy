@@ -20,7 +20,7 @@ a feature rich Twitter experience built with <a href="https://flutter.dev/">Flut
   <a href="https://github.com/robertodoering/harpy/stargazers"><img src="https://img.shields.io/github/stars/robertodoering/harpy?color=8B00FD&logo=github"/></a>
   <a href="https://github.com/robertodoering/harpy/releases"><img src="https://img.shields.io/github/v/release/robertodoering/harpy?color=BC0492"/></a>
   <a href="https://play.google.com/store/apps/details?id=com.robertodoering.harpy.free"><img src="https://img.shields.io/endpoint?color=DE0747&logo=google-play&logoColor=BC0492&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.robertodoering.harpy.free%26l%3Dfree%2520installs%26m%3D%24totalinstalls"/></a>
-  <a href="https://play.google.com/store/apps/details?id=com.robertodoering.harpy.free"><img src="https://img.shields.io/endpoint?color=DE0747&logo=google-play&logoColor=BC0492&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.robertodoering.harpy.pro%26l%3Dpro%2520installs%26m%3D%24totalinstalls"/></a>
+  <a href="https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro"><img src="https://img.shields.io/endpoint?color=DE0747&logo=google-play&logoColor=BC0492&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.robertodoering.harpy.pro%26l%3Dpro%2520installs%26m%3D%24totalinstalls"/></a>
   <a href="https://github.com/robertodoering/harpy/commits/master"><img src="https://img.shields.io/github/commits-since/robertodoering/harpy/latest?color=F2091C"/></a>
   <a href="https://github.com/robertodoering/harpy/commits/master"><img src="https://img.shields.io/github/commit-activity/m/robertodoering/harpy?color=FD0A04"/></a>
 </p>
