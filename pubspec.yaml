@@ -91,7 +91,7 @@ dependencies:
   webview_flutter: ^3.0.0
 
 dev_dependencies:
-  alchemist: ^0.5.1
+  alchemist: ^0.6.0
   build_runner: ^2.0.1
   flutter_test:
     sdk: flutter
