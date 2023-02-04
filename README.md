@@ -78,10 +78,6 @@ Some interesting features of the app include:
   [product flavor](https://developer.android.com/studio/build/build-variants)
 * Many customized animations sprinkled around the app, including custom logo animations created with [Rive](https://flare.rive.app/a/rbyd/files/recent/all)
 
-### Contributing
-
-Contributions are welcome! Check out the [contributing guidelines](https://github.com/robertodoering/harpy/blob/master/CONTRIBUTING.md).
-
 ### Development / Setup
 
 Follow the [project setup for building harpy](https://github.com/robertodoering/harpy/wiki/Project-setup-for-building-harpy) instructions to get the project running.
