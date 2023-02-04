@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class Badge extends StatelessWidget {
-  const Badge({
+class HarpyBadge extends StatelessWidget {
+  const HarpyBadge({
     required this.child,
     this.offset = Offset.zero,
     this.alignment = AlignmentDirectional.topStart,
     this.show = true,
   }) : badge = const _Bubble();
 
-  const Badge.custom({
+  const HarpyBadge.custom({
     required this.child,
     required this.badge,
     this.offset = Offset.zero,

@@ -37,7 +37,6 @@ class PostTweetNotifier extends StateNotifier<PostTweetState> with LoggerMixin {
 
   Future<void> post(
     String text, {
-
     /// The tweet hyperlink of the quoted tweet if this tweet is a quote.
     String? attachmentUrl,
 

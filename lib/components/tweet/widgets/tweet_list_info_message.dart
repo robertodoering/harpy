@@ -40,7 +40,7 @@ class TweetListInfoMessage extends ConsumerWidget {
             HorizontalSpacer.normal,
             Expanded(
               child: DefaultTextStyle(
-                style: theme.textTheme.subtitle1!,
+                style: theme.textTheme.titleMedium!,
                 child: text,
               ),
             ),

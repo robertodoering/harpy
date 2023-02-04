@@ -256,12 +256,15 @@ class _LockedProThemes extends ConsumerWidget {
 
     return SliverList(
       delegate: SliverChildListDelegate.fixed([
-        Divider(height: theme.spacing.base * 2),
+        Divider(
+          height: theme.spacing.base * 2,
+          color: theme.dividerColor,
+        ),
         Padding(
           padding: theme.spacing.symmetric(horizontal: true),
           child: Text(
             'only available for harpy pro',
-            style: theme.textTheme.subtitle2?.copyWith(
+            style: theme.textTheme.titleSmall?.copyWith(
               color: theme.colorScheme.onBackground.withOpacity(.8),
             ),
           ),

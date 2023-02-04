@@ -329,7 +329,7 @@ class _OverlayPreviewText extends ConsumerWidget {
             child: Text(
               tweet.visibleText,
               key: ObjectKey(tweet),
-              style: theme.textTheme.bodyText2!.copyWith(
+              style: theme.textTheme.bodyMedium!.copyWith(
                 color: Colors.white,
               ),
               maxLines: 2,

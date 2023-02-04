@@ -85,7 +85,7 @@ class _MentionsTab extends ConsumerWidget {
       cardColor: harpyTheme.colors.alternateCardColor,
     );
 
-    return Badge(
+    return HarpyBadge(
       show: state.hasNewMentions,
       child: child,
     );
@@ -99,7 +99,7 @@ class _HomeCustomizationTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final iconTheme = IconTheme.of(context);
 
-    return Badge.custom(
+    return HarpyBadge.custom(
       // analyzer false positive
       // ignore: avoid_redundant_argument_values
       show: isFree,

@@ -134,7 +134,7 @@ class _HarpyTabState extends ConsumerState<HarpyTab>
                 color: _foregroundColorAnimation.value,
               ),
               child: DefaultTextStyle(
-                style: theme.textTheme.subtitle1!.copyWith(
+                style: theme.textTheme.titleMedium!.copyWith(
                   color: _foregroundColorAnimation.value,
                 ),
                 child: SizedBox(

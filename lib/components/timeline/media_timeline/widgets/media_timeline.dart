@@ -43,8 +43,9 @@ class _MediaTimelineState extends ConsumerState<MediaTimeline> {
     super.didChangeDependencies();
 
     if (_controller == null) {
-      _controller = PrimaryScrollController.of(context) ?? ScrollController();
-      _disposeController = PrimaryScrollController.of(context) == null;
+      _controller =
+          PrimaryScrollController.maybeOf(context) ?? ScrollController();
+      _disposeController = PrimaryScrollController.maybeOf(context) == null;
     }
   }
 

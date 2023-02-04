@@ -31,7 +31,7 @@ class FilterSwitchTile extends StatelessWidget {
       ),
       title: Text(
         text,
-        style: theme.textTheme.subtitle1!.copyWith(
+        style: theme.textTheme.titleMedium!.copyWith(
           fontSize: 14,
           color: enabled ? null : theme.disabledColor,
         ),

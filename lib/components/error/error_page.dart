@@ -29,7 +29,7 @@ class ErrorPage extends StatelessWidget {
               children: [
                 Text(
                   'oops! something went wrong',
-                  style: theme.textTheme.subtitle2,
+                  style: theme.textTheme.titleSmall,
                 ),
                 VerticalSpacer.normal,
                 RbyButton.text(

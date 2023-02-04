@@ -52,8 +52,8 @@ class _ComposeMaxLengthState extends State<ComposeMaxLength> {
     final theme = Theme.of(context);
 
     final style = _count <= 280
-        ? theme.textTheme.bodyText1
-        : theme.textTheme.bodyText1?.copyWith(color: theme.errorColor);
+        ? theme.textTheme.bodyLarge
+        : theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.error);
 
     return Text('$_count / 280', style: style);
   }

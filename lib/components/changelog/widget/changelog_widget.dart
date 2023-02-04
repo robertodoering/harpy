@@ -22,7 +22,7 @@ class ChangelogWidget extends StatelessWidget {
           if (data.title != null) ...[
             Text(
               data.title!,
-              style: theme.textTheme.subtitle1,
+              style: theme.textTheme.titleMedium,
             ),
             VerticalSpacer.normal,
           ],
@@ -61,7 +61,7 @@ class _ChangelogDate extends StatelessWidget {
 
     return Text(
       l10n.formatShortDate(date.toLocal()),
-      style: theme.textTheme.subtitle2,
+      style: theme.textTheme.titleSmall,
     );
   }
 }

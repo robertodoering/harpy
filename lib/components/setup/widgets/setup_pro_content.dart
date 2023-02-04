@@ -40,7 +40,7 @@ class SetupProContent extends ConsumerWidget {
                       Expanded(
                         child: Text(
                           'harpy pro',
-                          style: theme.textTheme.headline2?.copyWith(
+                          style: theme.textTheme.displayMedium?.copyWith(
                             color: theme.colorScheme.onBackground,
                           ),
                         ),
@@ -51,7 +51,7 @@ class SetupProContent extends ConsumerWidget {
                 SizedBox(height: theme.spacing.base * 3),
                 Text(
                   'support harpy and gain access to exclusive features',
-                  style: theme.textTheme.headline5,
+                  style: theme.textTheme.headlineSmall,
                 ),
                 SizedBox(height: theme.spacing.base * 2),
                 const _FeatureRow(
@@ -131,7 +131,7 @@ class _FeatureRow extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: theme.textTheme.headline6,
+            style: theme.textTheme.titleLarge,
           ),
         ),
       ],

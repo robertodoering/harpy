@@ -84,7 +84,7 @@ class HarpyTheme {
         backgroundColor: colors.alternateCardColor,
         actionTextColor: colors.primary,
         disabledActionTextColor: colors.primary.withOpacity(.5),
-        contentTextStyle: text.textTheme.subtitle2,
+        contentTextStyle: text.textTheme.titleSmall,
         elevation: 0,
         shape: shapeTheme.shape,
         behavior: SnackBarBehavior.floating,

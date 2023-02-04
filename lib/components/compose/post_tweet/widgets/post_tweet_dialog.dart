@@ -137,7 +137,7 @@ class _StateMessage extends StatelessWidget {
             VerticalSpacer.small,
             Text(
               state.additionalInfo!,
-              style: theme.textTheme.bodyText1,
+              style: theme.textTheme.bodyLarge,
             ),
           ],
         ],

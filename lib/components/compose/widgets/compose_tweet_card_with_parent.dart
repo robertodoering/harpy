@@ -68,7 +68,7 @@ class _ParentTweetCard extends ConsumerWidget {
               Expanded(
                 child: Text(
                   label,
-                  style: theme.textTheme.subtitle1,
+                  style: theme.textTheme.titleMedium,
                 ),
               ),
             ],

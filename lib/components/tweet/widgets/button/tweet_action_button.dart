@@ -99,7 +99,7 @@ class _TweetActionButtonState extends State<TweetActionButton>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final textStyle = theme.textTheme.button!.copyWith(
+    final textStyle = theme.textTheme.labelLarge!.copyWith(
       fontSize: widget.iconSize - 4,
       height: 1,
       color: widget.active ? widget.activeColor : widget.foregroundColor,

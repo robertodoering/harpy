@@ -25,7 +25,7 @@ class HarpyThemeData with _$HarpyThemeData {
     required Brightness brightness,
     required String name,
   }) {
-    final colorScheme = palette.toColorScheme(brightness: brightness)!;
+    final colorScheme = palette.toColorScheme(brightness: brightness);
 
     return HarpyThemeData(
       name: name,

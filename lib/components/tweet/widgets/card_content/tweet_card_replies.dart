@@ -49,7 +49,7 @@ class TweetCardReplies extends ConsumerWidget {
                 Expanded(
                   child: Text(
                     '${tweet.replyAuthors} replied',
-                    style: theme.textTheme.bodyText1,
+                    style: theme.textTheme.bodyLarge,
                   ),
                 ),
               ],

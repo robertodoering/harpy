@@ -107,7 +107,7 @@ class _Table extends ConsumerWidget {
               children: [
                 Text(
                   'key',
-                  style: theme.textTheme.bodyText1!.copyWith(
+                  style: theme.textTheme.bodyLarge!.copyWith(
                     color: theme.colorScheme.primary,
                   ),
                 ),
@@ -119,7 +119,7 @@ class _Table extends ConsumerWidget {
               children: [
                 Text(
                   'secret',
-                  style: theme.textTheme.bodyText1!.copyWith(
+                  style: theme.textTheme.bodyLarge!.copyWith(
                     color: theme.colorScheme.primary,
                   ),
                 ),

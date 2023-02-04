@@ -16,7 +16,7 @@ class TweetCardPinned extends ConsumerWidget {
     final theme = Theme.of(context);
     final display = ref.watch(displayPreferencesProvider);
 
-    final textStyle = theme.textTheme.bodyText2!;
+    final textStyle = theme.textTheme.bodyMedium!;
 
     return IntrinsicWidth(
       child: Row(

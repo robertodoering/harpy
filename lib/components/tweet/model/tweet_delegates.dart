@@ -149,6 +149,7 @@ Future<void> _downloadMedia(
   }
 
   if (ref.read(mediaPreferencesProvider).showDownloadDialog) {
+    // ignore: use_build_context_synchronously
     final customName = await showDialog<String>(
       context: ref.context,
       builder: (_) => DownloadDialog(

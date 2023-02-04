@@ -23,7 +23,7 @@ class NewTweetsText extends StatelessWidget {
         children: [
           const Icon(FeatherIcons.chevronsUp),
           HorizontalSpacer.normal,
-          Text(_text, style: theme.textTheme.subtitle2),
+          Text(_text, style: theme.textTheme.titleSmall),
         ],
       ),
     );
