@@ -5,14 +5,6 @@
 <p align="center">
 a feature rich Twitter experience built with <a href="https://flutter.dev/">Flutter</a>
 </p>
-
-<p align="center">
-  <a href="https://play.google.com/apps/testing/com.robertodoering.harpy.free" target="_blank">
-    <img alt="Get it on Google Play"
-         src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-         width="200"/>
-  </a>
-</p>
   
 <br>
 
@@ -38,6 +30,10 @@ a feature rich Twitter experience built with <a href="https://flutter.dev/">Flut
 harpy is no longer in active development after Twitter's decision to disallow third party Twitter clients.
 </p>
 
+<p align="center">
+harpy was available in the Play Store as a free and paid app and was used by over 75.000 active users.
+</p>
+
 <br>
 
 <p align="center">
@@ -60,8 +56,6 @@ harpy is no longer in active development after Twitter's decision to disallow th
 **harpy** is an alternative Twitter client that focuses on a nice user experience with unique features.
 
 This project has been in development since late 2018 and aims to be a good example for a medium-large sized Flutter app with a focus on code quality and maintainability.
-
-It's currently available on the PlayStore as a [free](https://play.google.com/store/apps/details?id=com.robertodoering.harpy.free) and a paid [pro](https://play.google.com/store/apps/details?id=com.robertodoering.harpy.pro) version and is used by over 50.000 users.
 
 Some interesting features of the app include:
 
