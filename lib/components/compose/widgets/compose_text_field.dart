@@ -25,7 +25,7 @@ class ComposeTextField extends ConsumerWidget {
         child: TextField(
           controller: _controller,
           focusNode: _focusNode,
-          style: theme.textTheme.bodyText1,
+          style: theme.textTheme.bodyLarge,
           maxLines: null,
           textCapitalization: TextCapitalization.sentences,
           decoration: InputDecoration(

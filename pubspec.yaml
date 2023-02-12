@@ -51,9 +51,9 @@ dependencies:
   json_annotation: ^4.5.0
   location: ^4.4.0
   logging: ^1.0.1
-  material_color_utilities: ^0.1.5
+  material_color_utilities: ^0.2.0
   mime_type: ^1.0.0
-  modal_bottom_sheet: ^2.0.0
+  modal_bottom_sheet: ^3.0.0-pre
   package_info_plus: ^3.0.2
   path_provider: ^2.0.3
   permission_handler: ^10.0.0
@@ -91,7 +91,7 @@ dependencies:
   webview_flutter: ^3.0.0
 
 dev_dependencies:
-  alchemist: ^0.5.1
+  alchemist: ^0.6.0
   build_runner: ^2.0.1
   flutter_test:
     sdk: flutter

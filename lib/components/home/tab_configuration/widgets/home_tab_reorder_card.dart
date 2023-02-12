@@ -172,7 +172,7 @@ class _HomeTabNameTextFieldState extends State<_HomeTabNameTextField> {
           borderSide: BorderSide(color: theme.dividerColor),
         ),
       ),
-      style: theme.textTheme.subtitle1,
+      style: theme.textTheme.titleMedium,
       onChanged: widget.onChanged,
     );
   }

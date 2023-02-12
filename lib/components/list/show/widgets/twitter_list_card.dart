@@ -60,7 +60,7 @@ class _ListCardTitle extends StatelessWidget {
         Flexible(
           child: Text(
             list.name,
-            style: theme.textTheme.subtitle2,
+            style: theme.textTheme.titleSmall,
             softWrap: false,
             overflow: TextOverflow.fade,
           ),
@@ -87,7 +87,7 @@ class _ListDescription extends StatelessWidget {
 
     return Text(
       list.description,
-      style: theme.textTheme.bodyText1,
+      style: theme.textTheme.bodyLarge,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
@@ -119,7 +119,7 @@ class _ListUser extends StatelessWidget {
         Flexible(
           child: Text(
             list.user!.name,
-            style: theme.textTheme.bodyText1,
+            style: theme.textTheme.bodyLarge,
             softWrap: false,
             overflow: TextOverflow.fade,
           ),
@@ -128,7 +128,7 @@ class _ListUser extends StatelessWidget {
         Text(
           '@${list.user!.handle}',
           textDirection: TextDirection.ltr,
-          style: theme.textTheme.bodyText1,
+          style: theme.textTheme.bodyLarge,
           softWrap: false,
           overflow: TextOverflow.fade,
         ),

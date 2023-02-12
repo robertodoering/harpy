@@ -124,7 +124,7 @@ class _Handle extends ConsumerWidget {
           child: Text(
             handle,
             textDirection: TextDirection.ltr,
-            style: theme.textTheme.subtitle1,
+            style: theme.textTheme.titleMedium,
           ),
         ),
       ),

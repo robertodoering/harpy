@@ -52,7 +52,12 @@ class SearchPageContent extends StatelessWidget {
               ]),
             ),
           ),
-          SliverToBoxAdapter(child: Divider(height: theme.spacing.base * 2)),
+          SliverToBoxAdapter(
+            child: Divider(
+              height: theme.spacing.base * 2,
+              color: theme.dividerColor,
+            ),
+          ),
           const TrendsSelectionHeader(),
           VerticalSpacer.normalSliver,
           const TrendsList(),

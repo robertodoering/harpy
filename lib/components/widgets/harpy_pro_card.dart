@@ -18,7 +18,7 @@ class HarpyProCard extends ConsumerWidget {
     final theme = Theme.of(context);
     final launcher = ref.watch(launcherProvider);
 
-    final headline = theme.textTheme.headline6!.copyWith(
+    final headline = theme.textTheme.titleLarge!.copyWith(
       fontWeight: FontWeight.normal,
       color: Colors.white,
       shadows: const [
@@ -30,7 +30,7 @@ class HarpyProCard extends ConsumerWidget {
       ],
     );
 
-    final textStyle = theme.textTheme.subtitle2!.copyWith(
+    final textStyle = theme.textTheme.titleSmall!.copyWith(
       color: Colors.white,
       shadows: const [
         Shadow(

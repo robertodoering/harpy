@@ -107,7 +107,7 @@ class VideoPlayerProgressText extends StatelessWidget {
     return Text(
       '${prettyPrintDuration(data.position)} / '
       '${prettyPrintDuration(data.duration)}',
-      style: theme.textTheme.bodyText1!.copyWith(
+      style: theme.textTheme.bodyLarge!.copyWith(
         color: Colors.white,
         height: 1,
       ),

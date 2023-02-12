@@ -69,12 +69,12 @@ class _CrashReports extends ConsumerWidget {
         borderRadius: theme.shape.borderRadius,
         title: Text(
           'send automatic crash reports',
-          style: theme.textTheme.headline5,
+          style: theme.textTheme.headlineSmall,
           maxLines: 2,
         ),
         subtitle: Text(
           'anonymously report errors to improve harpy',
-          style: theme.textTheme.subtitle2,
+          style: theme.textTheme.titleSmall,
         ),
         onChanged: generalNotifier.setCrashReports,
       ),
@@ -97,7 +97,7 @@ class _HideSensitiveMedia extends ConsumerWidget {
         borderRadius: theme.shape.borderRadius,
         title: Text(
           'hide possibly sensitive media',
-          style: theme.textTheme.headline5,
+          style: theme.textTheme.headlineSmall,
           maxLines: 2,
         ),
         onChanged: mediaNotifier.setHidePossiblySensitive,
@@ -129,14 +129,14 @@ class _FollowHarpy extends StatelessWidget {
               const TextSpan(text: 'follow '),
               TextSpan(
                 text: '@harpy_app',
-                style: theme.textTheme.headline5!.copyWith(
+                style: theme.textTheme.headlineSmall!.copyWith(
                   fontWeight: FontWeight.bold,
                   color: theme.colorScheme.secondary,
                 ),
               ),
             ],
           ),
-          style: theme.textTheme.headline5,
+          style: theme.textTheme.headlineSmall,
         ),
         onChanged: (value) {
           HapticFeedback.lightImpact();

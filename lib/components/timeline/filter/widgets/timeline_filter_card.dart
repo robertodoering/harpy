@@ -48,7 +48,7 @@ class TimelineFilterCard extends ConsumerWidget {
                   padding: theme.spacing.edgeInsets.copyWith(bottom: 0),
                   child: Text(
                     sortedFilter.timelineFilter.name,
-                    style: theme.textTheme.subtitle2,
+                    style: theme.textTheme.titleSmall,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -146,14 +146,14 @@ class _AppliedFiltersText extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final style = theme.textTheme.caption?.copyWith(
+    final style = theme.textTheme.bodySmall?.copyWith(
       color: theme.colorScheme.secondary,
     );
 
     return Text.rich(
       TextSpan(
         children: [
-          TextSpan(text: 'used for ', style: theme.textTheme.caption),
+          TextSpan(text: 'used for ', style: theme.textTheme.bodySmall),
           for (final filter in filters) ...[
             TextSpan(
               text: _textFromFilter(filter),
@@ -186,11 +186,11 @@ void _showTimelineFilterCardBottomSheet(
         ),
       ),
       RbyListTile(
-        leading: Icon(CupertinoIcons.delete, color: theme.errorColor),
+        leading: Icon(CupertinoIcons.delete, color: theme.colorScheme.error),
         title: Text(
           'delete',
           style: TextStyle(
-            color: theme.errorColor,
+            color: theme.colorScheme.error,
             fontWeight: FontWeight.bold,
           ),
         ),

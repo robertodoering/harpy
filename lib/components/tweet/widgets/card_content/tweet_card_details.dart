@@ -28,8 +28,8 @@ class TweetCardDetails extends ConsumerWidget {
       alwaysUse24HourFormat: general.alwaysUse24HourFormat,
     );
 
-    final textStyle = theme.textTheme.bodyText2!.apply(
-      color: theme.textTheme.bodyText1!.color,
+    final textStyle = theme.textTheme.bodyMedium!.apply(
+      color: theme.textTheme.bodyLarge!.color,
       fontSizeDelta: style.sizeDelta,
     );
 

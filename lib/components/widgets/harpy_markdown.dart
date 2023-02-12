@@ -21,10 +21,10 @@ class HarpyMarkdown extends ConsumerWidget {
       physics: const NeverScrollableScrollPhysics(),
       onTapLink: (_, href, __) => _onLinkTap(ref, href: href),
       styleSheet: MarkdownStyleSheet(
-        code: theme.textTheme.bodyText2!.copyWith(
+        code: theme.textTheme.bodyMedium!.copyWith(
           backgroundColor: theme.colorScheme.onBackground.withOpacity(.07),
           fontFamily: 'monospace',
-          fontSize: theme.textTheme.bodyText2!.fontSize! * 0.85,
+          fontSize: theme.textTheme.bodyMedium!.fontSize! * 0.85,
         ),
       ),
     );

@@ -26,7 +26,7 @@ class LoadingError extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             DefaultTextStyle(
-              style: theme.textTheme.headline6!,
+              style: theme.textTheme.titleLarge!,
               textAlign: TextAlign.center,
               child: message,
             ),

@@ -28,7 +28,7 @@ class _UserPageAvatar extends State<UserPageAvatar> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _controller ??= PrimaryScrollController.of(context)
+    _controller ??= PrimaryScrollController.maybeOf(context)
       ?..addListener(_scrollListener);
   }
 
@@ -70,7 +70,7 @@ class _UserPageAvatar extends State<UserPageAvatar> {
             Positioned.fill(
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: theme.backgroundColor,
+                  color: theme.colorScheme.background,
                   shape: BoxShape.circle,
                 ),
               ),

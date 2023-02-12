@@ -112,7 +112,7 @@ class _SummaryCard extends ConsumerWidget {
             leading: const Icon(Icons.history),
             title: Text(
               'version $version',
-              style: theme.textTheme.subtitle1,
+              style: theme.textTheme.titleMedium,
             ),
             borderRadius: BorderRadius.only(
               topLeft: theme.shape.radius,
@@ -163,7 +163,7 @@ class _DonationCard extends ConsumerWidget {
             child: Text(
               'if you like harpy, please consider supporting the '
               'development with a donation',
-              style: theme.textTheme.subtitle2,
+              style: theme.textTheme.titleSmall,
             ),
           ),
           RbyListTile(
@@ -218,7 +218,7 @@ class _ProCard extends ConsumerWidget {
                   const TextSpan(text: ' in the play store'),
                 ],
               ),
-              style: theme.textTheme.subtitle2,
+              style: theme.textTheme.titleSmall,
             ),
           ),
           RbyListTile(

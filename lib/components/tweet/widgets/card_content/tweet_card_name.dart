@@ -32,7 +32,7 @@ class TweetCardName extends ConsumerWidget {
                   // rendering of the fitted box to throw exceptions due to the
                   // text having a width of 0.
                   '${tweet.user.name} ',
-                  style: theme.textTheme.bodyText2!
+                  style: theme.textTheme.bodyMedium!
                       .copyWith(height: 1)
                       .apply(fontSizeDelta: style.sizeDelta),
                 ),

@@ -48,11 +48,11 @@ void showTweetActionsBottomSheet(
       ),
       if (isAuthenticatedUser && delegates.onDelete != null)
         RbyListTile(
-          leading: Icon(CupertinoIcons.delete, color: theme.errorColor),
+          leading: Icon(CupertinoIcons.delete, color: theme.colorScheme.error),
           title: Text(
             'delete',
             style: TextStyle(
-              color: theme.errorColor,
+              color: theme.colorScheme.error,
               fontWeight: FontWeight.bold,
             ),
           ),

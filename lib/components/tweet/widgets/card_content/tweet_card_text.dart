@@ -22,7 +22,9 @@ class TweetCardText extends StatelessWidget {
         tweet.text,
         entities: tweet.entities,
         urlToIgnore: tweet.quoteUrl,
-        style: theme.textTheme.bodyText2!.apply(fontSizeDelta: style.sizeDelta),
+        style: theme.textTheme.bodyMedium!.apply(
+          fontSizeDelta: style.sizeDelta,
+        ),
       ),
     );
   }

@@ -22,6 +22,7 @@ class ChangelogDialog extends StatelessWidget {
           await ref.read(currentChangelogProvider.future).handleError();
 
       if (data != null) {
+        // ignore: use_build_context_synchronously
         showDialog<void>(
           context: ref.context,
           builder: (_) => ChangelogDialog(data: data),

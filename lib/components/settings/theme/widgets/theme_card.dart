@@ -49,7 +49,7 @@ class ThemeCard extends ConsumerWidget {
     final theme = Theme.of(context);
     final brightness = ref.watch(platformBrightnessProvider);
 
-    final style = harpyTheme.themeData.textTheme.subtitle2!;
+    final style = harpyTheme.themeData.textTheme.titleSmall!;
 
     Color? borderColor;
 
@@ -125,7 +125,7 @@ class LockedProThemeCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
-    final style = harpyTheme.themeData.textTheme.subtitle2!;
+    final style = harpyTheme.themeData.textTheme.titleSmall!;
 
     return _ThemeCardBase(
       harpyTheme: harpyTheme,
@@ -249,11 +249,11 @@ void _showThemeSelectionBottomSheet(
       ),
       if (onDelete != null)
         RbyListTile(
-          leading: Icon(CupertinoIcons.delete, color: theme.errorColor),
+          leading: Icon(CupertinoIcons.delete, color: theme.colorScheme.error),
           title: Text(
             'delete',
             style: TextStyle(
-              color: theme.errorColor,
+              color: theme.colorScheme.error,
               fontWeight: FontWeight.bold,
             ),
           ),

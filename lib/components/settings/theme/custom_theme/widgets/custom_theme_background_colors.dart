@@ -20,7 +20,7 @@ class CustomThemeBackgroundColors extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('background colors', style: theme.textTheme.headline4),
+        Text('background colors', style: theme.textTheme.headlineMedium),
         VerticalSpacer.normal,
         _ReorderableBackgroundColors(notifier: notifier),
         _AddBackgroundColor(notifier: notifier),

@@ -5,9 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final platformBrightnessProvider = StateProvider(
   (ref) {
     final observer = _PlatformBrightnessObserver(
-      onBrightnessChanged: (brightness) {
-        ref.read(platformBrightnessProvider.notifier).state = brightness;
-      },
+      onBrightnessChanged: (brightness) {},
     );
 
     WidgetsBinding.instance.addObserver(observer);

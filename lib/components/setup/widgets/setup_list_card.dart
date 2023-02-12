@@ -22,11 +22,11 @@ class SetupListCard extends StatelessWidget {
         child: Text(
           text,
           style: selected
-              ? theme.textTheme.headline5!.copyWith(
+              ? theme.textTheme.headlineSmall!.copyWith(
                   fontWeight: FontWeight.bold,
                   color: theme.colorScheme.secondary,
                 )
-              : theme.textTheme.headline5,
+              : theme.textTheme.headlineSmall,
         ),
       ),
       border: selected ? Border.all(color: theme.colorScheme.primary) : null,

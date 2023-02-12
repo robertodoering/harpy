@@ -32,7 +32,7 @@ class _RetweetButtonState extends ConsumerState<RetweetButton> {
   Future<void> _showMenu() async {
     final renderBox = context.findRenderObject()! as RenderBox;
     final overlay =
-        Overlay.of(context)!.context.findRenderObject()! as RenderBox;
+        Overlay.of(context).context.findRenderObject()! as RenderBox;
 
     final position = RelativeRect.fromRect(
       Rect.fromPoints(

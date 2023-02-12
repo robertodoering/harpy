@@ -27,7 +27,7 @@ class InfoMessage extends StatelessWidget {
           children: [
             if (primaryMessage != null)
               DefaultTextStyle(
-                style: theme.textTheme.headline6!,
+                style: theme.textTheme.titleLarge!,
                 textAlign: TextAlign.center,
                 child: primaryMessage!,
               ),
@@ -35,7 +35,7 @@ class InfoMessage extends StatelessWidget {
               VerticalSpacer.normal,
             if (secondaryMessage != null)
               DefaultTextStyle(
-                style: theme.textTheme.subtitle2!,
+                style: theme.textTheme.titleSmall!,
                 textAlign: TextAlign.center,
                 child: secondaryMessage!,
               ),

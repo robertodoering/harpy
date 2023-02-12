@@ -44,7 +44,7 @@ class _Layout extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('layout', style: theme.textTheme.headline5),
+        Text('layout', style: theme.textTheme.headlineSmall),
         const _AnimatedVerticalSpacer(),
         Row(
           children: [
@@ -102,7 +102,7 @@ class _Theme extends ConsumerWidget {
       children: [
         Text(
           'theme',
-          style: theme.textTheme.headline5,
+          style: theme.textTheme.headlineSmall,
         ),
         const _AnimatedVerticalSpacer(),
         if (materialYouLightData != null) ...[

@@ -76,7 +76,7 @@ class _UrlEntry extends ConsumerWidget {
         onLongPress: () => defaultOnUrlLongPress(ref, url),
         child: Text(
           url.displayUrl,
-          style: theme.textTheme.bodyText1!.copyWith(
+          style: theme.textTheme.bodyLarge!.copyWith(
             color: theme.colorScheme.secondary,
             fontWeight: FontWeight.bold,
           ),
@@ -102,7 +102,7 @@ class _Entry extends StatelessWidget {
     return IconTheme(
       data: theme.iconTheme.copyWith(size: theme.iconTheme.size! - 4),
       child: DefaultTextStyle(
-        style: theme.textTheme.bodyText1!,
+        style: theme.textTheme.bodyLarge!,
         child: Row(
           children: [
             icon,

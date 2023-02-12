@@ -154,7 +154,7 @@ class _LinkPreviewError extends StatelessWidget {
               child: FittedBox(
                 child: Text(
                   urlStr,
-                  style: theme.textTheme.subtitle2,
+                  style: theme.textTheme.titleSmall,
                 ),
               ),
             ),
@@ -193,7 +193,7 @@ class _LinkPreviewText extends StatelessWidget {
                     child: Text(
                       limitLength(title!, 40),
                       maxLines: 2,
-                      style: theme.textTheme.subtitle2,
+                      style: theme.textTheme.titleSmall,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -203,7 +203,7 @@ class _LinkPreviewText extends StatelessWidget {
                     desc!,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.bodyText2
+                    style: theme.textTheme.bodyMedium
                         ?.copyWith(height: 1.15)
                         .apply(
                           fontSizeDelta: -4,
@@ -217,7 +217,7 @@ class _LinkPreviewText extends StatelessWidget {
             metadata.url ?? '',
             maxLines: 1,
             overflow: TextOverflow.visible,
-            style: theme.textTheme.caption?.apply(fontSizeDelta: -4),
+            style: theme.textTheme.bodySmall?.apply(fontSizeDelta: -4),
           )
         ],
       ),
