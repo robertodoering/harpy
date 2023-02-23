@@ -122,9 +122,9 @@ class _SummaryCard extends ConsumerWidget {
           ),
           RbyListTile(
             leading: const Icon(FeatherIcons.github),
-            title: const Text('harpy on GitHub'),
-            subtitle: Text('github.com/robertodoering/harpy', style: style),
-            onTap: () => launcher('https://github.com/robertodoering/harpy'),
+            title: const Text('harpy forked on GitHub'),
+            subtitle: Text('github.com/armand0w/harpy', style: style),
+            onTap: () => launcher('https://github.com/armand0w/harpy'),
           ),
           RbyListTile(
             title: const Text('harpy on Twitter'),

@@ -65,7 +65,7 @@ dependencies:
     # path: ../rby.dart
   riverpod_annotation: ^1.0.6
   scroll_to_index: ^3.0.0
-  sentry_flutter: ^6.9.1
+  sentry_flutter: ^6.20.1
   share_plus: ^6.3.0
   shared_preferences: ^2.0.7
   shimmer: ^2.0.0
