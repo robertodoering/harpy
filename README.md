@@ -3,35 +3,35 @@
 </p>
 
 <p align="center">
-a feature rich Twitter experience built with <a href="https://flutter.dev/">Flutter</a>
+a feature rich Twitter experience built with <a href="https://flutter.dev/">Flutter</a>, continued
 </p>
   
 <br>
 
 <p align="center">
-  <a href="https://github.com/robertodoering/harpy/stargazers"><img src="https://img.shields.io/github/stars/robertodoering/harpy?color=8B00FD&logo=github"/></a>
-  <a href="https://github.com/robertodoering/harpy/releases"><img src="https://img.shields.io/github/v/release/robertodoering/harpy?color=BC0492"/></a>
-  <a href="https://github.com/robertodoering/harpy/commits/master"><img src="https://img.shields.io/github/commits-since/robertodoering/harpy/latest?color=F2091C"/></a>
-  <a href="https://github.com/robertodoering/harpy/commits/master"><img src="https://img.shields.io/github/commit-activity/m/robertodoering/harpy?color=FD0A04"/></a>
+  <a href="https://github.com/armand0w/harpy/stargazers"><img src="https://img.shields.io/github/stars/armand0w/harpy?color=8B00FD&logo=github"/></a>
+  <a href="https://github.com/armand0w/harpy/releases"><img src="https://img.shields.io/github/v/release/armand0w/harpy?color=BC0492"/></a>
+  <a href="https://github.com/armand0w/harpy/commits/master"><img src="https://img.shields.io/github/commits-since/armand0w/harpy/latest?color=F2091C"/></a>
+  <a href="https://github.com/armand0w/harpy/commits/master"><img src="https://img.shields.io/github/commit-activity/m/armand0w/harpy?color=FD0A04"/></a>
 </p>
 <p align="center">
   <a href="https://github.com/Solido/awesome-flutter">
    <img src="https://img.shields.io/badge/Awesome-Flutter-blue.svg?longCache=true"/>
   </a>
   
-  <a href="https://github.com/robertodoering/harpy/actions/workflows/flutter_push.yml">
-   <img src="https://github.com/robertodoering/harpy/actions/workflows/flutter_push.yml/badge.svg"/>
+  <a href="https://github.com/armand0w/harpy/actions/workflows/flutter_push.yml">
+   <img src="https://github.com/armand0w/harpy/actions/workflows/flutter_push.yml/badge.svg"/>
   </a>
 </p>
 
 <br>
 
 <p align="center">
-harpy is no longer in active development after Twitter's decision to disallow third party Twitter clients.
+The orignal harpy is no longer in active development after Twitter's decision to disallow third party Twitter clients. This fork continues that.
 </p>
 
 <p align="center">
-harpy was available in the Play Store as a free and paid app and was used by over 75.000 active users.
+harpy was a twitter client that used to be available in the Play Store as a free and paid app that was used by over 75k active users.
 </p>
 
 <br>
@@ -55,7 +55,7 @@ harpy was available in the Play Store as a free and paid app and was used by ove
 
 **harpy** is an alternative Twitter client that focuses on a nice user experience with unique features.
 
-This project has been in development since late 2018 and aims to be a good example for a medium-large sized Flutter app with a focus on code quality and maintainability.
+The project has been in development since late 2018 and aims to be a good example for a medium-large sized Flutter app with a focus on code quality and maintainability.
 
 Some interesting features of the app include:
 
@@ -68,10 +68,8 @@ Some interesting features of the app include:
 * Fully featured video player using the
   [video_player](https://pub.dev/packages/video_player) package
 * My own [twitter_api](https://github.com/robertodoering/twitter_api) package to make use of the official Twitter api
-* A 'pro' and 'free' android
-  [product flavor](https://developer.android.com/studio/build/build-variants)
 * Many customized animations sprinkled around the app, including custom logo animations created with [Rive](https://flare.rive.app/a/rbyd/files/recent/all)
 
 ### Development / Setup
 
-Follow the [project setup for building harpy](https://github.com/robertodoering/harpy/wiki/Project-setup-for-building-harpy) instructions to get the project running.
+Follow the [project setup for building harpy](https://github.com/armand0w/harpy/wiki/Project-setup-for-building-harpy) instructions to get the project running.
