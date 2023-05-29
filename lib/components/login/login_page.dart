@@ -68,8 +68,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             constraints: BoxConstraints(
                               maxHeight: mediaQuery.size.height * .5,
                             ),
-                            child: Column(
-                              children: const [
+                            child: const Column(
+                              children: [
                                 Expanded(child: _HarpyTitle()),
                                 Expanded(child: _HarpyLogo()),
                               ],

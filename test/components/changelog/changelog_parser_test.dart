@@ -61,7 +61,7 @@ void main() {
 
 void _mockChangelog(String changelog) {
   TestWidgetsFlutterBinding.ensureInitialized();
-  TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger
+  TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
       .setMockMessageHandler(
     'flutter/assets',
     (message) async => utf8.encoder.convert(changelog).buffer.asByteData(),

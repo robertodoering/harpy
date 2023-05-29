@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:harpy/core/core.dart';
+import 'package:logging/logging.dart';
 
 /// The count of weighted characters for a tweet.
 ///
@@ -21,10 +22,10 @@ int tweetTextCount(String text) {
 
   final urlsLength = urls * 23;
   final emojisLength = emojis * 2;
-  final normalWeigthedCharacters = normalWeighted.length;
+  final normalWeightedCharacters = normalWeighted.length;
   final otherCharacters = text.codeUnits.length * 2;
 
-  return urlsLength + emojisLength + normalWeigthedCharacters + otherCharacters;
+  return urlsLength + emojisLength + normalWeightedCharacters + otherCharacters;
 }
 
 /// Regex to match the code unit ranges for unicode glyphs that are weighted as
@@ -59,33 +60,33 @@ int _uniqueEmojis(String text) {
 
   final emojiMatches = emojiRegex.allMatches(text);
 
-  if (emojiMatches.isNotEmpty) {
-    try {
-      final emojiGroups = <String>[];
+  if (emojiMatches.isEmpty) return 0;
 
-      var prevEnd = -1;
-      var group = -1;
+  try {
+    final emojiGroups = <String>[];
 
-      for (final match in emojiMatches) {
-        final start = match.start;
-        final end = match.end;
+    var prevEnd = -1;
+    var group = -1;
 
-        if (start == prevEnd) {
-          emojiGroups[group] += text.substring(start, end);
-        } else {
-          emojiGroups.add(text.substring(start, end));
-          group++;
-        }
+    for (final match in emojiMatches) {
+      final start = match.start;
+      final end = match.end;
 
-        prevEnd = end;
+      if (start == prevEnd) {
+        emojiGroups[group] += text.substring(start, end);
+      } else {
+        emojiGroups.add(text.substring(start, end));
+        group++;
       }
 
-      for (final emojiGroup in emojiGroups) {
-        uniqueEmojis += Characters(emojiGroup).length;
-      }
-    } catch (e) {
-      // ignore potential parsing errors
+      prevEnd = end;
     }
+
+    for (final emojiGroup in emojiGroups) {
+      uniqueEmojis += Characters(emojiGroup).length;
+    }
+  } catch (e, st) {
+    Logger('$tweetTextCount').warning('error counting emojis in $text', e, st);
   }
 
   return uniqueEmojis;

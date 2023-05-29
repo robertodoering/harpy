@@ -45,18 +45,18 @@ class TweetPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            const PlaceholderBox(width: 42, height: 42, shape: BoxShape.circle),
+            PlaceholderBox(width: 42, height: 42, shape: BoxShape.circle),
             HorizontalSpacer.normal,
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   PlaceholderBox(widthFactor: .75, height: 15),
                   VerticalSpacer.small,
                   PlaceholderBox(widthFactor: .5, height: 15),
@@ -66,11 +66,11 @@ class TweetPlaceholder extends StatelessWidget {
           ],
         ),
         VerticalSpacer.normal,
-        const PlaceholderBox(widthFactor: .6, height: 15),
+        PlaceholderBox(widthFactor: .6, height: 15),
         VerticalSpacer.small,
-        const PlaceholderBox(height: 15),
+        PlaceholderBox(height: 15),
         VerticalSpacer.small,
-        const PlaceholderBox(widthFactor: .8, height: 15),
+        PlaceholderBox(widthFactor: .8, height: 15),
       ],
     );
   }

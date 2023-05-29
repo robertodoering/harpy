@@ -17,8 +17,8 @@ class HomeTimelineTopActions extends StatelessWidget {
     return SliverToBoxAdapter(
       child: Padding(
         padding: theme.spacing.edgeInsets.copyWith(bottom: 0),
-        child: Row(
-          children: const [
+        child: const Row(
+          children: [
             _RefreshButton(),
             Spacer(),
             _ComposeButton(),

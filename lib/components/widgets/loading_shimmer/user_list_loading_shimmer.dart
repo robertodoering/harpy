@@ -36,15 +36,15 @@ class UserPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const PlaceholderBox(width: 42, height: 42, shape: BoxShape.circle),
+        PlaceholderBox(width: 42, height: 42, shape: BoxShape.circle),
         HorizontalSpacer.normal,
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               PlaceholderBox(widthFactor: .75, height: 15),
               VerticalSpacer.small,
               PlaceholderBox(widthFactor: .3, height: 15),

@@ -39,15 +39,15 @@ class TrendsPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       children: [
-        const PlaceholderBox(width: 28, height: 28, shape: BoxShape.circle),
+        PlaceholderBox(width: 28, height: 28, shape: BoxShape.circle),
         HorizontalSpacer.normal,
         HorizontalSpacer.normal,
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               PlaceholderBox(widthFactor: .75, height: 15),
               VerticalSpacer.small,
               PlaceholderBox(widthFactor: .3, height: 15),

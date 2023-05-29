@@ -9,7 +9,7 @@ class UserPageData with _$UserPageData {
     required UserData user,
     String? bannerUrl,
     @Default(DescriptionTranslationState.untranslated())
-        DescriptionTranslationState descriptionTranslationState,
+    DescriptionTranslationState descriptionTranslationState,
     LegacyTweetData? pinnedTweet,
     RelationshipData? relationship,
   }) = _UserPageData;
