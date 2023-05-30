@@ -37,6 +37,12 @@ harpy was available in the Play Store as a free and paid app and was used by ove
 <br>
 
 <p align="center">
+  Check out a walkthrough of the app on youtube <a href="https://www.youtube.com/watch?v=egpQsNxLwvU" target="_blank">here</a>
+</p>
+
+<br>
+
+<p align="center">
   <kbd><img height="480" src="media/login_screen.gif"/></kbd>
   <kbd><img height="480" src="media/setup_screen.gif"/></kbd>
 </p>
