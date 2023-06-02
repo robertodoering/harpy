@@ -13,7 +13,7 @@ jobs:
         with:
           channel: 'stable'
       - run: dart pub get
-      - run: dart packages pub run build_runner build
+      - run: dart run build_runner build
       - run: dart analyze
       - run: dart format . --set-exit-if-changed
       - run: dart pub run code_rules.dart
