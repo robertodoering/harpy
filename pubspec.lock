@@ -578,10 +578,11 @@ packages:
   go_router:
     dependency: "direct main"
     description:
-      name: go_router
-      sha256: aa9a1ca4e7d745b2b55aa548fdd787101d6049782e7cccd7f9cf13558d18d955
-      url: "https://pub.dev"
-    source: hosted
+      path: "packages/go_router"
+      ref: c0432b8b05bd678b971e1b6bde783c82d9eee98c
+      resolved-ref: c0432b8b05bd678b971e1b6bde783c82d9eee98c
+      url: "https://github.com/robertodoering/packages"
+    source: git
     version: "4.0.0"
   golden_toolkit:
     dependency: "direct dev"

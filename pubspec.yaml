@@ -43,7 +43,11 @@ dependencies:
   flutter_markdown: ^0.6.10
   flutter_riverpod: ^2.1.1
   freezed_annotation: ^2.1.0
-  go_router: 4.0.0 # TODO: replace go_router
+  go_router:
+    git:
+      url: https://github.com/robertodoering/packages
+      path: packages/go_router
+      ref: c0432b8b05bd678b971e1b6bde783c82d9eee98c
   google_fonts: ^4.0.4
   http: ^0.13.3
   humanizer: ^2.0.0
