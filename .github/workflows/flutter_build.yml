@@ -32,10 +32,10 @@ jobs:
         run: echo "${{ secrets.KEYSTORE_FREE }}" | base64 --decode > android/key.jks
 
       - name: Get dependencies
-        run: flutter pub get
+        run: dart pub get
 
       - name: Generate files
-        run: flutter pub run build_runner build
+        run: dart pub run build_runner build
 
       - name: Build APK
         run: > 
