@@ -9,7 +9,7 @@ env:
 
 jobs:
   build_apk:
-    name: Build harpy free .apk
+    name: Build harpy pro .apk
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -42,8 +42,8 @@ jobs:
           flutter build apk
           --split-per-abi 
           --release
-          --flavor free
-          --dart-define flavor=free
+          --flavor pro
+          --dart-define flavor=pro
           --dart-define twitter_consumer_key=${{ secrets.CONSUMER_KEY_FREE }}
           --dart-define twitter_consumer_secret=${{ secrets.CONSUMER_SECRET_FREE }}
           --dart-define sentry_dsn=${{ secrets.SENTRY_DSN_FREE }}
