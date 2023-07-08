@@ -25,34 +25,35 @@ class UserPageNotifier extends _$UserPageNotifier {
     final twitterApiV1 = ref.watch(twitterApiV1Provider);
 
     final responses = await Future.wait([
-      _twitterApiV2.users.lookupByName(
-        username: handle,
-        userFields: [
-          v2.UserField.id,
-          v2.UserField.description,
-          v2.UserField.name,
-          v2.UserField.username,
-          v2.UserField.url,
-          v2.UserField.profileImageUrl,
-          v2.UserField.location,
-          v2.UserField.pinnedTweetId,
-          v2.UserField.protected,
-          v2.UserField.verified,
-          v2.UserField.publicMetrics,
-          v2.UserField.entities,
-          v2.UserField.createdAt,
-          v2.UserField.withheld,
-        ],
-        tweetFields: [
-          v2.TweetField.id,
-          v2.TweetField.text,
-          v2.TweetField.createdAt,
-          v2.TweetField.entities,
-          v2.TweetField.lang,
-          v2.TweetField.publicMetrics,
-        ],
-        expansions: [v2.UserExpansion.pinnedTweetId],
-      ),
+      twitterApiV1.userService.usersShow(screenName: handle),
+      // _twitterApiV2.users.lookupByName(
+      //   username: handle,
+      //   userFields: [
+      //     v2.UserField.id,
+      //     v2.UserField.description,
+      //     v2.UserField.name,
+      //     v2.UserField.username,
+      //     v2.UserField.url,
+      //     v2.UserField.profileImageUrl,
+      //     v2.UserField.location,
+      //     v2.UserField.pinnedTweetId,
+      //     v2.UserField.protected,
+      //     v2.UserField.verified,
+      //     v2.UserField.publicMetrics,
+      //     v2.UserField.entities,
+      //     v2.UserField.createdAt,
+      //     v2.UserField.withheld,
+      //   ],
+      //   tweetFields: [
+      //     v2.TweetField.id,
+      //     v2.TweetField.text,
+      //     v2.TweetField.createdAt,
+      //     v2.TweetField.entities,
+      //     v2.TweetField.lang,
+      //     v2.TweetField.publicMetrics,
+      //   ],
+      //   expansions: [v2.UserExpansion.pinnedTweetId],
+      // ),
       twitterApiV1.userService
           .profileBanner(screenName: handle)
           .handleError(logErrorHandler),
@@ -61,20 +62,22 @@ class UserPageNotifier extends _$UserPageNotifier {
           .handleError(logErrorHandler),
     ]);
 
-    final response = responses[0] as v2.TwitterResponse<v2.UserData, void>;
+    final user = responses[0] as v1.User;
+    // final user = responses[0] as v2.TwitterResponse<v2.UserData, void>;
     final banner = responses[1] as v1.Banner?;
     final relationship = responses[2] as v1.Relationship?;
 
-    final pinnedTweet = (response.includes?.tweets?.isNotEmpty ?? false)
-        ? response.includes?.tweets?.first
-        : null;
+    // final pinnedTweet = (user.includes?.tweets?.isNotEmpty ?? false)
+    //     ? user.includes?.tweets?.first
+    //     : null;
 
     return UserPageData(
-      user: UserData.fromV2(response.data),
+      // user: UserData.fromV2(user.data),
+      user: UserData.fromV1(user),
       bannerUrl: banner?.sizes?.size1500x500?.url,
-      pinnedTweet: pinnedTweet != null
-          ? LegacyTweetData.fromV2(pinnedTweet, response.data)
-          : null,
+      // pinnedTweet: pinnedTweet != null
+      //     ? LegacyTweetData.fromV2(pinnedTweet, user.data)
+      //     : null,
       relationship:
           relationship != null ? RelationshipData.fromV1(relationship) : null,
     );
