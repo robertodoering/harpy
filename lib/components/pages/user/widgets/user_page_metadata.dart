@@ -22,7 +22,7 @@ class UserPageMetadata extends StatelessWidget {
     )!;
 
     final children = [
-      if (data.user.location != null)
+      if (data.user.location != null && data.user.location!.isNotEmpty)
         _Entry(
           icon: const Icon(CupertinoIcons.map_pin_ellipse),
           child: Text(data.user.location!),
