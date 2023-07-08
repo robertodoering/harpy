@@ -16,23 +16,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// `--dart-define=twitter_consumer_key=your_consumer_key` and
 /// `--dart-define=twitter_consumer_secret=your_consumer_secret`.
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  final sharedPreferences = await SharedPreferences.getInstance();
-
-  // pre-cache flare animations
-  FlareCache.doesPrune = false;
-  await warmupFlare();
-
   // ErrorHandler will run the app and handle uncaught errors
   ErrorHandler(
-    sharedPreferences: sharedPreferences,
-    child: ProviderScope(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-      ],
-      observers: [ProviderLogger()],
-      child: const HarpyApp(),
-    ),
+    builder: () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      final sharedPreferences = await SharedPreferences.getInstance();
+
+      // pre-cache flare animations
+      FlareCache.doesPrune = false;
+      await warmupFlare();
+
+      return ProviderScope(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+        ],
+        observers: [ProviderLogger()],
+        child: const HarpyApp(),
+      );
+    },
   );
 }
 

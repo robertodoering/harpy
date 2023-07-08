@@ -23,8 +23,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// information about error reporting in Flutter.
 class ErrorHandler with LoggerMixin {
   ErrorHandler({
-    required Widget child,
-    required SharedPreferences sharedPreferences,
+    required Future<Widget> Function() builder,
   }) {
     if (kReleaseMode) {
       // override the error widget in release mode (the red error screen)
@@ -35,17 +34,15 @@ class ErrorHandler with LoggerMixin {
 
     runZonedGuarded(
       () async {
-        if (kReleaseMode && sentryDns.isNotEmpty) {
-          await SentryFlutter.init(
-            (options) => options.dsn = sentryDns,
-          ).handleError(logErrorHandler);
-        }
-
-        runApp(child);
+        WidgetsFlutterBinding.ensureInitialized();
+        sharedPreferences = await SharedPreferences.getInstance();
+        runApp(await builder());
       },
-      (e, st) => _handleError(e, st, sharedPreferences: sharedPreferences),
+      _handleError,
     );
   }
+
+  late final SharedPreferences sharedPreferences;
 
   /// Handles errors caught by the Flutter framework.
   ///
@@ -68,11 +65,7 @@ class ErrorHandler with LoggerMixin {
   }
 
   /// Prints the error and reports it to sentry in release mode.
-  Future<void> _handleError(
-    Object error,
-    StackTrace stackTrace, {
-    required SharedPreferences sharedPreferences,
-  }) async {
+  Future<void> _handleError(Object error, StackTrace stackTrace) async {
     if (error is SocketException) {
       // no internet connection, can be ignored
       log.warning(
