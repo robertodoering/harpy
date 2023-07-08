@@ -1,0 +1,6 @@
+Version 0.10.3
+2023-07-08
+
+For the time being harpy is still working by using Twitter's legacy v1 api.
+
+This release updated the user profile to use the old v1 api instead of the non-free v2 api to make profiles work again.
