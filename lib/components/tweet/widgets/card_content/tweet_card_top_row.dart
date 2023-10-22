@@ -96,7 +96,7 @@ class TweetCardTopRow extends ConsumerWidget {
                             ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

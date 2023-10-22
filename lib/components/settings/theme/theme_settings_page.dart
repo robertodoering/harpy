@@ -276,7 +276,7 @@ class _LockedProThemes extends ConsumerWidget {
             child: LockedProThemeCard(harpyTheme),
           ),
           VerticalSpacer.small,
-        ]
+        ],
       ]),
     );
   }

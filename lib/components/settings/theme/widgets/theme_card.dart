@@ -196,7 +196,7 @@ class _ThemeCardBase extends StatelessWidget {
           ? harpyTheme.colors.backgroundColors.toList()
           : [
               harpyTheme.colors.backgroundColors.first,
-              harpyTheme.colors.backgroundColors.first
+              harpyTheme.colors.backgroundColors.first,
             ],
     );
 

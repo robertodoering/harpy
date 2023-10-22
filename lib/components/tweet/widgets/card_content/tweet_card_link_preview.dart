@@ -218,7 +218,7 @@ class _LinkPreviewText extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.visible,
             style: theme.textTheme.bodySmall?.apply(fontSizeDelta: -4),
-          )
+          ),
         ],
       ),
     );

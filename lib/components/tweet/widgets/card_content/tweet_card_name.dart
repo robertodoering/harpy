@@ -44,7 +44,7 @@ class TweetCardName extends ConsumerWidget {
                 CupertinoIcons.checkmark_seal_fill,
                 size: 16 + style.sizeDelta,
               ),
-            ]
+            ],
           ],
         ),
       ),

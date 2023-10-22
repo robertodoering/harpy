@@ -160,7 +160,7 @@ class _AppliedFiltersText extends StatelessWidget {
               style: style,
             ),
             if (filter != filters.last) TextSpan(text: ', ', style: style),
-          ]
+          ],
         ],
       ),
       maxLines: 1,

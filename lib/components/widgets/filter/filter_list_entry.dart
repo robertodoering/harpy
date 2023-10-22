@@ -76,9 +76,9 @@ class _FilterListEntryState extends ConsumerState<FilterListEntry> {
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   onDeleted: () => widget.onDeleted(i),
                 ),
-              )
+              ),
           ],
-        )
+        ),
       ];
     }
 

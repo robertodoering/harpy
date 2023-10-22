@@ -136,7 +136,7 @@ class _AuthenticatedUser extends ConsumerWidget {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

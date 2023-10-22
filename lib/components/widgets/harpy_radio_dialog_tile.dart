@@ -52,7 +52,7 @@ class HarpyRadioDialogTile<T> extends ConsumerWidget {
                     Navigator.of(context).pop();
                     if (value != groupValue) onChanged?.call(value);
                   },
-                )
+                ),
             ],
           ),
         ),

@@ -19,8 +19,8 @@ class HomeTabIconDialog extends StatelessWidget {
         runSpacing: 4,
         children: [
           if (entry.name.isNotEmpty) _IconButton(iconName: entry.name[0]),
-          for (String iconName in HomeTabEntryIcon.iconNameMap.keys)
-            _IconButton(iconName: iconName)
+          for (final String iconName in HomeTabEntryIcon.iconNameMap.keys)
+            _IconButton(iconName: iconName),
         ],
       ),
     );

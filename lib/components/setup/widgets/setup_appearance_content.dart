@@ -70,7 +70,7 @@ class _Layout extends ConsumerWidget {
               ),
             ),
           ],
-        )
+        ),
       ],
     );
   }

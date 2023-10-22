@@ -169,7 +169,7 @@ void _showListActionBottomSheet(
             queryParams: {'name': list.name},
           );
         },
-      )
+      ),
     ],
   );
 }

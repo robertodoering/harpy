@@ -69,7 +69,7 @@ class _LocationSelectionDialogState
               padding: theme.spacing.edgeInsets,
               alignment: AlignmentDirectional.center,
               child: const CircularProgressIndicator(),
-            )
+            ),
         ],
       ),
     );

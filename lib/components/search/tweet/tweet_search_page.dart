@@ -82,7 +82,7 @@ class _TweetSearchPageState extends ConsumerState<TweetSearchPage> {
                             notifier: notifier,
                           ),
                         ),
-                      )
+                      ),
                     ],
                     loading: (_) => const [
                       VerticalSpacer.normalSliver,

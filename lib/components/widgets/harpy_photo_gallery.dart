@@ -63,7 +63,7 @@ Widget borderRadiusFlightShuttleBuilder(
     animation: animation,
     builder: (_, __) => ClipRRect(
       clipBehavior: Clip.hardEdge,
-      borderRadius: tween.evaluate(animation),
+      borderRadius: tween.evaluate(animation)!,
       child: hero.child,
     ),
   );
@@ -75,9 +75,7 @@ PhotoViewScaleState _scaleStateCycle(PhotoViewScaleState actual) {
     case PhotoViewScaleState.covering:
     case PhotoViewScaleState.originalSize:
     case PhotoViewScaleState.zoomedOut:
-      return PhotoViewScaleState.zoomOne;
-    case PhotoViewScaleState.zoomOne:
-    case PhotoViewScaleState.zoomTwo:
+      return PhotoViewScaleState.zoomedIn;
     case PhotoViewScaleState.zoomedIn:
       return PhotoViewScaleState.initial;
   }

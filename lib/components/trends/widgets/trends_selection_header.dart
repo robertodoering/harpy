@@ -45,7 +45,7 @@ class TrendsSelectionHeader extends ConsumerWidget {
                       UserScrollDirection.of(context)?.idle();
                       notifier.load();
                     },
-            )
+            ),
           ],
         ),
       ),

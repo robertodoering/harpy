@@ -104,7 +104,7 @@ const kTranslateLanguages = {
   'xh': 'Xhosa',
   'yi': 'Yiddish',
   'yo': 'Yoruba',
-  'zu': 'Zulu'
+  'zu': 'Zulu',
 };
 
 /// Returns the language code used by the translate service from the app

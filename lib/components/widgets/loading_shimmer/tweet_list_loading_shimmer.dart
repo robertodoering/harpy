@@ -62,7 +62,7 @@ class TweetPlaceholder extends StatelessWidget {
                   PlaceholderBox(widthFactor: .5, height: 15),
                 ],
               ),
-            )
+            ),
           ],
         ),
         VerticalSpacer.normal,

@@ -148,7 +148,7 @@ class _HarpyTapBarState extends ConsumerState<HarpyTabBar> {
               if (i != widget.tabs.length - 1) HorizontalSpacer.small,
             ],
             if (widget.endWidgets != null) ...[
-              for (Widget widget in widget.endWidgets!) ...[
+              for (final Widget widget in widget.endWidgets!) ...[
                 HorizontalSpacer.small,
                 widget,
               ],

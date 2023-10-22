@@ -53,7 +53,7 @@ void main() {
           Tweet()
             ..idStr = '2'
             ..inReplyToStatusIdStr = '1',
-          Tweet()..idStr = '1'
+          Tweet()..idStr = '1',
         ]);
 
         expect(tweets.length, equals(1));

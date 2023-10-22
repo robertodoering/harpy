@@ -43,7 +43,7 @@ class DisplaySettingsPage extends ConsumerWidget {
               Padding(
                 padding: theme.spacing.edgeInsets.copyWith(top: 0),
                 child: const _DisplaySettingsList(),
-              )
+              ),
             ]),
           ),
           const SliverBottomPadding(),

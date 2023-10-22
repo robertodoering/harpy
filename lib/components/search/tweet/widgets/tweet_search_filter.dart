@@ -94,7 +94,7 @@ class _InvalidFilterInfo extends StatelessWidget {
                           color: theme.colorScheme.onBackground.withOpacity(.7),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               )

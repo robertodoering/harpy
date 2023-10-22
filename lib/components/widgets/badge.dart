@@ -32,7 +32,7 @@ class HarpyBadge extends StatelessWidget {
           Transform.translate(
             offset: offset,
             child: IgnorePointer(child: badge),
-          )
+          ),
       ],
     );
   }

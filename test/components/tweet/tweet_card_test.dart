@@ -307,7 +307,7 @@ void main() {
                     ..aspectRatio = [16, 9]
                     ..variants = [])
                   ..mediaUrlHttps = 'blue.png',
-              )
+              ),
             ],
           ),
         ),
